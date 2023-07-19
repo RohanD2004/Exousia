@@ -1,0 +1,33 @@
+ul li {
+    list-style: none;
+    padding: 0.5rem;
+}
+
+ul li button Link{
+    text-decoration:none!important ;
+}
+
+.sidecol{
+    height: 100vh;
+}
+
+@media (max-width:576px){
+    .sidecol{
+        width: 50%;
+    }
+}
+@media (max-width:300px){
+    .sidecol{
+        width: 50%;
+    }
+}
+@media (max-width:200px){
+    .sidecol{
+        width: 100%;
+    }
+}
+@media (max-width:100px){
+    .sidecol{
+        width: 100%;
+    }
+}

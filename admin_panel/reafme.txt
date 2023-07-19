@@ -1,0 +1,8 @@
+installed packegs in this admin panel
+
+material UI packegs:-
+npm install @mui/icons-material @mui/material @emotion/react @emotion/styled react-bootstrap bootstrap web-vitals react-scripts react-router-dom react-datetime @mui/x-data-grid @mui/material
+
+
+
+

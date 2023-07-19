@@ -1,0 +1,16 @@
+@media (max-width: 320px) { 
+    #marks-input{
+        width: 3rem;
+    }
+}
+@media (min-width: 992px) { 
+    #marks-input{
+        width: 8rem;
+    }
+ }
+
+@media (min-width: 1200px) { 
+    #marks-input{
+        width: 8rem;
+    }
+ }
