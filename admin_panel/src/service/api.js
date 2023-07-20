@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { tokenpassApi } from '../components/Login';
-const url="http://192.168.1.56:8000"
+// const url="http://192.168.1.56:8000"
+const url="https://erp-exousia.onrender.com/api" 
 
 
 export const Authenticate =async (logcred)=>{

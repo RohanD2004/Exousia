@@ -16,7 +16,10 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 app.use(express.static(path.join(__dirname, './public')));
 app.use(cookieParser());
 
-app.use(require(`./src/Routes`));
+app.use("/api", require(`./src/Routes`));
+
+app.use(express.static('public'))
+
 
 app.use(logger('dev'));
 app.use(Utilities.send404);
