@@ -6,6 +6,7 @@
 	"scripts": {
 		"dev": "node server.js",
 		"start": "node server.js",
+		"build": "npm i",
 		"forever-start": "forever start server.js",
 		"forever-restart": "forever restart server.js",
 		"forever-stop": "forever stop server.js",
