@@ -232,7 +232,7 @@ class StudentController {
 
         let Id = req.params.id;
         let query = { _id: Number(Id) }
-        console.log(req);
+        
         try {
 
             const studetndata = await Studentmodel.aggregate([

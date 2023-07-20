@@ -9,6 +9,7 @@ import Sidenav from "../components/sidebar.tsx"
 import Std from "../components/std.js"
 import { useNavigate } from "react-router-dom"
 import { getclass } from "../service/api"
+import Header from "./header";
 let Stdno;
 
 
@@ -58,7 +59,8 @@ function TextLinkExample() {
         <Sidenav />
 
         <Box component="main" sx={{ flexGrow: 1, p: 3 }} >
-          <div className="container list-group listgroup">
+          <Header title="Classes "/>
+          <div className="container list-group listgroup mt-4">
 
 
             {classes.map((user) => (

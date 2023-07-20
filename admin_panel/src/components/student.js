@@ -148,7 +148,7 @@ export default function Student() {
                   <tbody>
                     {
                       students.filter((user,index) =>
-                        user.name.includes(sname))
+                        user.name.toLowerCase().includes(sname))
                         .map((user,index) => {
 
                           return  user.feesPaid === user.stdfeesinfo.total_fees ?

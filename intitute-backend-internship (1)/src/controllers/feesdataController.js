@@ -19,9 +19,6 @@ class FeesdataModule {
             var Existingfeespaid = parseInt(req.body.feesPaid);
             var curreentAmount = parseInt(req.body.Amount)
             Totalfeespaid = Existingfeespaid + curreentAmount;
-            console.log(Totalfeespaid);
-
-
             let payfees = {
                 feesId: req.body.feesId,
                 name: req.body.name,
@@ -51,7 +48,7 @@ class FeesdataModule {
         let query = { feesId: Number(feesId) }
         try {
             let doseExit = await feesDataModule.findOne(query);
-            console.log("doseExit:--", doseExit);
+           
             if (doseExit != null) {
                 const feeshistory = await feesDataModule.aggregate([
                     {
@@ -122,7 +119,6 @@ class FeesdataModule {
             const newMessage = new Message({ mobileNumber: normalizedNumber, message });
             await newMessage.save();
     
-            console.log('SMS sent:', twilioResponse.sid);
             res.sendStatus(200);
         } catch (error) {
             console.error('Error sending SMS:', error);

@@ -95,7 +95,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 export default function Sidebar() {
   const theme = useTheme();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [menuData, setMenuData] = useState("student");
   const handleDrawerOpen = () => {
     setOpen(true);

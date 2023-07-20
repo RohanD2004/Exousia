@@ -71,6 +71,18 @@ class TeacherController
         }
     }
 
+    async  getSingleTeacher2(req, res) {
+
+       const id= req.body.id;
+        console.log(id);
+        try {
+          const  getSingleteacher = await TeacherModule.find({_id : id});
+            Utilities.apiResponse(res, 200, 'Get Teacher Successfully', getSingleteacher);
+        } catch (error) {
+            Utilities.apiResponse(res, 500, error);
+        }
+    }
+
     async updateTeacher(req, res) {
         try {
             await TeacherModule.findOneAndUpdate({ _id: req.params.id }, req.body);

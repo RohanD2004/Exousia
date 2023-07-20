@@ -173,7 +173,7 @@ export default function Classlayout() {
             <tbody>
               {
                 students?.filter((user) =>
-                  user.name.includes(sname))
+                  user.name.toLowerCase().includes(sname))
                   .map((user) => {
 
                     return <tr>

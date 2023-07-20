@@ -76,11 +76,6 @@ export default function Teacher() {
                         <div class="large font-italic mb-4">Admitted On : {moment(teacherdata.createdAt).format('MMMM Do, YYYY')}</div>
                       </div>
                     </div>
-                    <div className='mt-3 mb-3 d-flex justify-content-center'>
-                      <Button className='btn bg-primary text-white w-50' component={Link} to={`/admin/teacher/view/edit/${teacherdata._id}`} >
-                        EDIT
-                      </Button>
-                    </div>
                   </div>
                   <div class="col-xl-8">
                     {/* <!-- Account details card--> */}

@@ -43,11 +43,11 @@ export default function Studentprofile() {
 
     return (
         <Box sx={{ display: 'flex' }} >
-            <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
+            <Box component='main' sx={{ flexGrow: 1}}>
                 <Box>
                     <Header title="Profile"/>
                 </Box>
-                <div class="container-xl px-3 mt-4">
+                <div class="container-xl  mt-4">
 
                     {
                         studetndata?.map((user) => {

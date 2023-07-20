@@ -35,7 +35,6 @@ class MarkController {
     async getMarkData(req, res){
         try {
             const student_id= req.params.id
-            console.log(student_id);
             const data= await Mark.find({stuId :student_id })
             Utilities.apiResponse(res, 200, 'getmarks  Successfully',data);
         } catch (error) {

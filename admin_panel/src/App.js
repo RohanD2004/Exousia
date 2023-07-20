@@ -25,6 +25,8 @@ import Feesdata from './StudentComponents/Fees';
 import Assesment from './StudentComponents/Assesment';
 import TeacherHome from "./TeacherComponent/TeacherHome"
 import Exams from './TeacherComponent/Exams';
+import Uploadmaterial from './TeacherComponent/uploadmaterial';
+import TeacherTimetable from "./TeacherComponent/TeacherTimetable"
 export default function App() {
   return (
     <>
@@ -62,6 +64,8 @@ export default function App() {
           {/* Teacher dashboard route start */}
           <Route path="/teacher/:id?" element={<TeacherHome />}> </Route>
           <Route path="/teacher/exams" element={<Exams />}> </Route>
+          <Route path="/teacher/uploadmaterial" element={<Uploadmaterial />}> </Route>
+          <Route path="/teacher/Timetable" element={<TeacherTimetable />}> </Route>
 
 
         </Routes>

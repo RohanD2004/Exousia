@@ -480,7 +480,7 @@ export default function Homepage() {
               </div>
             </div>
           </div>
-          <div className='col mt-5 p-3 shadow'>
+          <div className='col mt-5 p-3 shadow bg-white'>
             <strong>
               <span style={{ fontSize: '2rem' }}>Student Data</span>
             </strong>
@@ -528,7 +528,7 @@ export default function Homepage() {
         </div>
         <div className='row mt-4'>
           <div className='col-lg-6'>
-            <div className='container-fluid shadow p-3'>
+            <div className='container-fluid shadow p-3 bg-white mb-4'>
               <p className='h3'>Announcement</p>
               <div className='row'>
                 <div>
@@ -585,7 +585,7 @@ export default function Homepage() {
             </div>
           </div>
           <div className='col'>
-            <div className='container-fluid shadow'>
+            <div className='container-fluid shadow bg-white'>
 
               <div className='row p-3'>
 

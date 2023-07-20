@@ -9,6 +9,7 @@ import Sidenav from "../components/sidebar.tsx"
 import Swal from "sweetalert2";
 import { useNavigate } from 'react-router-dom';
 import { messaging } from '../service/api';
+import Header from "../components/header"
 import moment from 'moment'
 
 let totalfees;
@@ -108,8 +109,10 @@ export default function Feesdetails() {
 
             <Sidenav />
             <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
+                
+                <Header title="Fees History"/>
 
-                < table class=" table-striped  table table-bordered" id='paid' >
+                < table class=" table-striped  table table-bordered mt-4" id='paid' >
                     <thead>
                         <tr>
                             <th scope="col">Date</th>

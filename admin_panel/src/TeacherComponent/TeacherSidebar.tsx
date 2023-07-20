@@ -187,7 +187,7 @@ export default function Sidebar() {
             />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding sx={{ display: "block" }} onClick={() => navigate("/student/Timetable")}>
+        <ListItem disablePadding sx={{ display: "block" }} onClick={() => navigate("/teacher/Timetable")}>
           <ListItemButton sx={{ minHeight: 48, justifyContent: open ? "initial" : "center", px: 2.5, }}>
             <ListItemIcon
               sx={{
@@ -206,7 +206,7 @@ export default function Sidebar() {
           </ListItemButton>
         </ListItem>
 
-        <ListItem disablePadding sx={{ display: "block" }} onClick={() => navigate("/student/Assessment")}>
+        <ListItem disablePadding sx={{ display: "block" }} onClick={() => navigate("/teacher/uploadmaterial")}>
           <ListItemButton sx={{ minHeight: 48, justifyContent: open ? "initial" : "center", px: 2.5, }}>
             <ListItemIcon
               sx={{
@@ -219,30 +219,13 @@ export default function Sidebar() {
               <PiStudentDuotone />
             </ListItemIcon>
             <ListItemText
-              primary={"Assessment"}
+              primary={"Upload Material"}
               sx={{ opacity: open ? 1 : 0 }}
             />
           </ListItemButton>
         </ListItem>
 
-        <ListItem disablePadding sx={{ display: "block" }} onClick={() => navigate(`/student/feesdetails/${id}`)}>
-          <ListItemButton sx={{ minHeight: 48, justifyContent: open ? "initial" : "center", px: 2.5, }}>
-            <ListItemIcon
-              sx={{
-                minWidth: 0,
-                mr: open ? 3 : "auto",
-                justifyContent: "center",
-                color: "white"
-              }}
-            >
-              <FaRupeeSign />
-            </ListItemIcon>
-            <ListItemText
-              primary={"Fees"}
-              sx={{ opacity: open ? 1 : 0 }}
-            />
-          </ListItemButton>
-        </ListItem>
+        
 
         <ListItem disablePadding sx={{ display: "block" }} onClick={() =>logout()}>
           <ListItemButton sx={{ minHeight: 48, justifyContent: open ? "initial" : "center", px: 2.5, }}>

@@ -96,11 +96,14 @@ Route.route('/admin/student')
     .get(authcontroller.Auth, feesdataController.getFeesHistory);
 
     Route.route('/student/Assessment/:id')
-    .post( MarkControler.getMarkData);
+    .post(MarkControler.getMarkData);
     
 
     Route.route('/teacher/exams')
     .post( authcontroller.Auth,StudentController.studentdataForMarks);
+
+    Route.route('/teacher/exams/sub')
+    .post( authcontroller.Auth,TeacherController.getSingleTeacher2);
 
     Route.route('/teacher/exams/updatemark')
     .post(authcontroller.Auth,MarkControler.AddMarks);

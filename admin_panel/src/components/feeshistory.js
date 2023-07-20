@@ -64,10 +64,10 @@ function getTotalFees(fees) {
 
 export default function Feeshistory() {
 
-    const navigate= useNavigate();
-    const temp= localStorage.getItem('token');
+    const navigate = useNavigate();
+    const temp = localStorage.getItem('token');
     const [sname, setSname] = useState("");
-    const [type, setType] = useState(1);
+    const [type, setType] = useState("1");
     const [students, setStudent] = useState([]);
 
 
@@ -80,25 +80,8 @@ export default function Feeshistory() {
 
 
     const filter = (e) => {
-
-        setType(e.target.value)
-        console.log(type)
-        // var paid= document.getElementById('paid')
-        // var unpaid= document.getElementById('unPaid')
-
-        // if (e.target.value==1) {
-        //     paid.style.display='block'
-        //     unpaid.style.display='none'
-
-        // } else {
-        //     paid.style.display='none'
-        //     unpaid.style.display='block'
-
-        // }
-
-
-
-    }
+        setSname(e.target.value);
+    };
 
     function redcolor(id) {
 
@@ -108,12 +91,12 @@ export default function Feeshistory() {
 
     useEffect(() => {
         console.log(temp);
-        if(temp ===null){
-          navigate('/');
+        if (temp === null) {
+            navigate('/');
         }
-      }, [temp])
+    }, [temp])
 
-      useEffect(() => {
+    useEffect(() => {
         getAllStudentDataForFees();
     }, []);
 
@@ -122,7 +105,7 @@ export default function Feeshistory() {
 
 
             <Sidenav />
-            <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
+            <Box component='main' className='table-responsive' sx={{ flexGrow: 1, p: 3 }}>
 
                 <AppBar position="static" style={{ backgroundColor: '#002147' }}>
                     <Toolbar>
@@ -139,7 +122,7 @@ export default function Feeshistory() {
                                 <SearchIcon />
                             </SearchIconWrapper>
                             <StyledInputBase
-                                onChange={(e) => setSname(e.target.value)}
+                                onChange={(e) => filter(e)}
                                 placeholder="Search…"
                                 inputProps={{ 'aria-label': 'search' }}
                             />
@@ -156,7 +139,7 @@ export default function Feeshistory() {
                                     Select Type
                                 </InputLabel>
                                 <NativeSelect
-                                    onChange={(e) => filter(e)}
+                                    onChange={(e) => setType(e.target.value)}
                                     className='form-control select'
                                     defaultValue={1}
                                     inputProps={{
@@ -172,9 +155,9 @@ export default function Feeshistory() {
 
 
                     </div>
-                    <div class="card-body">
+                    <div class="card-body ">
 
-                        <div className=' mt-2 table-responsive'>
+                        <div className=' mt-2 table-responsive '>
                             <table class=" table-striped  table table-bordered" id='paid'>
                                 <thead>
                                     <tr>
@@ -185,56 +168,63 @@ export default function Feeshistory() {
                                         <th scope="col"></th>
                                     </tr>
 
-
-
                                 </thead>
-                                {/* Unpaid */}
                                 <tbody id='paid'>
-                                    {
-                                        students.filter((user, index) =>
-                                            type === 1 ?
-                                                user.name.includes(sname) && user.feesPaid === user.stdfeesinfo.total_fees :
-                                                user.name.includes(sname)
-                                                && user.feesPaid !== user.stdfeesinfo.total_fees
-                                        )
-
-                                            .map((user, index) => {
+                                    {students
+                                        .filter((user) => {
+                                            const lowerCaseName = user.name.toLowerCase();
+                                            const lowerCaseSearch = sname.toLowerCase();
+                                        
+                                            if (type === "1") {
                                                 return (
-                                                    user.feesPaid === 0 ?
+                                                    lowerCaseName.includes(lowerCaseSearch) &&
+                                                    user.feesPaid === user.stdfeesinfo.total_fees
+                                                );
+                                            } else if (type === "0") {
+                                                return (
+                                                    lowerCaseName.includes(lowerCaseSearch) &&
+                                                    user.feesPaid !== user.stdfeesinfo.total_fees
+                                                );
+                                            }
+                                        
+                                            return false; // Optional: Handle the default case if needed
+                                        })
+                                        .map((user) => {
+                                            return (
+                                                user.feesPaid === 0 ? (
                                                     <tr className='table-danger'>
-                                                        <th scope="row"  >{user.name}</th>
-                                                        <td >{user.stdfeesinfo.std} th</td>
-                                                        <td >{user.gen}</td>
-                                                        <td  >{user.contact}</td>
-                                                        <td >
-                                                            <Button startIcon={ <CancelIcon style={{color:'red'}}/>}></Button>
-                                                       
+                                                        <th scope="row">{user.name}</th>
+                                                        <td>{user.stdfeesinfo.std} th</td>
+                                                        <td>{user.gen}</td>
+                                                        <td>{user.contact}</td>
+                                                        <td>
+                                                            <Button startIcon={<CancelIcon style={{ color: 'red' }} />} />
                                                         </td>
-
                                                     </tr>
-                                                    :
-                                                    <tr >
-                                                        <th scope="row"  >{user.name}</th>
-                                                        <td >{user.stdfeesinfo.std} th</td>
-                                                        <td >{user.gen}</td>
-                                                        <td  >{user.contact}</td>
-                                                        <td >
-
-                                                            <Link to={`history/${user._id}`} style={{ color: 'white', textDecoration: 'none' }} > <Button className="btn " href="#data" startIcon={<AiFillEye />}> </Button> </Link>
+                                                ) : (
+                                                    <tr>
+                                                        <th scope="row">{user.name}</th>
+                                                        <td>{user.stdfeesinfo.std} th</td>
+                                                        <td>{user.gen}</td>
+                                                        <td>{user.contact}</td>
+                                                        <td>
+                                                            <Link to={`history/${user._id}`} style={{ color: 'white', textDecoration: 'none' }}>
+                                                                <Button className="btn " href="#data" startIcon={<AiFillEye />} />
+                                                            </Link>
                                                         </td>
-
                                                     </tr>
                                                 )
-                                            })}
-
+                                            );
+                                        })}
                                 </tbody>
+
 
                             </table>
 
                         </div>
                     </div>
                 </div>
-               
+
 
 
 

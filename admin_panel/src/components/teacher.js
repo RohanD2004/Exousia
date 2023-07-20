@@ -239,7 +239,7 @@ export default function Student() {
               {
 
                 teachers.filter((element) =>
-                  element.name.includes(tname))
+                element.name.toLowerCase().includes(tname))
                   .map((element) => {
                     return (
                       <><div class="row">

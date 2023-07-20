@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { tokenpassApi } from '../components/Login';
-const url="http://localhost:8000"
+const url="http://192.168.0.178:8000"
 
 
 export const Authenticate =async (logcred)=>{
   try {
        return await axios.post( `${url}/`,logcred)
   } catch (error) {
-     console.log("erroe during login  student",error)
+       console.log("erroe during login  student",error)
   }
 }
 
@@ -322,6 +322,22 @@ export const viewTeacher= async (id)=>{
     const token =localStorage.getItem('token');
 
         return await axios.get(`${url}/admin/teacher/view/${id}`,{
+
+          headers:{
+            Authorization: `Bearer ${token}`
+           }
+    
+        })
+  }catch(error)
+  {
+      console.log("Error occur durring api called",error)
+  }
+}
+export const viewTeacher2= async (id)=>{
+
+  try{
+    const token =localStorage.getItem('token');
+        return await axios.post(`${url}/teacher/exams/sub`,{id},{
 
           headers:{
             Authorization: `Bearer ${token}`

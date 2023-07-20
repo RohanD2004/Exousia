@@ -24,11 +24,11 @@ export default function StudyMaterial() {
       <Box sx={{ display: 'flex'}} >
       <Sidebar />
       <Box component="main" className='table-responsive' sx={{ flexGrow: 1, p: 3 }} >
-      <Box sx={{ flexGrow: 1 }}>
+    
         <Header title="Study Material"/>
-      </Box>
-      <div className="shadow mt-5">
-          <table class="table table-bordered">
+
+      <div className=" mt-5  table-responsive">
+          <table class=" shadow table table-bordered">
             <thead className="table-dark">
               <tr>
                 <th scope="col">PDF</th>
