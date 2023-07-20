@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { tokenpassApi } from '../components/Login';
-const url="http://192.168.0.178:8000"
+const url="http://192.168.1.56:8000"
 
 
 export const Authenticate =async (logcred)=>{
