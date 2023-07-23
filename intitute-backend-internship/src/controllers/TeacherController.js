@@ -1,10 +1,22 @@
 const mongoose = require('mongoose');
 const Utilities = require('../Utilities');
 const TeacherModule = require('../models/Teacher')
-const User= require('../models/getUser')
+const getUsers= require('../models/getUser')
 
 class TeacherController
 {
+
+
+    async countTeacher(req,res){
+
+        try {
+            const totalTeacher = await TeacherModule.countDocuments({})
+            Utilities.apiResponse(res, 200, 'Teacher Count  Successfully!',totalTeacher);
+        } catch (error) {
+            Utilities.apiResponse(rres,500,error);
+        }
+
+    };
     async AddTeacher(req, res) {
 
         try {
@@ -39,7 +51,7 @@ class TeacherController
                 role: 'Teacher',
                 user_Id: newTeachermodel._id,
               };
-              const NewUser = new User(userData);
+              const NewUser = new getUsers(userData);
               await NewUser.save();
 
             Utilities.apiResponse(res, 200, 'Teacher Added  Successfully!');
@@ -95,6 +107,7 @@ class TeacherController
     async  deleteTeacher (req, res) {
         try {
             await TeacherModule.deleteOne({ _id: req.params.id });
+            await getUsers.deleteOne({user_Id: req.params.id})
             Utilities.apiResponse(res, 200, 'teacher Deleted Successfully');
         } catch (error) {
             Utilities.apiResponse(res, 500, error);

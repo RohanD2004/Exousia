@@ -30,11 +30,15 @@ Route.route('/admin')
     Route.route('/admin/classes')
     .get(authcontroller.Auth,FeesController.getFeesDetails);
 
+    Route.route('/admin/teacherCount')
+    .get(authcontroller.Auth,TeacherController.countTeacher);
+
     Route.route('/admin/profile/:id?')
     .get(authcontroller.Auth,AdminController.getAdminData);
 
     Route.route('/')
-    .post(LoginController.AuthData)
+    // .post(LoginController.AuthData)
+    .post(authcontroller.login)
 
 
 Route.route('/admin/student/admission')
@@ -106,6 +110,9 @@ Route.route('/admin/student')
 
     Route.route('/student/Assessment/:id')
     .post(authcontroller.Auth, MarkControler.getMarkData);
+
+    Route.route('/student/messages')
+    .post(authcontroller.Auth, StudentController.getSinglestudetnDataForMessage);
     
 
     Route.route('/teacher/exams')

@@ -1,0 +1,15 @@
+@media only screen and (max-device-width: 500px)
+ {
+  #msgbox{
+    min-width: 55vw;
+    max-height: 12vh;
+  }
+ } 
+ 
+ @media (min-device-width:550px)and (max-device-width: 1000px)
+ {
+  #msgbox{
+    min-width: 35vw;
+    max-height:12vh;
+}
+}

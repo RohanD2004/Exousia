@@ -53,6 +53,7 @@ let ten;
 let stdinfo;
 let total_fees;
 let remaining;
+let totalStudent;
 
 
 
@@ -114,7 +115,7 @@ export default function Homepage() {
   let Student = [];
   const totalcount = async () => {
     count = await getTotalCount();
-    // temp3=count?.data.data[0].total;
+    totalStudent=count?.data.data[0].total;
     first = count?.data.data[0].first;
     second = count?.data.data[0].second;
     third = count?.data.data[0].third;
@@ -386,24 +387,9 @@ export default function Homepage() {
 
 
   }, [])
-  useEffect(() => {
-    // number counter js
-    let valueDisplays = document.querySelectorAll('.num');
-    let interval = 3000;
-    valueDisplays.forEach((valueDisplay) => {
-      let startvalue = 0;
-      let endvalue = parseInt(valueDisplay.getAttribute('data-val'));
-      let duration = Math.floor(interval / endvalue);
-      let counter = setInterval(function () {
-        startvalue += 1;
-        valueDisplay.textContent = startvalue;
-        if (startvalue === endvalue) {
-          clearInterval(counter);
-        }
-      }, duration);
-    });
-  }, []);
+  
 
+  const t2=28
   return (
     <Box sx={{ display: 'flex' }}>
 
@@ -450,12 +436,12 @@ export default function Homepage() {
                         <div class='card-statistic-3 p-4'>
                           <div class='card-icon card-icon-large me-5' style={{ color: 'black' }}><FaUsers size={100} /></div>
                           <div class='mb-4'>
-                            <h5 class='card-title mb-0'>Teachers</h5>
+                            <h5 class='card-title mb-0'>Student</h5>
                           </div>
                           <div class='row align-items-center mb-2 d-flex'>
                             <div class='col-8'>
                               <h2 class='d-flex align-items-center mb-0'>
-                                <span class="num" data-val='300'>000</span>
+                              {totalStudent}
                               </h2>
                             </div>
 

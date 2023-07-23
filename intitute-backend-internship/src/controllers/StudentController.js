@@ -4,6 +4,8 @@ const Studentmodel = require('../models/Student');
 const feesModule = require("../models/fees");
 const FeeesDataModule = require("../models/feesdata");
 const User = require("../models/getUser");
+const getUsers =require('../models/getUser')
+const MarkModule = require('../models/Marks')
 
 class StudentController {
     // async AddStudent(req, res) {
@@ -167,6 +169,9 @@ class StudentController {
     async deleteStudent(req, res) {
         try {
             await Studentmodel.deleteOne({ _id: req.params.id });
+            await FeeesDataModule.deleteMany({feesId:req.params.id})
+            await getUsers.deleteOne({user_Id: req.params.id})
+            await MarkModule.deleteMany({stuId:req.params.id})
             Utilities.apiResponse(res, 200, 'Student Deleted Successfully');
         } catch (error) {
             Utilities.apiResponse(res, 500, error);
@@ -274,6 +279,43 @@ class StudentController {
         try {
             const students = await Studentmodel.find({std_id :mongoose.Types.ObjectId(std_id2)});
             Utilities.apiResponse(res, 200, 'Get Student Successfully', students);
+        } catch (error) {
+            Utilities.apiResponse(res, 500, error);
+        }
+    }
+
+
+    async getSinglestudetnDataForMessage(req, res) {
+
+        let Id = req.body.id;
+        let query = { _id: Number(Id) }
+       
+        
+        try {
+
+            const studetndata = await Studentmodel.aggregate([
+
+                {
+                    $match: query
+                },
+
+                {
+                    $lookup: {
+                        from: "fees",
+                        localField: "std_id",
+                        foreignField: "_id",
+                        as: "stdfeesinfo",
+                    }
+                },
+                {
+                    $unwind: '$stdfeesinfo',
+                },
+
+
+            ])
+
+            Utilities.apiResponse(res, 200, 'Get Student Successfully', studetndata);
+
         } catch (error) {
             Utilities.apiResponse(res, 500, error);
         }

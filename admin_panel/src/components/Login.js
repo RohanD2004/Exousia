@@ -48,9 +48,10 @@ export default function Login() {
 
         try {
             const response = await Authenticate(data)
-            console.log(response.data.userdata.role);
+            const tkn=response?.data.data.accessToken
+        
             if (response.status === 200) {
-                localStorage.setItem('token', response?.data.token)
+                localStorage.setItem('token',tkn)
                 Swal.fire({
                     title: "Success",
                     text: "Login Successful",
@@ -59,13 +60,13 @@ export default function Login() {
                 });
 
 
-                if (response.data.userdata.role === "student") {
-                    navigate(`/student/${response.data.userdata.user_id}`);
-                    localStorage.setItem('user_id', response.data.userdata.user_id)
+                if (response.data.data.userdata.role === "student") {
+                    navigate(`/student/${response.data.data.userdata.user_id}`);
+                    localStorage.setItem('user_id', response.data.data.userdata.user_id)
 
-                } else if (response.data.userdata.role === "Teacher") {
-                    navigate(`/teacher/${response.data.userdata.user_id}`);
-                    localStorage.setItem('user_id', response.data.userdata.user_id)
+                } else if (response.data.data.userdata.role === "Teacher") {
+                    navigate(`/teacher/${response.data.data.userdata.user_id}`);
+                    localStorage.setItem('user_id', response.data.data.userdata.user_id)
                 }
                 else {
                     
@@ -97,10 +98,9 @@ export default function Login() {
 
         } catch (error) {
 
-            console.log("error occure");
             Swal.fire({
                 title: "Error ",
-                text: "something went wrong !",
+                text: error,
                 icon: "error",
                 confirmButtonText: "OK",
             });
@@ -222,7 +222,7 @@ export default function Login() {
                                 <form onSubmit={handleSubmit(Onsubmit)} >
                                     <div class="mb-4">
                                         <TextField variant='outlined' sx={{ input: { color: 'white' } }} label='Username' fullWidth focused placeholder='Enter username here..'
-                                            {...register("username", { required: true })}
+                                            {...register("loginid", { required: true })}
                                         ></TextField>
                                         <p className='text-danger'>
                                             {errors.username?.type === "required" && "username is required"}
@@ -236,7 +236,7 @@ export default function Login() {
                                                 placeholder='Enter password here..'
                                                 id="outlined-adornment-password"
                                                 type={showPassword ? 'text' : 'password'}
-                                                {...register("password", { required: true })}
+                                                {...register("pass", { required: true })}
                                                 endAdornment={
                                                     <InputAdornment position="end">
                                                         <IconButton

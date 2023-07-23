@@ -88,7 +88,7 @@ module.exports.verifyAccessToken = (req, res, next) => {
         if (!req.headers['authorization']) {
             return apiResponse(res, 401, 'No Authorization Key Provided', []);
         }
-        const token = req.headers['authorization'];
+        const token = req.headers.authorization.split(" ")[1];
         JWT.verify(token, process.env.JWT_SECRET, (err, payload) => {
             if (err) {
                 return apiResponse(res, 401, 'Invalid Authorization Token', []);

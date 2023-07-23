@@ -28,7 +28,8 @@ import Exams from './TeacherComponent/Exams';
 import Uploadmaterial from './TeacherComponent/uploadmaterial';
 import TeacherTimetable from "./TeacherComponent/TeacherTimetable"
 import AdminProfile from './components/AdminProfile';
-import AdminEdit   from "./components/AdminEdit"
+import AdminEdit   from "./components/AdminEdit";
+import Message from './StudentComponents/Message';
 export default function App() {
   return (
     <>
@@ -63,6 +64,7 @@ export default function App() {
           <Route path="/student/Timetable" element={<TimeTable />}> </Route>
           <Route path="/student/feesdetails/:id?" element={<Feesdata />}> </Route>
           <Route path="/student/Assessment/:id?" element={<Assesment />}> </Route>
+          <Route path="/student/messages" element={< Message/>}> </Route>
 
 
           {/* Teacher dashboard route start */}
