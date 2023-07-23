@@ -445,19 +445,20 @@ export default function Homepage() {
               <div className='d-flex row p-3' >
                 <div class='col-md-10 '>
                   <div class='row '>
-                    <div class='col-xl-4 col-lg-6'>
-                      <div class='card l-bg-cherry' style={{ backgroundColor: '#0079FF' }}>
+                  <div class='col-xl-4 col-lg-6'>
+                      <div class='card l-bg-blue-dark' style={{ backgroundColor: '#0079ff' }}>
                         <div class='card-statistic-3 p-4'>
-                          <div class='card-icon me-5' style={{ color: 'black' }}><FaUsers size={100} /></div>
+                          <div class='card-icon card-icon-large me-5' style={{ color: 'black' }}><FaUsers size={100} /></div>
                           <div class='mb-4'>
-                            <h5 class='card-title mb-0'>Students</h5>
+                            <h5 class='card-title mb-0'>Teachers</h5>
                           </div>
                           <div class='row align-items-center mb-2 d-flex'>
                             <div class='col-8'>
                               <h2 class='d-flex align-items-center mb-0'>
-                                <span class="num" data-val="300"></span>
+                                <span class="num" data-val='300'>000</span>
                               </h2>
                             </div>
+
                           </div>
 
                         </div>

@@ -23,15 +23,15 @@ const AdminController= require("./controllers/AdminController")
 
 Route.route('/admin')
     .get(authcontroller.Auth,StudentController.getTotalCount)
-    .post(authcontroller.Auth,authcontroller.Auth,FeesDataController.AddFees)
+    .post(authcontroller.Auth,FeesDataController.AddFees)
     // .get(StudentController.gatAllstudentdata)
-    .put(authcontroller.Auth,authcontroller.Auth,FeesController.setFees);
+    .put(authcontroller.Auth,FeesController.setFees);
 
     Route.route('/admin/classes')
-    .get(authcontroller.Auth,authcontroller.Auth,FeesController.getFeesDetails);
+    .get(authcontroller.Auth,FeesController.getFeesDetails);
 
     Route.route('/admin/profile/:id?')
-    .get(authcontroller.Auth,authcontroller.Auth,AdminController.getAdminData);
+    .get(authcontroller.Auth,AdminController.getAdminData);
 
     Route.route('/')
     .post(LoginController.AuthData)
