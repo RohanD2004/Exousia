@@ -2,7 +2,7 @@ import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import {Button} from '@mui/material'
+import { Button } from '@mui/material'
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
@@ -10,9 +10,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import Sidenav from "../components/sidebar.tsx"
 import { useState, useEffect } from 'react';
 import { getAllStudent } from '../service/api.js';
-import {AiOutlinePlus} from 'react-icons/ai';
-import {useNavigate} from"react-router-dom";
+import { AiOutlinePlus } from 'react-icons/ai';
+import { useNavigate } from "react-router-dom";
 import PersonIcon from '@mui/icons-material/Person';
+import Loading from './Loading.js';
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -56,9 +57,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Student() {
-  const temp= localStorage.getItem('token');
+  const temp = localStorage.getItem('token');
   const [students, setStudent] = useState([]);
   const [sname, setSname] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
 
   const getAllStudent2 = async () => {
@@ -74,19 +76,24 @@ export default function Student() {
 
   useEffect(() => {
     console.log(temp);
-    if(temp ===null){
+    if (temp === null) {
       history('/');
     }
   }, [temp])
 
   useEffect(() => {
-    getAllStudent2();
+    setTimeout(() => {
+      // Replace this with your actual API call
+      getAllStudent2();
+
+      setIsLoading(false);
+    }, 2000);
   }, []);
 
-   document.body.style.backgroundColor="#EFEFEF"
+  document.body.style.backgroundColor = "#EFEFEF"
   return (
 
-    <Box sx={{ display: 'flex' , backgroundColor: "#EFEFEF",  }}>
+    <Box sx={{ display: 'flex', backgroundColor: "#EFEFEF", }}>
 
       <Sidenav />
       <Box component="main" className='table-responsive' sx={{ flexGrow: 1, p: 3 }} >
@@ -115,72 +122,78 @@ export default function Student() {
               </Toolbar>
             </AppBar>
           </Box>
-          <div class="card comman-shadow mt-5">
-            <div class="row align-items-center mt-3">
+          {
+            isLoading ? (
+              <Loading />
+            ) : (
+              <div class="card comman-shadow mt-5">
+                <div class="row align-items-center mt-3">
 
-              <div className='col ms-3'>
-                <h2> Add Student</h2>
-              </div>
+                  <div className='col ms-3'>
+                    <h2> Add Student</h2>
+                  </div>
 
-              <div class="col-auto text-end float-start ms-auto download-grp me-5">
-                <button className='btn btn-primary' onClick={ ()=>history("admission")}><AiOutlinePlus size={30}/> </button>
-              </div>
+                  <div class="col-auto text-end float-start ms-auto download-grp me-5">
+                    <button className='btn btn-primary' onClick={() => history("admission")}><AiOutlinePlus size={30} /> </button>
+                  </div>
 
-            </div>
-            <div class="card-body">
+                </div>
+                <div class="card-body">
 
-              <div className=' mt-2 table-responsive'>
-                <table class=" table-striped  table table-bordered">
-                  <thead>
-                    <tr>
-                      <th scope="col">Name</th>
-                      <th scope="col">Standard</th>
-                      <th scope="col">Gender</th>
-                      <th scope="col">Contact No</th>
-                      <th scope="col">Email/Username</th>
-                      <th scope="col">Fees</th>
-                      <th scope="col"></th>
-                    </tr>
-
-
-
-                  </thead>
-                  <tbody>
-                    {
-                      students.filter((user,index) =>
-                        user.name.toLowerCase().includes(sname))
-                        .map((user,index) => {
-
-                          return  user.feesPaid === user.stdfeesinfo.total_fees ?
-                          <tr className='table-success'>
-                            <th scope="row"  >{user.name}</th>
-                            <td >{user.stdfeesinfo.std}th</td>
-                            <td >{user.gen}</td>
-                            <td  >{user.contact}</td>
-                            <td >{user.email}</td>
-                            <td >{user.feesPaid}/{user.stdfeesinfo.total_fees}</td>
-                            <td ><Button onClick={()=>history(`view/${user._id}`)} type='btn' startIcon={<PersonIcon/>}>  </Button></td>
-
-                          </tr>
-                          :
-                          <tr>
-                          <th scope="row"  >{user.name}</th>
-                          <td >{user.stdfeesinfo.std}th</td>
-                          <td >{user.gen}</td>
-                          <td  >{user.contact}</td>
-                          <td >{user.email}</td>
-                          <td >{user.feesPaid}/{user.stdfeesinfo.total_fees}</td>
-                          <td ><Button onClick={()=>history(`view/${user._id}`)} type='btn' startIcon={<PersonIcon/>}>  </Button></td>
-
+                  <div className=' mt-2 table-responsive'>
+                    <table class=" table table-bordered">
+                      <thead className='table-dark'>
+                        <tr>
+                          <th scope="col">Name</th>
+                          <th scope="col">Standard</th>
+                          <th scope="col">Gender</th>
+                          <th scope="col">Contact No</th>
+                          <th scope="col">Email/Username</th>
+                          <th scope="col">Fees</th>
+                          <th scope="col"></th>
                         </tr>
 
-                        })}
 
-                  </tbody>
-                </table>
+
+                      </thead>
+                      <tbody>
+                        {
+                          students.filter((user, index) =>
+                            user.name.toLowerCase().includes(sname))
+                            .map((user, index) => {
+
+                              return user.feesPaid === user.stdfeesinfo.total_fees ?
+                                <tr className='table-success'>
+                                  <th scope="row"  >{user.name}</th>
+                                  <td >{user.stdfeesinfo.std}</td>
+                                  <td >{user.gen}</td>
+                                  <td  >{user.contact}</td>
+                                  <td >{user.email}</td>
+                                  <td >{user.feesPaid}/{user.stdfeesinfo.total_fees}</td>
+                                  <td ><Button onClick={() => history(`view/${user._id}`)} type='btn' startIcon={<PersonIcon />}>  </Button></td>
+
+                                </tr>
+                                :
+                                <tr>
+                                  <th scope="row"  >{user.name}</th>
+                                  <td >{user.stdfeesinfo.std}</td>
+                                  <td >{user.gen}</td>
+                                  <td  >{user.contact}</td>
+                                  <td >{user.email}</td>
+                                  <td >{user.feesPaid}/{user.stdfeesinfo.total_fees}</td>
+                                  <td ><Button onClick={() => history(`view/${user._id}`)} type='btn' startIcon={<PersonIcon />}>  </Button></td>
+
+                                </tr>
+
+                            })}
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            )
+          }
         </div>
       </Box>
     </Box>

@@ -96,12 +96,13 @@ const Drawer = styled(MuiDrawer, {
 export default function Sidebar() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const [menuData, setMenuData] = useState("student");
+  const [menuData, setMenuData] = useState("");
   const handleDrawerOpen = () => {
     setOpen(true);
   };
-  const handleDrawerClose = () => {
-    setOpen(true);
+  
+  const handleCloseDrawer = () => {
+    setOpen(false);
   };
 
   const navigate = useNavigate();
@@ -115,6 +116,8 @@ export default function Sidebar() {
     event.setStyle("cont2");
   };
 
+  const id= localStorage.getItem('user_id')
+
   const logout = () => {
     localStorage.removeItem('token');
     navigate("/")
@@ -126,6 +129,7 @@ export default function Sidebar() {
     <Drawer
       variant="permanent"
       open={open}
+      onClose={handleCloseDrawer}
       sx={{ backgroundColor: "#002147", color: "white" }}
     >
       <DrawerHeader sx={{ backgroundColor: "#002147", color: "white" }}>
@@ -142,7 +146,7 @@ export default function Sidebar() {
       <List sx={{ backgroundColor: "#002147", color: "white", height: "100%" }}>
 
 
-        <ListItem disablePadding sx={{ display: "block", backgroundColor: '#315278' }} onClick={() => navigate("/admin/profile")}>
+        <ListItem disablePadding sx={{ display: "block"}} onClick={() => {navigate(`/admin/profile/${id}`);setMenuData("Admin")}}>
           <ListItemButton sx={{ minHeight: 48, justifyContent: open ? "initial" : "center", px: 2.5, }}>
             <ListItemIcon
               sx={{
@@ -166,7 +170,7 @@ export default function Sidebar() {
 
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding sx={{ display: "block" }} onClick={() => navigate("/admin")}>
+        <ListItem disablePadding sx={{ display: "block", backgroundColor: menuData === "Home" ? "#315278" : "transparent" }} onClick={() => {navigate("/admin");setMenuData("Home")}}>
           <ListItemButton sx={{ minHeight: 48, justifyContent: open ? "initial" : "center", px: 2.5, }}>
             <ListItemIcon
               sx={{
@@ -184,7 +188,7 @@ export default function Sidebar() {
             />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding sx={{ display: "block" }} onClick={() => navigate("/admin/student")}>
+        <ListItem disablePadding sx={{ display: "block", backgroundColor: menuData === "Student" ? "#315278" : "transparent" }} onClick={() => {navigate("/admin/student");setMenuData("Student")}}>
           <ListItemButton sx={{ minHeight: 48, justifyContent: open ? "initial" : "center", px: 2.5, }}>
             <ListItemIcon
               sx={{
@@ -202,7 +206,7 @@ export default function Sidebar() {
             />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding sx={{ display: "block" }} onClick={() => navigate("/admin/teacher")}>
+        <ListItem disablePadding sx={{ display: "block", backgroundColor: menuData === "Teacher" ? "#315278" : "transparent" }} onClick={() =>{ navigate("/admin/teacher");setMenuData("Teacher")}}>
           <ListItemButton sx={{ minHeight: 48, justifyContent: open ? "initial" : "center", px: 2.5, }}>
             <ListItemIcon
               sx={{
@@ -221,7 +225,7 @@ export default function Sidebar() {
           </ListItemButton>
         </ListItem>
 
-        <ListItem disablePadding sx={{ display: "block" }} onClick={() => navigate("/admin/classes")}>
+        <ListItem disablePadding sx={{ display: "block", backgroundColor: menuData === "classes" ? "#315278" : "transparent" }} onClick={() =>{ navigate("/admin/classes");setMenuData("classes")}}>
           <ListItemButton sx={{ minHeight: 48, justifyContent: open ? "initial" : "center", px: 2.5, }}>
             <ListItemIcon
               sx={{
@@ -240,7 +244,7 @@ export default function Sidebar() {
           </ListItemButton>
         </ListItem>
 
-        <ListItem disablePadding sx={{ display: "block" }} onClick={() => navigate("/admin/feesdetails")}>
+        <ListItem disablePadding sx={{ display: "block",backgroundColor: menuData === "Fees" ? "#315278" : "transparent" }} onClick={() =>{ navigate("/admin/feesdetails");setMenuData("Fees")}}>
           <ListItemButton sx={{ minHeight: 48, justifyContent: open ? "initial" : "center", px: 2.5, }}>
             <ListItemIcon
               sx={{

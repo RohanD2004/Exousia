@@ -128,8 +128,11 @@ class StudentController {
         try {
 
             const studentdata = await Studentmodel.aggregate([
-
-
+                {
+                $sort: { /* Specify the field and order for sorting */
+                    _id: -1, // 1 for ascending, -1 for descending
+                }
+            },
                 {
                     $lookup: {
                         from: "fees",
@@ -152,6 +155,7 @@ class StudentController {
                         as: "feesinfo",
                     },
                 }
+                 
             ])
             Utilities.apiResponse(res, 200, 'Get Users Successfully', studentdata);
         } catch (error) {
@@ -182,7 +186,7 @@ class StudentController {
     async getTotalCount(req, res) {
         try {
             const TotalStd = [];
-            const totalStudent = await Studentmodel.find().count
+            const totalStudent = await Studentmodel.countDocuments({})
             const first_data = await Studentmodel.countDocuments({ "std_id": "64aaeb0d3e6166d34291cf9a" })
             const second_data = await Studentmodel.countDocuments({ "std_id": "64aaeb2e3e6166d34291cf9c" })
             const third_data = await Studentmodel.countDocuments({ "std_id": "64aaeb6c3e6166d34291cfa0" })

@@ -27,6 +27,8 @@ import TeacherHome from "./TeacherComponent/TeacherHome"
 import Exams from './TeacherComponent/Exams';
 import Uploadmaterial from './TeacherComponent/uploadmaterial';
 import TeacherTimetable from "./TeacherComponent/TeacherTimetable"
+import AdminProfile from './components/AdminProfile';
+import AdminEdit   from "./components/AdminEdit"
 export default function App() {
   return (
     <>
@@ -36,6 +38,8 @@ export default function App() {
 
           <Route path="/" exact element={<Login />}  ></Route>
           <Route path="admin" exact element={<Home />}  ></Route>
+          <Route path="/admin/profile/:id?" exact element={<AdminProfile />}  ></Route>
+          <Route path="/admin/profile/edit/:id?" exact element={<AdminEdit />}  ></Route>
           <Route path="admin/student" element={<Student />}></Route>
           <Route path="/admin/student/view/:id?" element={<StudentProfile />}></Route>
           <Route path="admin/teacher" element={<Teacher />}>  </Route>

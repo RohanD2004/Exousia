@@ -1,6 +1,6 @@
 require('dotenv').config();
 require('./src/database/dbconfig/DB_mongodb_connection');
-
+const nodemailer = require('nodemailer');
 const Utilities = require('./src/Utilities');
 const bodyParser = require('body-parser');
 const express = require('express');
@@ -19,6 +19,8 @@ app.use(cookieParser());
 app.use("/", require(`./src/Routes`));
 
 app.use("/",express.static('public'))
+
+
 
 
 app.use(logger('dev'));

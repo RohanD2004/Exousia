@@ -1,15 +1,13 @@
-.divider:after,
-.divider:before {
-content: "";
-flex: 1;
-height: 1px;
-background: #eee;
+.login-page{
+    background-image: url("C:\rohan ghuge\react\ERP SYSTEM\admin_panel\src\img\bg-image-modified.jpg");
+    background-size: cover;
+    
 }
-.h-custom {
-height: calc(100% - 73px);
+@media only screen and (max-device-width: 500px) { 
+#login{
+ min-width: 67vw;
 }
-@media (max-width: 450px) {
-.h-custom {
-height: 100%;
 }
+.MuiInputLabel-root {
+    color: black !important;
 }

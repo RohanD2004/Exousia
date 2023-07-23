@@ -53,7 +53,7 @@
 //     )
 
 // }
-
+import Loading from './Loading.js';
 import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
@@ -121,8 +121,15 @@ export default function Student() {
 
   const [teachers, setTeacher] = useState([]);
   const [tname, settname] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    getAllTeacher2();
+    
+    setTimeout(() => {
+      // Replace this with your actual API call
+      getAllTeacher2();
+      
+      setIsLoading(false);
+    }, 2000);
   }, []);
 
   const getAllTeacher2 = async () => {
@@ -219,6 +226,10 @@ export default function Student() {
             </Toolbar>
           </AppBar>
         </Box>
+        {
+            isLoading ? (
+              <Loading />
+            ) : (
 
         <div class="card comman-shadow mt-5">
           <div class="row align-items-center mt-3">
@@ -281,6 +292,8 @@ export default function Student() {
             </div>
           </div>
         </div>
+         )
+        }
       </Box>
     </Box >
   )

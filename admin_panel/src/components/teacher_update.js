@@ -130,7 +130,6 @@ export default function EditTeacher() {
 
 
     const theme = useTheme();
-    var password = "";
     const [standard, setstandard] = useState([]);
     const [gen, setgen] = useState([]);
 
@@ -189,6 +188,7 @@ export default function EditTeacher() {
         try {
             const response = await updatTeacher(id,TeacherData);
             if (response?.status === 200) {
+                setTeacherData([]);
                 Swal.fire({
                     title: "Success",
                     text: response.message,

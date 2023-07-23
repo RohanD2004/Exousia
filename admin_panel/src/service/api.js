@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { tokenpassApi } from '../components/Login';
-// const url="http://192.168.1.56:8000"
+// const url="http://localhost:8000"
 const url="https://erp-exousia.onrender.com" 
 
 
@@ -35,6 +35,34 @@ export const addpayFees =async (data)=>{
   try {
     const token =localStorage.getItem('token');
     return await axios.post( `${url}/admin`,data,{
+
+      headers:{
+        Authorization: `Bearer ${token}`
+       }
+
+    })
+  } catch (error) {
+    console.log("erroe during add pai fees student",error)
+  }
+}
+export const setMessageData =async (data)=>{
+  try {
+    const token =localStorage.getItem('token');
+    return await axios.post( `${url}/admin/std/sendmsg`,data,{
+
+      headers:{
+        Authorization: `Bearer ${token}`
+       }
+
+    })
+  } catch (error) {
+    console.log("erroe during add pai fees student",error)
+  }
+}
+export const adminData =async (id)=>{
+  try {
+    const token =localStorage.getItem('token');
+    return await axios.get( `${url}/admin/profile/${id}`,{
 
       headers:{
         Authorization: `Bearer ${token}`
@@ -182,7 +210,7 @@ export const viewStudent= async (id)=>{
   }
 }
 
-export const getSingletudentData= async (id)=>{
+export const getSingleStudentData= async (id)=>{
 
   try{
     const token =localStorage.getItem('token');

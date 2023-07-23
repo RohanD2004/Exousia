@@ -20,9 +20,22 @@ class FeesModule {
     }
 
     async setFees(req, res) {
+        const id = req.body.std_id;
         try {
-            await feesModule.findOneAndUpdate({ 'std': req.body.std }, req.body);
+            await feesModule.findOneAndUpdate({ _id: mongoose.Types.ObjectId(id) }, req.body);
             Utilities.apiResponse(res, 200, 'fees set successfully');
+        } catch (error) {
+            Utilities.apiResponse(res, 500, error);
+        }
+    }
+
+    async setMessage(req, res) {
+        
+        try {
+            const filter = { _id : req.body.std_id};
+            const update = { message:req.body.msg };
+            await feesModule.updateOne(filter, update);
+            Utilities.apiResponse(res, 200, 'Message Send Successful');
         } catch (error) {
             Utilities.apiResponse(res, 500, error);
         }

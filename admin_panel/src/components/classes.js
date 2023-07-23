@@ -10,6 +10,7 @@ import Std from "../components/std.js"
 import { useNavigate } from "react-router-dom"
 import { getclass } from "../service/api"
 import Header from "./header";
+import Loading from './Loading.js';
 let Stdno;
 
 
@@ -29,10 +30,11 @@ export function passStd() {
 
 
 function TextLinkExample() {
-  const temp= localStorage.getItem('token');
+  const temp = localStorage.getItem('token');
 
   const [classes, setlayout] = useState([]);
 
+  const [isLoading, setIsLoading] = useState(true);
 
   const gettotallayout = async () => {
     let response = await getclass()
@@ -43,13 +45,18 @@ function TextLinkExample() {
 
   useEffect(() => {
     console.log(temp);
-    if(temp ===null){
+    if (temp === null) {
       history('/');
     }
   }, [temp])
 
   useEffect(() => {
-    gettotallayout();
+    setTimeout(() => {
+      // Replace this with your actual API call
+      gettotallayout();
+
+      setIsLoading(false);
+    }, 2000);
   }, []);
 
 
@@ -59,147 +66,42 @@ function TextLinkExample() {
         <Sidenav />
 
         <Box component="main" sx={{ flexGrow: 1, p: 3 }} >
-          <Header title="Classes "/>
-          <div className="container list-group listgroup mt-4">
+          <Header title="Classes " />
+
+          {
+            isLoading ? (
+              <Loading />
+            ) :
+              (
+                <div className="container list-group listgroup mt-4">
 
 
-            {classes.map((user) => (
+                  {
 
-              <>
 
-                <div className="card">
-                  <div className="card-header">
-                    <b>{ct}</b> shubham kahdekar
+                    classes.map((user) => (
 
-                  </div>
-                  <div className="card-body">
-                    <h5 className="card-title">{user.std} standard</h5>
-                    <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <Link to={`/admin/classes/std/${user._id}`} style={{ color: 'white', textDecoration: 'none' }} > <button className="btn btn-primary" href="#data" onClick={() => getStd(user._id)} >checkout </button> </Link>
-                  </div>
-                </div >
-                <br />
-              </>
+                      <>
 
-            ))}
-            {/* <div className="card">
-              <div className="card-header">
-                <b>{ct}</b> shubham kahdekar
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">2nd standard</h5>
-                <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <Link to="std/2" style={{ color: 'white', textDecoration: 'none' }}>  <button className="btn btn-primary"   href="#data" onClick={() => getStd(2)}> checkout </button></Link>
-              </div>
-            </div>
-            <br />
-            <div className="card">
-              <div className="card-header">
-                <b>{ct}</b> shubham kahdekar
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">3rd standard</h5>
-                <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <Link to="std/3" style={{ color: 'white', textDecoration: 'none' }}>  <button className="btn btn-primary"   href="#data" onClick={() => getStd(3)}> checkout </button></Link>
-              </div>
-            </div>
-            <br />
-            <div className="card">
-              <div className="card-header">
-                <b>{ct}</b> shubham kahdekar
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">4th standard</h5>
-                <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <Link to="std/4" style={{ color: 'white', textDecoration: 'none' }}>  <button className="btn btn-primary"   href="#data" onClick={() => getStd(4)}> checkout </button></Link>
-              </div>
-            </div>
-            <br />
-            <div className="card">
-              <div className="card-header">
-                <b>{ct}</b> shubham kahdekar
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">5th standard</h5>
-                <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <Link to="std/5" style={{ color: 'white', textDecoration: 'none' }}>  <button className="btn btn-primary"   href="#data" onClick={() => getStd(5)}> checkout </button></Link>
-              </div>
-            </div>
-            <br />
-            <div className="card">
-              <div className="card-header">
-                <b>{ct}</b> shubham kahdekar
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">6th standard</h5>
-                <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <Link to="std/6" style={{ color: 'white', textDecoration: 'none' }}><button className="btn btn-primary"   href="#data"onClick={() => getStd(6)}> checkout </button></Link>
-              </div>
-            </div>
-            <br />
-            <div className="card">
-              <div className="card-header">
-                <b>{ct}</b> shubham kahdekar
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">7th standard</h5>
-                <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <Link to="std/7" style={{ color: 'white', textDecoration: 'none' }}><button className="btn btn-primary"   href="#data" type='button' onClick={() => getStd(7)}> checkout </button></Link>
-              </div>
-            </div>
-            <br />
-            <div className="card">
-              <div className="card-header">
-                <b>{ct}</b> shubham kahdekar
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">8th standard</h5>
-                <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <Link to="std/8" style={{ color: 'white', textDecoration: 'none' }}><button className="btn btn-primary"   href="#data" type='button' onClick={() => getStd(8)}> checkout </button></Link>
-              </div>
-            </div>
-            <br />
-            <div className="card">
-              <div className="card-header">
-                <b>{ct}</b> shubham kahdekar
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">9th standard</h5>
-                <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <Link to="std/9" style={{ color: 'white', textDecoration: 'none' }}> <button className="btn btn-primary"   href="#data" type='button' onClick={() => getStd(9)}> checkout </button></Link>
-              </div>
-            </div>
-            <br />
-            <div className="card">
-              <div className="card-header">
-                <b>{ct}</b> shubham kahdekar
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">10th standard</h5>
-                <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <Link to="std/10" style={{ color: 'white', textDecoration: 'none' }}> <button className="btn btn-primary"   href="#data" type='button' onClick={() => getStd(10)}> checkout </button> </Link>
-              </div>
-            </div> */}
-            <br />
-          </div>
-          {/* <div class="modal fade modal-lg ms-5" id="data" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button 
-                    onClick={()=>history("/classes")}
-                    type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+                        <div className="card">
+                          <div className="card-header">
+                            <b>{ct}</b> shubham kahdekar
+
+                          </div>
+                          <div className="card-body">
+                            <h5 className="card-title">{user.std} standard</h5>
+                            <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            <Link to={`/admin/classes/std/${user._id}`} style={{ color: 'white', textDecoration: 'none' }} > <button className="btn btn-primary" href="#data" onClick={() => getStd(user._id)} >checkout </button> </Link>
+                          </div>
+                        </div >
+                        <br />
+                      </>
+
+                    ))}
                 </div>
-                <div class="modal-body">
-                  <Routes>
-                    <Route path="std/:std?" element={<Std />}>
-                    </Route>
 
-                  </Routes>
-                </div>
-              </div>
-            </div>
-          </div> */}
+              )
+          }
         </Box>
       </Box>
     </>

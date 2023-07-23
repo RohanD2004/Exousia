@@ -135,10 +135,11 @@ const Admission = () => {
         setStudent({ ...student, [event.target.name]: event.target.value })
 
     };
+    
     const [Std2, setStd] = useState('');
     const [open, setOpen] = useState(false);
     const [username, Setuname] = useState('');
-    const [gen, setgen] = React.useState([]);
+    const [gen, setgen] =useState([]);
 
     const [student, setStudent] = useState(initialValue);
     const { name, dob, std, contactno, alternateno, address, email, uname, pass } = student;
@@ -165,6 +166,7 @@ const Admission = () => {
         'female',
         'other',
     ];
+
     function getStylesstd2(name, theme) {
         return {
             fontWeight:
@@ -205,11 +207,20 @@ const Admission = () => {
            if (response?.status === 200) {
             Swal.fire({
               title: "Success",
-              text: response?.message,
+              text: response?.data.message,
               icon: "success",
               confirmButtonText: "OK",
           });
-            
+          setValue("name", "");
+          setValue("dob", "");
+          setgen("");
+          setStd("");
+          setValue("contact", "");
+          setValue("Alternet_contact", "");
+          setValue("Address", "");
+          setValue("email", "");
+          setValue("username", "");
+          setValue("required", "");
           } else if (response?.status===422) {
             Swal.fire({
                 title:"Error",
@@ -259,8 +270,8 @@ const Admission = () => {
                 </Box>
 
                 {/* <ToastContainer /> */}
-                <div class="row mt-5">
-                    <div class="col-sm-12">
+                <div class="row mt-4  card p-4">
+                    <div class="col-sm-12 mt-3 ">
 
                         <form className="container row " onSubmit={handleSubmit(onSubmit)}>
 
@@ -297,9 +308,7 @@ const Admission = () => {
                                             input={<OutlinedInput label="Gender" />}
                                             MenuProps={MenuProps}
                                         >
-                                            <p className='text-danger'>
-                                                {errors.gen?.type === "required" && "Gender is required"}
-                                            </p>
+                                           
                                             {gender.map((name) => (
                                                 <MenuItem
                                                     key={name}
@@ -310,6 +319,9 @@ const Admission = () => {
                                                 </MenuItem>
                                             ))}
                                         </Select>
+                                        <p className='text-danger'>
+                                                {errors.gen?.type === "required" && "Gender is required"}
+                                            </p>
                                     </FormControl>
 
                                 </div>
@@ -417,12 +429,12 @@ const Admission = () => {
 
                                     variant="outlined"
                                 />
-                                <p className='color:red'>
+                                <p className='text-danger'>
                                     {errors.password?.type === "required" && "password  is required"}
                                 </p>
                             </div>
 
-                            <div className='col-12 col-sm-4 mt-3'>
+                            {/* <div className='col-12 col-sm-4 mt-3'>
                                 <TextField
                                     name='fes'
                                     id="fees"
@@ -434,10 +446,8 @@ const Admission = () => {
 
                                     variant="outlined"
                                 />
-                                <p className='color:red'>
-                                    {errors.feesPaid?.type === "required" && "password  is required"}
-                                </p>
-                            </div>
+                             
+                            </div> */}
 
                             <div>
                                 <Button className="btn bg-primary text-white  mt-3"  style={{width:'15%'}} type="submit">Submit</Button>

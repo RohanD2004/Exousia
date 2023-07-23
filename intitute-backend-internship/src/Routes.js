@@ -10,13 +10,16 @@ const FeesDataController= require('./controllers/feesdataController');
 const feesdataController = require('./controllers/feesdataController');
 const LoginController = require('./controllers/LoginController')
 const MarkControler  = require('./controllers/MarkController')
+const mailController = require('./controllers/mail')
+const AdminController= require("./controllers/AdminController")
 
 /**
  * APIs V1 Routes
  */
 
 
-
+ Route.route('/send/mail')
+ .post(mailController.sendMailData)
 
 Route.route('/admin')
     .get(authcontroller.Auth,StudentController.getTotalCount)
@@ -26,6 +29,9 @@ Route.route('/admin')
 
     Route.route('/admin/classes')
     .get(authcontroller.Auth,authcontroller.Auth,FeesController.getFeesDetails);
+
+    Route.route('/admin/profile/:id?')
+    .get(authcontroller.Auth,authcontroller.Auth,AdminController.getAdminData);
 
     Route.route('/')
     .post(LoginController.AuthData)
@@ -78,11 +84,14 @@ Route.route('/admin/student')
     Route.route('/admin/recipt')
     .get(authcontroller.Auth,feesdataController.getReciptdata);
 
+    Route.route('/admin/std/sendmsg')
+    .post(authcontroller.Auth,FeesController.setMessage);
+
     Route.route('/admin/student/view/:id')
     .get(authcontroller.Auth,StudentController.getSinglestudetnData);
     
     Route.route('/teacher/exams')
-    .post(StudentController.studentdataForMarks);
+    .post(authcontroller.Auth,StudentController.studentdataForMarks);
 
     // Route.route('/teacher/exams2')
     // .post(StudentController.studentdataForMarks);
@@ -90,13 +99,13 @@ Route.route('/admin/student')
     // student dashboard route start
     
     Route.route('/student/:id')
-    .get(StudentController.getSinglestudetnData);
+    .get(authcontroller.Auth,StudentController.getSinglestudetnData);
     
     Route.route('/student/feesdetails/:id')
     .get(authcontroller.Auth, feesdataController.getFeesHistory);
 
     Route.route('/student/Assessment/:id')
-    .post(MarkControler.getMarkData);
+    .post(authcontroller.Auth, MarkControler.getMarkData);
     
 
     Route.route('/teacher/exams')

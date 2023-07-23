@@ -223,6 +223,7 @@ export default function Admission() {
   const {
     register,
     formState: { errors },
+    setValue,
     handleSubmit,
   } = useForm();
   const onSubmit = async (data) => {
@@ -237,8 +238,20 @@ export default function Admission() {
           icon: "success",
           confirmButtonText: "OK",
         });
-
-
+        setValue("name","");
+        setValue("dob","");
+        setValue("Experties","");
+        setValue("Experiance","");
+        setValue("contactNo","");
+        setValue("Alternetno","");
+        setValue("subjects","");
+        setValue("Address","");
+        setValue("Email","");
+        setValue("Usename","");
+        setValue("Password","");
+        setgen("");
+        setstandard([]);
+        navigate('/admin/teacher');
       } else {
         Swal.fire({
           title: "Error",
@@ -272,7 +285,7 @@ export default function Admission() {
           <Header title="Teacher Admission" />
         </Box>
 
-        <div class=" container-fluid mt-5">
+        <div class="card p-3 container-fluid mt-5">
 
           <div class="row">
             <div class="col-sm-12">
@@ -320,9 +333,7 @@ export default function Admission() {
                         input={<OutlinedInput label="Gender" />}
                         MenuProps={MenuProps}
                       >
-                        <p className='text-danger'>
-                          {errors.gen?.type === "required" && "Gender is required"}
-                        </p>
+                     
                         {gender.map((name) => (
                           <MenuItem
                             key={name}
@@ -333,6 +344,9 @@ export default function Admission() {
                           </MenuItem>
                         ))}
                       </Select>
+                      <p className='text-danger'>
+                          {errors.gen?.type === "required" && "Gender is required"}
+                        </p>
                     </FormControl>
 
                   </div>
@@ -352,9 +366,7 @@ export default function Admission() {
                       input={<OutlinedInput label="Assigned Classes" />}
                       MenuProps={MenuProps}
                     >
-                      <p className='text-danger'>
-                        {errors.Asignclass?.type === "required" && "Asignclass is required"}
-                      </p>
+                     
                       {standards.map((name) => (
                         <MenuItem
                           key={name}
@@ -365,6 +377,9 @@ export default function Admission() {
                         </MenuItem>
                       ))}
                     </Select>
+                    <p className='text-danger'>
+                        {errors.Asignclass?.type === "required" && "Asignclass is required"}
+                      </p>
                   </FormControl>
                 </div>
 

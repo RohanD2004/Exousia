@@ -1,4 +1,4 @@
-import {React,useState} from 'react'
+import { React, useState } from 'react'
 import '../components/css/login.css'
 import TextField from '@mui/material/TextField';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -8,21 +8,21 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton';
-import pic from "../img/login (1).jpg";
+import pic from '../img/pexels-kobe-1516440.jpg'
 import { Authenticate } from '../service/api';
 import Swal from "sweetalert2";
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 let token;
- function passtoken(tkn){
-    token=tkn;
-   
- }
+function passtoken(tkn) {
+    token = tkn;
 
- export function tokenpassApi(){
+}
+
+export function tokenpassApi() {
     return token
- }
+}
 
 
 const initialValue = {
@@ -32,7 +32,7 @@ const initialValue = {
 export default function Login() {
 
 
-    const navigate=useNavigate();
+    const navigate = useNavigate();
 
     const {
         register,
@@ -44,13 +44,13 @@ export default function Login() {
 
     const [logcred, setcred] = useState(initialValue);
 
-    const Onsubmit= async(data)=> {
+    const Onsubmit = async (data) => {
 
         try {
-            const response= await Authenticate(data)
+            const response = await Authenticate(data)
             console.log(response.data.userdata.role);
-            if (response.status===200) {
-               localStorage.setItem('token',response?.data.token)
+            if (response.status === 200) {
+                localStorage.setItem('token', response?.data.token)
                 Swal.fire({
                     title: "Success",
                     text: "Login Successful",
@@ -59,23 +59,24 @@ export default function Login() {
                 });
 
 
-             if (response.data.userdata.role==="student") {
-                navigate(`/student/${response.data.userdata.user_id}`);
-                localStorage.setItem('user_id',response.data.userdata.user_id)
-                
-            }else if(response.data.userdata.role==="Teacher"){
-                navigate(`/teacher/${response.data.userdata.user_id}`);
-                localStorage.setItem('user_id',response.data.userdata.user_id)
-             }
-              else {
-                
-                 navigate('/admin');
-             }
+                if (response.data.userdata.role === "student") {
+                    navigate(`/student/${response.data.userdata.user_id}`);
+                    localStorage.setItem('user_id', response.data.userdata.user_id)
+
+                } else if (response.data.userdata.role === "Teacher") {
+                    navigate(`/teacher/${response.data.userdata.user_id}`);
+                    localStorage.setItem('user_id', response.data.userdata.user_id)
+                }
+                else {
+                    
+                    navigate('/admin');
+                    localStorage.setItem('user_id', "64bc9b0c92341fcd088bb604");
+                }
 
 
-                
+
             }
-            else if(response.status==422){
+            else if (response.status == 422) {
                 Swal.fire({
                     title: "Error !",
                     text: response.message,
@@ -83,7 +84,7 @@ export default function Login() {
                     confirmButtonText: "OK",
                 });
             }
-            else{
+            else {
 
                 Swal.fire({
                     title: "Error !",
@@ -93,7 +94,7 @@ export default function Login() {
                 });
 
             }
-            
+
         } catch (error) {
 
             console.log("error occure");
@@ -103,7 +104,7 @@ export default function Login() {
                 icon: "error",
                 confirmButtonText: "OK",
             });
-            
+
         }
 
     }
@@ -118,15 +119,15 @@ export default function Login() {
     const onValueChange = (event) => {
 
         setcred({ ...logcred, [event.target.name]: event.target.value })
-        console.log(logcred);
+
     }
-  
+
     return (
         <>
 
 
 
-            <section class="vh-100">
+            {/* <section class="vh-100">
                 <div class="container-fluid h-custom">
                     <div className='card shadow' style={{ backgroundColor: '#002147' }}>
                         <div className='card-body'>
@@ -202,7 +203,74 @@ export default function Login() {
                     </div>
 
                 </div>
-            </section>
+            </section> */}
+            <div className='container-fluid  login-page px-0' >
+                <header className='d-flex justify-content-center' style={{ backgroundColor: '#002147', height: '4rem' }}>
+                    <span className='mt-3 text-white h5'>Exousia Academy</span>
+                </header>
+                <div className='container' >
+                    <div className='parent-div d-flex align-items-center justify-content-center' style={{ height: '80vh' }}>
+                        <div className='child-div p-4 shadow'>
+                            <div className='d-flex justify-content-center shadow align-items-center mb-3 text-white' id='login' style={{
+                                height: '15vh', width: '30vw', backgroundImage: `url(${pic})`,
+                                backgroundRepeat: 'no-repeat',
+                                backgroundSize: 'cover'
+                            }}>
+                                <span style={{ fontSize: '1.5rem' }}>LOGIN</span>
+                            </div>
+                            <div style={{ backgroundColor: 'transparent' }} className='text-white'>
+                                <form onSubmit={handleSubmit(Onsubmit)} >
+                                    <div class="mb-4">
+                                        <TextField variant='outlined' sx={{ input: { color: 'white' } }} label='Username' fullWidth focused placeholder='Enter username here..'
+                                            {...register("username", { required: true })}
+                                        ></TextField>
+                                        <p className='text-danger'>
+                                            {errors.username?.type === "required" && "username is required"}
+                                        </p>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <FormControl fullWidth focused sx={{ input: { color: 'white' } }} variant="outlined">
+                                            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                                            <OutlinedInput
+                                                placeholder='Enter password here..'
+                                                id="outlined-adornment-password"
+                                                type={showPassword ? 'text' : 'password'}
+                                                {...register("password", { required: true })}
+                                                endAdornment={
+                                                    <InputAdornment position="end">
+                                                        <IconButton
+                                                            aria-label="toggle password visibility"
+                                                            onClick={handleClickShowPassword}
+
+                                                            edge="end"
+                                                        >
+                                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                }
+                                                label="Password"
+                                            />
+                                               <p className='text-danger'>
+
+                                            {errors.password?.type === "required" && "password is required"}
+                                               </p>
+                                        </FormControl>
+                                    </div>
+
+                                    <button type='submit' className='btn btn-primary w-100'>Login</button>
+
+
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <footer className='fixed-bottom d-flex justify-content-center' style={{ backgroundColor: '#002147', height: '4rem' }}>
+                    <span className='mt-3 text-white'>Designed & developed by Exousia. All rights reserved.</span>
+                </footer>
+            </div>
         </>
 
     )

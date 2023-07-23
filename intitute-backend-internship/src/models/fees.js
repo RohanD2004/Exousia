@@ -10,6 +10,10 @@ const fees = new Schema(
         total_fees: {
             type: Number,
         },
+
+        message: {
+            type: String,
+        },
         
 
     },

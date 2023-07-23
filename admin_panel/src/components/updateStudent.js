@@ -16,12 +16,15 @@ import { useParams } from 'react-router-dom';
 import FormHelperText from '@mui/material/FormHelperText';
 import Box from '@mui/material/Box';
 import Sidenav from "../components/sidebar.tsx"
-import { getSingletudentData, updateStudent } from "../service/api"
+import { getSingleStudentData, updateStudent } from "../service/api"
 import { useForm } from "react-hook-form";
-import {Input, Typography, styled, FormGroup } from '@mui/material'
+import { Input, Typography, styled, FormGroup } from '@mui/material'
 import { useNavigate } from 'react-router-dom';
-
-
+import Swal from "sweetalert2";
+import { GetFees } from "../service/api"
+import OutlinedInput from "@mui/material/OutlinedInput";
+import { useTheme } from "@mui/material/styles";
+import Header from './header.js';
 const textstyle = {
     color: 'Black'
 }
@@ -48,13 +51,26 @@ const initialValue = {
     password: ''
 }
 
+const ITEM_HEIGHT = 40;
+
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+};
+
 
 const Admission = () => {
-    const navigate= useNavigate();
-    const temp= localStorage.getItem('token');
+    const navigate = useNavigate();
+    const temp = localStorage.getItem('token');
     const { id } = useParams();
-
+    const theme = useTheme();
     const [student, setStudent] = useState(initialValue);
+    const [student2, setStudent2] = useState([]);
     const [updatedvalue, setUpdateValue] = useState(initialValue);
 
     let { name, dob, std, contactno, alternateno, address, email, uname, pass } = student;
@@ -66,31 +82,151 @@ const Admission = () => {
         handleSubmit,
     } = useForm();
 
+    const [feesstd, setfeesStd] = useState([])
+    const [Std2, setStd] = useState('');
+    const [open, setOpen] = useState(false);
+    const [gen, setgen] = useState([]);
+
+    const fees = async () => {
+        try {
+            const response = await GetFees();
+            if (response.status === 200) {
+                let list = response?.data;
+                if (list && list.length) {
+                    list = list.map((item) => {
+                        return {
+                            key: item._id,
+                            text: item.std,
+                            value: item._id,
+                        };
+                    });
+                }
+                setfeesStd(list);
+            } else setfeesStd([]);
+        } catch (error) {
+            Swal.fire({
+                title: 'Error !',
+                text: error,
+                icon: 'error',
+            });
+        }
+
+    }
+
+    const onsubmit = async () => {
+
+        console.log(student2);
+        try {
+
+            const response = await updateStudent(id, student2);
+            if (response?.status == 200) {
+
+                Swal.fire({
+                    title: "Success",
+                    text: response?.data.message,
+                    icon: "success",
+                    confirmButtonText: "OK",
+                });
+                navigate(`/admin/student/view/${student2._id}`);
+
+            } else {
+
+                Swal.fire({
+                    title: "Error",
+                    text: response?.data.message,
+                    icon: "error",
+                    confirmButtonText: "OK",
+                });
+
+            }
+
+        } catch (error) {
+            Swal.fire({
+                title: "Error",
+                text: error,
+                icon: "error",
+                confirmButtonText: "OK",
+            });
+        }
+    }
+
+
+
+    const handleChange = (event) => {
+        setStd(event.target.value);
+        setStudent2({
+            ...student2,
+            std_id: event.target.value
+        })
+
+    };
+
     useEffect(() => {
+
+        fees();
         getStudent();
+
     }, []);
 
+
     const getStudent = async () => {
-        const response = await getSingletudentData(id);
-        setStudent(response?.data);
-        // console.log(response.data)
+        const response = await getSingleStudentData(id);
+        setStudent2(response?.data);
+        setgen(response.data.gen)
+        setStd(response.data.std_id)
+        console.log(response.data._id)
+    }
+
+
+    const handleChangegen = (event) => {
+
+        setgen(
+            event.target.value
+        );
+        setStudent2({
+            ...student2,
+                gen: event.target.value
+        })
+
+    }
+    const gender = [
+        'male',
+        'female',
+        'other',
+    ];
+    function getStylesstd2(name, theme) {
+        return {
+            fontWeight:
+                gender.indexOf(name) === -1
+                    ? theme.typography.fontWeightRegular
+                    : theme.typography.fontWeightMedium,
+        };
     }
 
     const onValueChange = (e) => {
-        setStudent({ ...student, [e.target.name]: e.target.value })
+        setStudent2({ ...student, [e.target.name]: e.target.value })
     }
 
     const updateStudentDetails = async () => {
         console.log(student)
-       await updateStudent(id, student);
+        await updateStudent(id, student);
     }
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
     // const onSubmit = async (data) => await updateStudent(id, data);
     useEffect(() => {
         console.log(temp);
-        if(temp ===null){
-          navigate('/');
+        if (temp === null) {
+            navigate('/');
         }
-      }, [temp])
+    }, [temp])
+
     return (
 
         <Box sx={{ display: 'flex' }}>
@@ -98,207 +234,191 @@ const Admission = () => {
             <Sidenav />
             <Box component="main" sx={{ flexGrow: 1, p: 3 }} >
 
-                {/* <Container injectFirst>
-                <form className="container row g-3" onSubmit={handleSubmit(onSubmit)}>
+            <Header title="Update Student"/>
 
-                    <div className="col-12 mt-5">
-                    <FormControl fullWidth>
-                    <Input  onChange={(e) => onValueChange(e)}  name='name' value={student.name} id="my-input" aria-describedby="my-helper-text" 
-                            
-                        />
-                        </FormControl>
-                        
 
-                        <p className='text-danger'>
-                            {errors.name?.type === "required" && "Name is required"}
-                        </p>
-                    </div>
 
-                    <div className='col-12'>
-                    <FormControl fullWidth>
-                            <TextField type='date'  value={student.dob}  variant='outlined' style={textstyle}
-                                {...register("dob", { required: true })}
-                            />
-                            <FormHelperText id="outlined-weight-helper-text">Date of Birth</FormHelperText>
-                        </FormControl>
-                            <p className='text-danger'>
-                                {errors.dob?.type === "required" && "Dob is required"}
-                            </p>
-                        
-                    </div>
+                <div class="row mt-4  bg-white">
+                    <div class="col-sm-12 p-3">
 
-                    <div className='col-12'>
-                        <FormControl sx={{ minWidth: 300 }} className='mt-3'>
-                            <InputLabel id="demo-controlled-open-select-label1" >Std</InputLabel>
-                            <Select
-                                labelId="demo-controlled-open-select-label"
-                                id="demo-controlled-open-select"
-                                // open={open}
-                                {...register("std", { required: true })}
+                        <form className="container row " >
 
-                                // onClose={handleClose}
-                                // onOpen={handleOpen}
-                                // value={Std2}
-                                value={student.std}
-                                label="Std"
-                            // onChange={handleChange}
-                            >
-                                <MenuItem value={1}>1st</MenuItem>
-                                <MenuItem value={2}>2nd</MenuItem>
-                                <MenuItem value={3}>3rd</MenuItem>
-                                <MenuItem value={4}>4th</MenuItem>
-                                <MenuItem value={5}>5th</MenuItem>
-                                <MenuItem value={6}>6th</MenuItem>
-                                <MenuItem value={7}>7th</MenuItem>
-                                <MenuItem value={8}>8th</MenuItem>
-                                <MenuItem value={9}>9th</MenuItem>
-                                <MenuItem value={10}>10th</MenuItem>
-
-                            </Select>
-                            
-                        </FormControl>
-                        <p className='text-danger'>
-                                {errors.std?.type === "required" && "std is required"}
-                            </p>
-                    </div>
-                    <div class="row g-3">
-                        <div class="col">
-                            <TextField  variant='outlined' value={student.contact}   label="Contact No"  className='d-block mt-3' 
-                                {...register("contact", { required: true })}
-                            
-                            />
-                            <p className='text-danger'>
-                                {errors.contact?.type === "required" && "contact is required"}
-                            </p>
-                        </div>
-                        
-                        <div class="col">
-                            <TextField  variant='outlined' value={student.Alternet_contact}  id='contactno2' label="Alternate No" className='mt-3 '
-                                {...register("Alternet_contact", { required: true })}
-                            />
-                        </div>
-                        <p className='text-danger'>
-                                {errors.Alternet_contact?.type === "required" && "Alternet_contact is required"}
-                            </p>
-                    </div>
-
-                    <div className='col-12'>
-                        <TextField   variant='outlined' value={student.Address}  label='Address' className='mt-3' multiline maxRows={4}  
-                                {...register("Address", { required: true })}
-                        />
-                        <p className='text-danger'>
-                                {errors.Address?.type === "required" && "Address is required"}
-                            </p>
-                    </div>
-
-                    <div className="row g-3">
-                        <div className="col-md-6">
-                            <div className="input-group mt-3">
-                                <input type="text" className="form-control" value={student.email} placeholder="Email" aria-describedby="basic-addon2" 
-                                 {...register("email", { required: true })}
+                            <div className="col-12 col-sm-4 ">
+                                <TextField fullWidth label="Name" variant="outlined" focused value={student2.name} className='mb-3' style={textstyle}
+                                    onChange={(e) => setStudent2({
+                                        ...student2,
+                                        name: e.target.value
+                                    })}
                                 />
-                                <span className="input-group-text " id="basic-addon2">@gmail.com</span>
-                            </div>
-                            <p className='text-danger'>
-                                {errors.email?.type === "required" && "email is required"}
-                            </p>
 
-                        </div>
-                        <div className="col-md-6">
-                            <div className="input-group mt-3">
-                                <span className="input-group-text" id="basic-addon1">@</span>
-                                <input type="text" value={student.username} className="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" 
-                                 {...register("Username", { required: true })}
-                                
+                            </div>
+
+                            <div className='col-12 col-sm-4 '>
+                                <FormControl fullWidth>
+                                    <TextField type='date' className='datetimepicker' focused value={student2.dob} name='dob' variant='outlined' placeholder="DD-MM-YYYY  Date Of Birth" style={textstyle}
+                                        onChange={(e) => setStudent2({
+                                            ...student2,
+                                            dob: e.target.value
+                                        })}
+                                    />
+
+                                </FormControl>
+                            </div>
+
+                            <div class="col-12 col-sm-4 ">
+                                <div class="form-group local-forms ">
+                                    <FormControl style={{ width: '100%' }}>
+                                        <InputLabel id="demo-multiple-name-label">Gender</InputLabel>
+                                        <Select className=' select'
+                                            labelId="demo-multiple-name-label"
+                                            id="demo-multiple-name"
+                                            value={gen}
+                                            focused
+                                            onChange={handleChangegen}
+                                            input={<OutlinedInput label="Gender" />}
+                                            MenuProps={MenuProps}
+                                        >
+
+                                            {gender.map((name) => (
+                                                <MenuItem
+                                                    key={name}
+                                                    value={name}
+                                                    style={getStylesstd2(name, theme)}
+                                                >
+                                                    {name}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+
+                                    </FormControl>
+
+                                </div>
+                            </div>
+
+                            <div className='col-12 col-sm-4 '>
+                                <FormControl fullWidth className='mt-3'>
+                                    <InputLabel id="demo-controlled-open-select-label1" >Std</InputLabel>
+                                    <Select
+                                        labelId="demo-controlled-open-select-label"
+                                        id="demo-controlled-open-select"
+                                        open={open}
+                                        onClose={handleClose}
+                                        onOpen={handleOpen}
+                                        value={Std2}
+                                        label="Std"
+                                        onChange={handleChange}
+                                    >
+
+                                        {feesstd.map((user) => (
+
+                                            <MenuItem value={user.value}>{user.text}</MenuItem>
+
+                                        ))}
+
+                                    </Select>
+
+                                </FormControl>
+                            </div>
+
+                            <div class="col-12 col-sm-4 ">
+                                <TextField fullWidth variant='outlined' focused value={student2.contact} name='contact' id='contactno1' label="Contact No" className='d-block mt-3' inputProps={{ inputMode: 'numeric' }}
+                                    onChange={(e) => setStudent2({
+                                        ...student2,
+                                        contact: e.target.value
+                                    })}
+
                                 />
+
                             </div>
-                            <p className='text-danger'>
-                                {errors.Username?.type === "required" && "Username is required"}
-                            </p>
-                        </div>
+                            <div class="col-12 col-sm-4 ">
+                                <TextField fullWidth variant='outlined' focused value={student2.Alternet_contact} name='Alternet_contact' id='contactno2' label="Alternate No" className='mt-3 '
+                                    onChange={(e) => setStudent2({
+                                        ...student2,
+                                        Alternet_contact: e.target.value
+                                    })}
+                                />
+
+                            </div>
+
+
+                            <div className='col-12 col-sm-4  mt-3'>
+                                <TextField fullWidth variant='outlined' focused value={student2.Address} label='Address' multiline maxRows={4}
+                                    onChange={(e) => setStudent2({
+                                        ...student2,
+                                        Address: e.target.value
+                                    })}
+                                />
+
+
+                            </div>
+
+
+                            <div className="col-12 col-sm-4 mt-3">
+                                <div className="input-group  ">
+                                    <TextField fullWidth variant='outlined' focused value={student2.email} id='Email' label="Email" placeholder='example123@gmail.com' className='d-block' inputProps={{ inputMode: 'string' }}
+                                        onChange={(e) => setStudent2({
+                                            ...student2,
+                                            email: e.target.value
+                                        })}
+                                    />
+
+                                </div>
+
+                            </div>
+                            <div className="col-12 col-sm-4 mt-3">
+                                <div className="input-group  ">
+                                    <TextField fullWidth variant='outlined' focused id='uname' value={student2.username} label="Username" className='d-block' inputProps={{ inputMode: 'string' }}
+                                        onChange={(e) => setStudent2({
+                                            ...student2,
+                                            username: e.target.value
+                                        })}
+                                    />
+
+                                </div>
+                            </div>
+
+                            <div className='col-12 col-sm-4 mt-3'>
+                                <TextField
+                                    name='pass'
+                                    id="password"
+                                    label="Password"
+                                    fullWidth
+                                    value={student2.password}
+                                    focused
+                                    variant="outlined"
+                                    onChange={(e) => setStudent2({
+                                        ...student2,
+                                        password: e.target.value
+                                    })}
+                                />
+
+                            </div>
+
+                            {/* <div className='col-12 col-sm-4 mt-3'>
+                                <TextField
+                                    name='fes'
+                                    id="fees"
+                                    label="Fees Paid"
+                                    fullWidth
+
+                                    {...register("feesPaid", { required: false })}
+
+
+                                    variant="outlined"
+                                />
+                             
+                            </div> */}
+
+                            <div>
+                                <Button className="btn bg-primary text-white  mt-3" onClick={() => onsubmit()} style={{ width: '15%' }} type="Button">Submit</Button>
+                            </div>
+                        </form>
+
                     </div>
+                </div>
 
-                    <div className='row g-3'>
-                        <div className='col-md-6'>
-                            <TextField
-                                label="Password"
-                
-                                defaultValue="Generate"
-                                value={student.password}
-                                InputProps={{
-                                    readOnly: true,
-                                }}
 
-                                {...register("password", { required: true })}
 
-                                variant="outlined"
-                            />
-                        <p className='text-danger'>
-                                {errors.password?.type === "required" && "password is required"}
-                            </p>
-                        </div>
-                        <div className='col-md-6'>
-                            <Button className='mx-3 mt-2' style={{ color: 'black' }} endIcon={<KeyIcon />}>
-                                Create Password
-                            </Button>
-                        </div>
-                    </div>
-                    <div className="col-12">
-                    <TextField className="button" type="submit" />
-                    </div>
-
-                </form>
-                </Container> */}
-
-                <Container injectFirst className='shadow w-50 ' >
-                    <h2 variant="h4" className='text-center p-3'>Update Student</h2>
-                    <FormControl>
-                        <InputLabel htmlFor="my-input">Name</InputLabel>
-                        <Input  className='form-control' onChange={(e) => onValueChange(e)} name='name'  value={student.name} id="my-input" aria-describedby="my-helper-text" />
-                    </FormControl>
-                    <FormControl>
-                        <InputLabel htmlFor="my-input">DOB</InputLabel>
-                        <Input onChange={(e) => onValueChange(e)} name='dob' value={student.dob} id="my-input" aria-describedby="my-helper-text" />
-                    </FormControl>
-                    <FormControl>
-                        <InputLabel htmlFor="my-input">Gen</InputLabel>
-                        <Input onChange={(e) => onValueChange(e)} name='gen' value={student.gen} id="my-input" aria-describedby="my-helper-text" />
-                    </FormControl>
-                    <FormControl>
-                        <InputLabel htmlFor="my-input">STD</InputLabel>
-                        <Input  className='form-control' onChange={(e) => onValueChange(e)} name='std' value={student.std} id="my-input" aria-describedby="my-helper-text" />
-                    </FormControl>
-                    <FormControl>
-                        <InputLabel htmlFor="my-input">Contact</InputLabel>
-                        <Input  className='form-control' onChange={(e) => onValueChange(e)} name='contact' value={student.contact} id="my-input" aria-describedby="my-helper-text" />
-                    </FormControl>
-                    <FormControl>
-                        <InputLabel htmlFor="my-input">Alternet Contact No</InputLabel>
-                        <Input  className='form-control' onChange={(e) => onValueChange(e)} name='Alternet_contact' value={student.Alternet_contact} id="my-input" aria-describedby="my-helper-text" />
-                    </FormControl>
-                    <FormControl>
-                        <InputLabel htmlFor="my-input">Address</InputLabel>
-                        <Input  className='form-control' onChange={(e) => onValueChange(e)} name='Address' value={student.Address} id="my-input" aria-describedby="my-helper-text" />
-                    </FormControl>
-                    <FormControl>
-                        <InputLabel htmlFor="my-input">Gmail</InputLabel>
-                        <Input  className='form-control' onChange={(e) => onValueChange(e)} name='email' value={student.email} id="my-input" aria-describedby="my-helper-text" />
-                    </FormControl>
-                    <FormControl>
-                        <InputLabel htmlFor="my-input">Username</InputLabel>
-                        <Input  className='form-control' onChange={(e) => onValueChange(e)} name='username' value={student.username} id="my-input" aria-describedby="my-helper-text" />
-                    </FormControl>
-                    <FormControl>
-                        <InputLabel htmlFor="my-input">Password</InputLabel>
-                        <Input className='form-control' onChange={(e) => onValueChange(e)} name='password' value={student.password} id="my-input" aria-describedby="my-helper-text" />
-                    </FormControl>
-                </Container>
-                <Container2 className='w-50'>
-
-                    <div className='text-center' >
-                        <Button  variant="contained" className='btn btn-primary' onClick={() => updateStudentDetails()} >Update Student</Button>
-                    </div>
-                </Container2>
             </Box>
         </Box>
     )
