@@ -50,7 +50,7 @@ export default function Login() {
             const response = await Authenticate(data)
             const tkn=response?.data.data.accessToken
         
-            if (response.status === 200) {
+            if (response?.status === 200) {
                 localStorage.setItem('token',tkn)
                 Swal.fire({
                     title: "Success",
