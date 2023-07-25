@@ -33,8 +33,14 @@ Route.route('/admin')
     Route.route('/admin/teacherCount')
     .get(authcontroller.Auth,TeacherController.countTeacher);
 
+    Route.route('/admin/feescount')
+    .get(authcontroller.Auth,StudentController.totalFeesPaid);
+
     Route.route('/admin/profile/:id?')
     .get(authcontroller.Auth,AdminController.getAdminData);
+
+    Route.route('/admin/profile/edit/:id?')
+    .put(authcontroller.Auth,AdminController.updateData);
 
     Route.route('/')
     // .post(LoginController.AuthData)

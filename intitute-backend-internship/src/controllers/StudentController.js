@@ -322,5 +322,30 @@ class StudentController {
     }
 
 
+    //couting total fees paid of student
+
+    async  totalFeesPaid(req, res) {
+        try {
+          const response = await Studentmodel.aggregate([
+            {
+              $group: {
+                _id: null,
+                sum_val: { $sum: "$feesPaid" }
+              }
+            }
+          ]);
+      
+          if (response.length > 0) {
+            const totalFeesPaid = response[0].sum_val;
+            Utilities.apiResponse(res, 200, 'Get Student Successfully', totalFeesPaid);
+          } else {
+            Utilities.apiResponse(res, 200, 'No students found or feesPaid is zero', 0);
+          }
+        } catch (error) {
+          Utilities.apiResponse(res, 500, error);
+        }
+      }
+
+
 }
 module.exports = new StudentController();

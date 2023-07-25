@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { tokenpassApi } from '../components/Login';
-// const url = "http://localhost:8000"
-const url="https://erp-exousia.onrender.com" 
+const url = "http://localhost:8000"
+// const url="https://erp-exousia.onrender.com" 
 
 
 export const Authenticate = async (logcred) => {
@@ -88,12 +88,53 @@ export const adminData = async (id) => {
     console.log("erroe during add pai fees student", error)
   }
 }
+export const updateAdminData = async (id,data) => {
+  try {
+    const token = localStorage.getItem('token');
+    return await axios.put(`${url}/admin/profile/edit/${id}`, data,{
+
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+
+    })
+  } catch (error) {
+    console.log("erroe update admin data", error)
+  }
+}
 
 export const getTotalCount = async () => {
 
   const token = localStorage.getItem('token');
   try {
     return await axios.get(`${url}/admin/`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+  } catch (error) {
+    console.log("erroe during counting total student", error)
+  }
+}
+export const teacherCount = async () => {
+
+  const token = localStorage.getItem('token');
+  try {
+    return await axios.get(`${url}/admin/teacherCount`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+  } catch (error) {
+    console.log("erroe during counting total student", error)
+  }
+}
+
+export const totalFeesPaid = async () => {
+
+  const token = localStorage.getItem('token');
+  try {
+    return await axios.get(`${url}/admin/feescount`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

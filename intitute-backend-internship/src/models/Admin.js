@@ -23,6 +23,10 @@ const AdminData = new Schema(
             type:String,
         },
 
+        className:{
+            type:String,
+        },
+
         username:{
             type:String,
         },

@@ -24,7 +24,7 @@ import { FaUsers } from 'react-icons/fa';
 import { FaRupeeSign } from 'react-icons/fa';
 import { TfiAnnouncement } from 'react-icons/tfi';
 import { TextField, Input } from '@mui/material';
-import { getTotalCount, setMessageData } from '../service/api';
+import { getTotalCount, setMessageData,teacherCount,totalFeesPaid } from '../service/api';
 import { useForm } from 'react-hook-form';
 import { setFees } from '../service/api';
 import SendIcon from '@mui/icons-material/Send';
@@ -54,6 +54,8 @@ let stdinfo;
 let total_fees;
 let remaining;
 let totalStudent;
+let teacherCounting;
+let feesPaidTotal;
 
 
 
@@ -260,7 +262,7 @@ export default function Homepage() {
     stdinfo = students[indexno].stdfeesinfo.std;
     total_fees = students[indexno].stdfeesinfo.total_fees;
     remaining = total_fees - students[indexno].feesPaid;
-    console.log(remaining);
+   
 
 
   }
@@ -366,6 +368,25 @@ export default function Homepage() {
     }
 
   }
+
+ const coutingteacherDocument = async()=>{
+
+  try {
+
+    const response= await teacherCount();
+    teacherCounting=response?.data.data
+    
+  } catch (error) {
+    
+  }
+
+ }
+
+  const totalFeesAddiion= async()=>{
+       const response=await totalFeesPaid()
+       feesPaidTotal=response.data.data;
+  }
+
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -380,8 +401,8 @@ export default function Homepage() {
       // Replace this with your actual API call
       totalcount();
       fees();
-
-
+      coutingteacherDocument();
+      totalFeesAddiion();
       setIsLoading(false);
     }, 2000);
 
@@ -460,7 +481,7 @@ export default function Homepage() {
                           <div class='row align-items-center mb-2 d-flex'>
                             <div class='col-8'>
                               <h2 class='d-flex align-items-center mb-0'>
-                                <span class="num" data-val='300'>000</span>
+                               {teacherCounting}
                               </h2>
                             </div>
 
@@ -479,9 +500,9 @@ export default function Homepage() {
                           <div class='row align-items-center mb-2 d-flex'>
                             <div class='col-8'>
                               <h2 class='d-flex align-items-center mb-0'>
-                                <span class="num" data-val='300'>000</span>
-                                <span>/</span>
-                                <span class="num" data-val='300'>000</span>
+                                <span class="num" data-val='300'>{feesPaidTotal}</span>
+                                {/* <span>/</span>
+                                <span class="num" data-val='300'>000</span> */}
                               </h2>
                             </div>
                           </div>
