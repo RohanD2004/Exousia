@@ -20,11 +20,11 @@ const AdminController= require("./controllers/AdminController")
 
  Route.route('/send/mail')
  .post(mailController.sendMailData)
-
+ 
+ Route.route('/')
+ // .post(LoginController.AuthData)
+ .post(authcontroller.login)
 Route.route('/admin')
-    Route.route('/')
-    // .post(LoginController.AuthData)
-    .post(authcontroller.login)
     .get(authcontroller.Auth,StudentController.getTotalCount)
     .post(authcontroller.Auth,FeesDataController.AddFees)
     // .get(StudentController.gatAllstudentdata)
