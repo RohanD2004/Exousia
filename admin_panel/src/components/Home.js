@@ -23,8 +23,8 @@ import { styled, alpha } from '@mui/material/styles';
 import { FaUsers } from 'react-icons/fa';
 import { FaRupeeSign } from 'react-icons/fa';
 import { TfiAnnouncement } from 'react-icons/tfi';
-import { TextField, Input } from '@mui/material';
-import { getTotalCount, setMessageData,teacherCount,totalFeesPaid } from '../service/api';
+import { TextField, FormControlLabel,Input,Switch } from '@mui/material';
+import { getTotalCount, setMessageData, teacherCount, totalFeesPaid } from '../service/api';
 import { useForm } from 'react-hook-form';
 import { setFees } from '../service/api';
 import SendIcon from '@mui/icons-material/Send';
@@ -37,6 +37,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Loading from "./Loading.js";
 import "../components/css/loading.css"
+import Header from './header'
 const pages = [];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 let count;
@@ -112,12 +113,10 @@ export default function Homepage() {
   const [total, setTotal] = useState("");
 
 
-
-
   let Student = [];
   const totalcount = async () => {
     count = await getTotalCount();
-    totalStudent=count?.data.data[0].total;
+    totalStudent = count?.data.data[0].total;
     first = count?.data.data[0].first;
     second = count?.data.data[0].second;
     third = count?.data.data[0].third;
@@ -262,7 +261,7 @@ export default function Homepage() {
     stdinfo = students[indexno].stdfeesinfo.std;
     total_fees = students[indexno].stdfeesinfo.total_fees;
     remaining = total_fees - students[indexno].feesPaid;
-   
+
 
 
   }
@@ -369,22 +368,22 @@ export default function Homepage() {
 
   }
 
- const coutingteacherDocument = async()=>{
+  const coutingteacherDocument = async () => {
 
-  try {
+    try {
 
-    const response= await teacherCount();
-    teacherCounting=response?.data.data
-    
-  } catch (error) {
-    
+      const response = await teacherCount();
+      teacherCounting = response?.data.data
+
+    } catch (error) {
+
+    }
+
   }
 
- }
-
-  const totalFeesAddiion= async()=>{
-       const response=await totalFeesPaid()
-       feesPaidTotal=response.data.data;
+  const totalFeesAddiion = async () => {
+    const response = await totalFeesPaid()
+    feesPaidTotal = response.data.data;
   }
 
   const [isLoading, setIsLoading] = useState(true);
@@ -408,51 +407,26 @@ export default function Homepage() {
 
 
   }, [])
-  
 
-  const t2=28
+
+  const t2 = 28
   return (
     <Box sx={{ display: 'flex' }}>
 
 
       <Sidenav />
       <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
-
-        <Box sx={{ flexGrow: 1 }}>
-          <AppBar position="static" style={{ backgroundColor: '#002147' }}>
-            <Toolbar>
-              <Typography
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-              >
-                Home
-              </Typography>
-              {/* <Search>
-                <SearchIconWrapper>
-                  <SearchIcon />
-                </SearchIconWrapper>
-                <StyledInputBase
-                  onChange={(e) => setSname2(e.target.value)}
-                  placeholder="Search…"
-                  inputProps={{ 'aria-label': 'search' }}
-                />
-              </Search> */}
-            </Toolbar>
-          </AppBar>
-        </Box>
         {
           isLoading ? (
             <Loading />
           ) : (
             <>
-
+              <Header title="Home" />
 
               <div className='d-flex row p-3' >
                 <div class='col-md-10 '>
                   <div class='row '>
-                  <div class='col-xl-4 col-lg-6'>
+                    <div class='col-xl-4 col-lg-6'>
                       <div class='card l-bg-blue-dark' style={{ backgroundColor: '#0079ff' }}>
                         <div class='card-statistic-3 p-4'>
                           <div class='card-icon card-icon-large me-5' style={{ color: 'black' }}><FaUsers size={100} /></div>
@@ -462,7 +436,7 @@ export default function Homepage() {
                           <div class='row align-items-center mb-2 d-flex'>
                             <div class='col-8'>
                               <h2 class='d-flex align-items-center mb-0'>
-                              {totalStudent}
+                                {totalStudent}
                               </h2>
                             </div>
 
@@ -481,7 +455,7 @@ export default function Homepage() {
                           <div class='row align-items-center mb-2 d-flex'>
                             <div class='col-8'>
                               <h2 class='d-flex align-items-center mb-0'>
-                               {teacherCounting}
+                                {teacherCounting}
                               </h2>
                             </div>
 
@@ -521,7 +495,9 @@ export default function Homepage() {
                       <div className='card-body'>
                         <div class='mb-3'>
                           <label for='exampleInputEmail1' class='form-label'>Choose standard</label>
-                          <FormControl fullWidth className='mt-3 bg-light'>
+                          <FormControl fullWidth className='mt-3 bg-light'
+                            style={{ borderRadius: '10px' }}
+                          >
                             <Select
                               labelId="demo-controlled-open-select-label"
                               id="demo-controlled-open-select"
@@ -532,6 +508,7 @@ export default function Homepage() {
                               label="Std"
                               {...register("std_id", { required: true })}
                               onChange={handleChangestd}
+
                             >
 
                               {feesstd.map((user) => (
@@ -550,6 +527,7 @@ export default function Homepage() {
                         <div class='mb-3'>
                           <label for='exampleInputPassword1' class='form-label'>Set fees</label>
                           <input class='form-control bg-light' id='exampleInputPassword1'
+                            style={{ borderRadius: '10px' }}
                             {...register("total_fees", { required: true })}
                           />
                           <p className='text-danger'>
@@ -637,53 +615,16 @@ export default function Homepage() {
                 </div>
               </div>
               <div className='row mt-4'>
-                <div className='col-lg-6'>
-                  <div className='container-fluid shadow p-3 bg-white mb-4'>
+                {/* <div className='col-lg-6'>
+                  <div className='container-fluid shadow p-3 bg-white mb-4' style={{borderTop:'5px solid #002147',borderBottom:'5px solid #002147'}}>
                     <p className='h3'>Announcement</p>
                     <div className='row'>
                       <div>
-                        {/* <div className='p-3'>
-                    <label class="check">
-                      <input type="checkbox" id="myCheck" name='1st' value={1} onChange={handleChange} />
-                      <span>1st</span>
-                    </label>
-                    <label class="check">
-                      <input type="checkbox" id="myCheck" name='2nd' value={2} onChange={handleChange} />
-                      <span>2nd</span>
-                    </label>
-                    <label class="check">
-                      <input type="checkbox" id="myCheck" name='3rd' value={3} onChange={handleChange} />
-                      <span>3rd</span>
-                    </label>
-                    <label class="check">
-                      <input type="checkbox" id="myCheck" name='4th' value={4} onChange={handleChange} />
-                      <span>4th</span>
-                    </label>
-                    <label class="check">
-                      <input type="checkbox" id="myCheck" name='5th' value={5} onChange={handleChange} />
-                      <span>5th</span>
-                    </label>
-                    <label class="check">
-                      <input type="checkbox" id="myCheck" name='6th' value={6} onChange={handleChange} />
-                      <span>6th</span>
-                    </label>
-                    <label class="check">
-                      <input type="checkbox" id="myCheck" name='7th' value={7} onChange={handleChange} />
-                      <span>7th</span>
-                    </label>
-                    <label class="check">
-                      <input type="checkbox" id="myCheck" name='8th' value={8} onChange={handleChange} />
-                      <span>8th</span>
-                    </label>
-                    <label class="check">
-                      <input type="checkbox" id="myCheck" name='9th' value={9} onChange={handleChange} />
-                      <span>9th</span>
-                    </label>
+                        
                     <label class="check">
                       <input type="checkbox" id="myCheck" name='10th' value={10} onChange={handleChange} />
                       <span>10th</span>
                     </label>
-                  </div> */}
                         <FormControl fullWidth className='mt-3 bg-white'>
                           <Select
                             labelId="demo-controlled-open-select-label"
@@ -720,9 +661,50 @@ export default function Homepage() {
                       </Button>
                     </div>
                   </div>
+                </div> */}
+
+                <div className='col-lg-6 p-2 shadow' style={{ backgroundColor: 'white' }}>
+                  <p className='h3 mt-1'>Announcement</p>
+                  <header className='bg-light px-3 py-2 pu d-flex '>
+                    <span className='mt-2'>To: </span>
+                    <FormControl className='d-block mt-1 mb-1 ms-2' size='small'>
+                      <Select
+                        value={StdMsg}
+                        {...register("std_id", { required: true })}
+                        onChange={handleChangestd2}
+                      >
+                        {feesstd.map((user) => (
+
+                          <MenuItem value={user.value}>{user.text}</MenuItem>
+
+                        ))}
+
+                      </Select>
+                      <p className='text-danger'>
+                          {errors.std_id?.type === "required" && "Standard is required"}
+                        </p>
+                    </FormControl>
+                    <FormControlLabel
+                      className='ms-3 '
+                      value="All"
+                      control={<Switch color="primary" />}
+                      label="All"
+                      labelPlacement="end"
+                    />
+                  </header>
+                  <div className='mt-2'>
+                    <TextField fullWidth focused multiline minRows={10} placeholder='Enter messege here..'
+                     onChange={(e) => { setMessage({ ...message, msg: e.target.value }) }}
+                    ></TextField>
+                  </div>
+                  <footer className='mt-2 bg-light py-2 d-flex justify-content-end'>
+                    <Button className='me-3 bg-primary text-white' onClick={() => sendData()} endIcon={<SendIcon />}>Send</Button>
+                  </footer>
                 </div>
+
+
                 <div className='col'>
-                  <div className='container-fluid shadow bg-white'>
+                  <div className='container-fluid shadow bg-white' >
 
                     <div className='row p-3'>
 
@@ -807,6 +789,11 @@ export default function Homepage() {
                           /></div>
                       </div>
                       <div className='row px-3 '>
+                        <div className='col-lg-5 col-md-10 col-sm-10'>
+                          <TextField label={total_fees} placeholder='Remaining fees' value={remaining} type='numeric' focused className='mb-3'
+
+                          />
+                        </div>
                         <div className='col-lg-5 col-md-10 col-sm-10 mb-4'>
                           <TextField label="Amount" placeholder='Enter Amount' type='numeric' focused className='mb-3'
 
@@ -814,11 +801,6 @@ export default function Homepage() {
 
                           />
                           <FaRupeeSign size={35} className='  mt-2' style={{ opacity: '30%' }} />
-                        </div>
-                        <div className='col-lg-5 col-md-10 col-sm-10'>
-                          <TextField label={total_fees} placeholder='Remaining fees' value={remaining} type='numeric' focused className='mb-3'
-
-                          />
                         </div>
                       </div>
                       <div className='row px-4'>
@@ -838,7 +820,7 @@ export default function Homepage() {
             </>
           )}
       </Box>
-    </Box>
+    </Box >
   )
 }
 

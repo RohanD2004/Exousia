@@ -136,7 +136,7 @@ export default function Feeshistory() {
                         <div className='col-xl-4 col-md-4  ms-3 form-group local-forms '>
                             <FormControl className='col-sm-10 w-75' >
                                 <InputLabel variant="outlined" htmlFor="uncontrolled-native">
-                                    Select Type
+                                    Filter
                                 </InputLabel>
                                 <NativeSelect
                                     onChange={(e) => setType(e.target.value)}
@@ -158,8 +158,8 @@ export default function Feeshistory() {
                     <div class="card-body ">
 
                         <div className=' mt-2 table-responsive '>
-                            <table class=" table-striped  table table-bordered" id='paid'>
-                                <thead>
+                            <table class=" table table-bordered" id='paid'>
+                                <thead  className='table-dark'>
                                     <tr>
                                         <th scope="col">Name</th>
                                         <th scope="col">Standard</th>

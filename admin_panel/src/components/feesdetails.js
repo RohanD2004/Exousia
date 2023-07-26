@@ -112,8 +112,8 @@ export default function Feesdetails() {
                 
                 <Header title="Fees History"/>
 
-                < table class=" table-striped  table table-bordered mt-4" id='paid' >
-                    <thead>
+                < table class=" table table-bordered mt-4" id='paid' >
+                    <thead className='table-dark'>
                         <tr>
                             <th scope="col">Date</th>
                             <th scope="col">Amount</th>
@@ -143,8 +143,8 @@ export default function Feesdetails() {
 
                 </table>
 
-                <table className='table table-striped table-bordered'>
-                    <thead>
+                <table className='table  table-bordered'>
+                    <thead className='table-dark'>
                         <tr>
                             <th scope="col">Paid</th>
                             <th scope="col">Total</th>

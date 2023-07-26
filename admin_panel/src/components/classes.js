@@ -56,7 +56,7 @@ function TextLinkExample() {
       gettotallayout();
 
       setIsLoading(false);
-    }, 2000);
+    }, 3000);
   }, []);
 
 
@@ -74,12 +74,8 @@ function TextLinkExample() {
             ) :
               (
                 <div className="container list-group listgroup mt-4">
-
-
                   {
-
-
-                    classes.map((user) => (
+                    classes?.map((user) => (
 
                       <>
 

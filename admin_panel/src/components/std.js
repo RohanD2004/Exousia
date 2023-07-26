@@ -16,6 +16,7 @@ import AppBar from '@mui/material/AppBar';
 import InputBase from '@mui/material/InputBase';
 import Toolbar from '@mui/material/Toolbar';
 import Swal from "sweetalert2";
+import Loading from './Loading.js';
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -62,7 +63,7 @@ export default function Classlayout() {
   const temp = localStorage.getItem('token');
   const [sname, setSname] = useState("");
   const [students, setStudent] = useState(null);
-
+  const [isLoading, setIsLoading] = useState(true);
 
   const getAllStudent = async () => {
     let response = await getStudent(passStd());
@@ -125,7 +126,13 @@ export default function Classlayout() {
   }, [temp])
 
   useEffect(() => {
-    getAllStudent();
+    
+    setTimeout(() => {
+      // Replace this with your actual API call
+      getAllStudent();
+      setIsLoading(false);
+    }, 2000);
+
   }, []);
 
   return (
@@ -160,8 +167,13 @@ export default function Classlayout() {
         </Box>
 
         <div class="card comman-shadow mt-5">
-          <table class="table-striped table">
-            <thead>
+        {
+            isLoading ? (
+              <Loading />
+            ) :
+              (
+          <table class=" table">
+            <thead className='table-dark'>
               <tr>
                 <th scope="col" className='col-md-2 col-xl-1'>Id</th>
                 <th scope="col" className='col-md-6 col-xl-2 col-sm-6'>Name</th>
@@ -191,6 +203,8 @@ export default function Classlayout() {
               }
             </tbody>
           </table>
+          )
+        }
         </div>
       </Box>
     </Box>

@@ -1,13 +1,6 @@
-.login-page{
-    background-image: url("C:\rohan ghuge\react\ERP SYSTEM\admin_panel\src\img\bg-image-modified.jpg");
-    background-size: cover;
-    
-}
+
 @media only screen and (max-device-width: 500px) { 
 #login{
  min-width: 67vw;
 }
-}
-.MuiInputLabel-root {
-    color: black !important;
 }

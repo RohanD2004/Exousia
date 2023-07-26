@@ -221,7 +221,7 @@ export default function Login() {
                             <div style={{ backgroundColor: 'transparent' }} className='text-white'>
                                 <form onSubmit={handleSubmit(Onsubmit)} >
                                     <div class="mb-4">
-                                        <TextField variant='outlined' sx={{ input: { color: 'white' } }} label='Username' fullWidth focused placeholder='Enter username here..'
+                                        <TextField variant='outlined'  label='Username' fullWidth focused placeholder='Enter username here..'
                                             {...register("loginid", { required: true })}
                                         ></TextField>
                                         <p className='text-danger'>
@@ -230,7 +230,7 @@ export default function Login() {
                                     </div>
 
                                     <div class="mb-4">
-                                        <FormControl fullWidth focused sx={{ input: { color: 'white' } }} variant="outlined">
+                                        <FormControl fullWidth focused  variant="outlined">
                                             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                                             <OutlinedInput
                                                 placeholder='Enter password here..'

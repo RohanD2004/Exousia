@@ -43,7 +43,7 @@ const getStudentData = async () => {
             <Sidenav />
             <Box component='main' className='table-responsive' sx={{ flexGrow: 1, p: 3 }}>
 
-                <div className='container'>
+                <div className='container ' style={{backgroundColor:'white'}}>
                     <div className='row bg-dark' style={{ borderTop: '5px solid yellow' }}>
                         <div className='col'>
                             <p className='text-white h5 mt-3 ms-0'>You</p>
