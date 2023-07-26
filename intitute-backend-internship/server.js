@@ -18,7 +18,7 @@ app.use(cookieParser());
 
 app.use("/", require(`./src/Routes`));
 
-app.use("/",express.static('public'))
+// app.use("/",express.static('public'))
 
 
 
