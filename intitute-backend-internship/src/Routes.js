@@ -22,6 +22,9 @@ const AdminController= require("./controllers/AdminController")
  .post(mailController.sendMailData)
 
 Route.route('/admin')
+    Route.route('/')
+    // .post(LoginController.AuthData)
+    .post(authcontroller.login)
     .get(authcontroller.Auth,StudentController.getTotalCount)
     .post(authcontroller.Auth,FeesDataController.AddFees)
     // .get(StudentController.gatAllstudentdata)
@@ -42,9 +45,7 @@ Route.route('/admin')
     Route.route('/admin/profile/edit/:id?')
     .put(authcontroller.Auth,AdminController.updateData);
 
-    Route.route('/')
-    // .post(LoginController.AuthData)
-    .post(authcontroller.login)
+    
 
 
 Route.route('/admin/student/admission')
