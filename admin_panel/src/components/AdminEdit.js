@@ -204,7 +204,7 @@ function App() {
             Swal.fire({
                 title: "error",
                 text: error,
-                icon: "success",
+                icon: "error",
                 confirmButtonText: "OK",
               }); 
         }

@@ -107,7 +107,7 @@ class TeacherController
     async  deleteTeacher (req, res) {
         try {
             await TeacherModule.deleteOne({ _id: req.params.id });
-            await getUsers.deleteOne({user_Id: req.params.id})
+            await getUsers.deleteOne({user_Id: req.params.id});
             Utilities.apiResponse(res, 200, 'teacher Deleted Successfully');
         } catch (error) {
             Utilities.apiResponse(res, 500, error);

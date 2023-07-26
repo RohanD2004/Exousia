@@ -278,7 +278,17 @@ export default function Homepage() {
   const sendData = async () => {
 
     try {
+
       const response = await setMessageData(message);
+    if(response?.status==200)
+    {
+      Swal.fire({
+        title: "Success",
+        text:response.data.message,
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+    }
 
     } catch (error) {
       Swal.fire({
@@ -663,7 +673,7 @@ export default function Homepage() {
                   </div>
                 </div> */}
 
-                <div className='col-lg-6 p-2 shadow' style={{ backgroundColor: 'white' }}>
+                <div className='col-lg-6 p-2 shadow mb-3' style={{ backgroundColor: 'white' }}>
                   <p className='h3 mt-1'>Announcement</p>
                   <header className='bg-light px-3 py-2 pu d-flex '>
                     <span className='mt-2'>To: </span>
@@ -703,7 +713,7 @@ export default function Homepage() {
                 </div>
 
 
-                <div className='col'>
+                <div className='col '>
                   <div className='container-fluid shadow bg-white' >
 
                     <div className='row p-3'>
@@ -712,7 +722,7 @@ export default function Homepage() {
                         <p className='h3 me-3'>Payment</p>
 
                       </div>
-                      <div className='col w-50  w'>
+                      <div className='col w-50 '>
 
                         <Search fullWidth className=' text-light bg-primary text-white'  >
                           <SearchIconWrapper>
