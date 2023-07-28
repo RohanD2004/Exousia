@@ -153,7 +153,7 @@ export default function Sidebar() {
               }}
             >
 
-              <AccountCircleIcon style={{ fontSize: `${iconSize}px`, backgroundColor: '#315278', color: '#47ffff',marginLeft:'-10px'}} />
+              <AccountCircleIcon style={{ fontSize: `${iconSize}px`,  color: '#47ffff',marginLeft:'-10px'}} />
 
             </ListItemIcon>
             <ListItemText

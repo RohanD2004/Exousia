@@ -194,7 +194,7 @@ export default function Feeshistory() {
                                                 user.feesPaid === 0 ? (
                                                     <tr className='table-danger'>
                                                         <th scope="row">{user.name}</th>
-                                                        <td>{user.stdfeesinfo.std} th</td>
+                                                        <td>{user.stdfeesinfo.std}</td>
                                                         <td>{user.gen}</td>
                                                         <td>{user.contact}</td>
                                                         <td>
@@ -204,7 +204,7 @@ export default function Feeshistory() {
                                                 ) : (
                                                     <tr>
                                                         <th scope="row">{user.name}</th>
-                                                        <td>{user.stdfeesinfo.std} th</td>
+                                                        <td>{user.stdfeesinfo.std} </td>
                                                         <td>{user.gen}</td>
                                                         <td>{user.contact}</td>
                                                         <td>

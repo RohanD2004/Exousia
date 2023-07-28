@@ -4,6 +4,8 @@ import { tokenpassApi } from '../components/Login';
 const url="https://erp-exousia.onrender.com" 
 
 
+
+
 export const Authenticate = async (logcred) => {
   try {
     return await axios.post(`${url}/`, logcred)
@@ -11,6 +13,15 @@ export const Authenticate = async (logcred) => {
     console.log("erroe during login  student", error)
   }
 }
+
+// export const SendMessageData = async () => {
+//   try {
+//     return await axios.get(`${url}/admin/mail`)
+   
+//   } catch (error) {
+//     console.log("erroe sending sms", error)
+//   }
+// }
 
 export const setFees = async (data) => {
 

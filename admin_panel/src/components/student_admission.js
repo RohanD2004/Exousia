@@ -220,7 +220,8 @@ const Admission = () => {
           setValue("Address", "");
           setValue("email", "");
           setValue("username", "");
-          setValue("required", "");
+          setValue("password", "");
+        
           } else if (response?.status===422) {
             Swal.fire({
                 title:"Error",
@@ -286,7 +287,8 @@ const Admission = () => {
 
                             <div className='col-12 col-sm-4 '>
                                 <FormControl fullWidth>
-                                    <TextField type='date' className='datetimepicker' name='dob' variant='outlined' placeholder="DD-MM-YYYY  Date Of Birth" style={textstyle}
+                                
+                                    <TextField label="DOB" type='date' className='datetimepicker' focused name='dob' variant='outlined'  style={textstyle}
                                         {...register("dob", { required: true })}
                                     />
                                     <p className='text-danger'>

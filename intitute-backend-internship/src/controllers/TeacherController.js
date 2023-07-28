@@ -95,6 +95,23 @@ class TeacherController
         }
     }
 
+    async sendMailData(req, res) {
+
+        try
+        {
+          console.log("Hello from send sms")
+  
+          const response= await fast2Sms.sendMessage({authorization: process.env.FAST_2_SMS_KEY, message:"Hello from Exousia", number:"8530458123"})
+          
+          Utilities.apiResponse(res, 200, 'Mail send Successfully',response);
+          
+        }
+            
+       catch (error) {
+        Utilities.apiResponse(res, 500, error);
+      }
+      };
+
     async updateTeacher(req, res) {
         try {
             await TeacherModule.findOneAndUpdate({ _id: req.params.id }, req.body);

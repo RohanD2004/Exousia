@@ -24,7 +24,7 @@ import { FaUsers } from 'react-icons/fa';
 import { FaRupeeSign } from 'react-icons/fa';
 import { TfiAnnouncement } from 'react-icons/tfi';
 import { TextField, FormControlLabel,Input,Switch } from '@mui/material';
-import { getTotalCount, setMessageData, teacherCount, totalFeesPaid } from '../service/api';
+import { getTotalCount, setMessageData, teacherCount, totalFeesPaid ,SendMessageData} from '../service/api';
 import { useForm } from 'react-hook-form';
 import { setFees } from '../service/api';
 import SendIcon from '@mui/icons-material/Send';
@@ -394,6 +394,9 @@ export default function Homepage() {
   const totalFeesAddiion = async () => {
     const response = await totalFeesPaid()
     feesPaidTotal = response.data.data;
+    // const smsResponse= await SendMessageData();
+    // console.log(smsResponse?.data.data)
+
   }
 
   const [isLoading, setIsLoading] = useState(true);
@@ -703,7 +706,7 @@ export default function Homepage() {
                     />
                   </header>
                   <div className='mt-2'>
-                    <TextField fullWidth focused multiline minRows={10} placeholder='Enter messege here..'
+                    <TextField fullWidth focused multiline minRows={11} placeholder='Enter messege here..'
                      onChange={(e) => { setMessage({ ...message, msg: e.target.value }) }}
                     ></TextField>
                   </div>
@@ -713,8 +716,8 @@ export default function Homepage() {
                 </div>
 
 
-                <div className='col '>
-                  <div className='container-fluid shadow bg-white' >
+                <div className='col-lg-6 mb-3'>
+                  <div className=' shadow bg-white' >
 
                     <div className='row p-3'>
 

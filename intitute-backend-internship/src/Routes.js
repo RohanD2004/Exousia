@@ -11,27 +11,33 @@ const feesdataController = require('./controllers/feesdataController');
 const LoginController = require('./controllers/LoginController')
 const MarkControler  = require('./controllers/MarkController')
 const mailController = require('./controllers/mail')
-const AdminController= require("./controllers/AdminController")
+const AdminController= require("./controllers/AdminController");
+
 
 /**
  * APIs V1 Routes
  */
 
 
- Route.route('/send/mail')
- .post(mailController.sendMailData)
- 
- Route.route('/')
- // .post(LoginController.AuthData)
- .post(authcontroller.login)
+
+Route.route('/')
+// .post(LoginController.AuthData)
+.post(authcontroller.login);
+
+
+
 Route.route('/admin')
     .get(authcontroller.Auth,StudentController.getTotalCount)
     .post(authcontroller.Auth,FeesDataController.AddFees)
     // .get(StudentController.gatAllstudentdata)
     .put(authcontroller.Auth,FeesController.setFees);
 
+    Route.route('/admin/mail')
+    
+    .get(mailController.sendMailData);
+
     Route.route('/admin/classes')
-    .get(authcontroller.Auth,FeesController.getFeesDetails);
+    .get(FeesController.getFeesDetails);
 
     Route.route('/admin/teacherCount')
     .get(authcontroller.Auth,TeacherController.countTeacher);
@@ -127,6 +133,7 @@ Route.route('/admin/student')
 
     Route.route('/teacher/exams/sub')
     .post( authcontroller.Auth,TeacherController.getSingleTeacher2);
+   
 
     Route.route('/teacher/exams/updatemark')
     .post(authcontroller.Auth,MarkControler.AddMarks);

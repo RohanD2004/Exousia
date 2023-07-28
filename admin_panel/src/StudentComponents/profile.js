@@ -65,7 +65,7 @@ export default function Studentprofile() {
                                                 <AccountCircleSharpIcon class="img-account-profile rounded-circle mb-2" />
                                                 {/* <!-- Profile picture help block--> */}
                                                 <div class="large font-italic mb-2"><b>{user.name}</b></div>
-                                                <div class="large font-italic mb-4">{user.stdfeesinfo.std}th</div>
+                                                <div class="large font-italic mb-4">{user.stdfeesinfo.std}</div>
                                                 <div class="large font-italic mb-4">Admitted On :{ moment(user.createdAt).format('MMMM Do, YYYY')}</div>
 
                                                 <div class="large font-italic mb-4">
