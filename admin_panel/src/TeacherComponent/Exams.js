@@ -12,6 +12,7 @@
 //   </Box>
 //   )
 // }
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import axios from 'axios';
 import { GetStudentStd, updateMark } from '../service/api';
 import { React, useEffect, useState } from 'react'
@@ -88,11 +89,26 @@ export default function Exams() {
 
   };
 
+  const [markSuccess, setMarkSuccess] = useState(false)
+  const [updatedStudentId, setUpdatedStudentId] = useState(null);
 
 
   const AddMark = async () => {
-    let response = await updateMark(date);
+    try {
 
+      let response = await updateMark(date);
+      if (response?.status === 200) {
+        setMarkSuccess(true);
+        setUpdatedStudentId(date.stuId); // Set the ID of the updated student
+        setTimeout(() => {
+          setMarkSuccess(false);
+           // Reset the updated student ID after 2 seconds
+        }, 2000);
+      }
+
+    } catch (error) {
+
+    }
   }
 
   const getTeacherData = async () => {
@@ -164,9 +180,9 @@ export default function Exams() {
                   label="Subject"
                   onChange={handleChange}
                 >
-                     {
-                      Sub.subjects && <MenuItem value={Sub.subjects}>{Sub.subjects}</MenuItem>
-                    }
+                  {
+                    Sub?.subjects && <MenuItem value={Sub?.subjects}>{Sub.subjects}</MenuItem>
+                  }
 
                 </Select>
               </FormControl>
@@ -194,7 +210,12 @@ export default function Exams() {
         </div>
 
         <div className='container mt-4'>
-          <table className='table table-striped table-responsive'>
+          {markSuccess && (
+            <p className='alert alert-success' role='alert'>
+              Mark updated successfully!
+            </p>
+          )}
+          <table className='table table-responsive'>
             <thead className='table-dark'>
               <tr>
                 <th>Name</th>
@@ -209,7 +230,12 @@ export default function Exams() {
                   return (
                     <>
                       <tr>
-                        <td>{user.name}</td>
+                        <td>
+                          {user.name}
+                          {updatedStudentId === user._id && (
+                            <CheckCircleIcon sx={{ color: 'green', ml: 1 }} />
+                          )}
+                        </td>
                         <td>
                           <input type='number' id='marks-input' name='score' className='form-control'
 

@@ -34,7 +34,7 @@ const teacherSchema = new Schema(
         },
 
         subjects: {
-            type: String,
+            type: Array,
             require: true,
         },
 
