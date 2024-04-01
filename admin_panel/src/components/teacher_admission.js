@@ -1,27 +1,27 @@
-import { React, useEffect, useState } from 'react';
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import KeyIcon from '@mui/icons-material/Key';
-import Button from '@mui/material/Button';
-import FormHelperText from '@mui/material/FormHelperText';
-import TextField from '@mui/material/TextField';
+import { React, useEffect, useState } from "react";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import KeyIcon from "@mui/icons-material/Key";
+import Button from "@mui/material/Button";
+import FormHelperText from "@mui/material/FormHelperText";
+import TextField from "@mui/material/TextField";
 import { useTheme } from "@mui/material/styles";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import 'bootstrap';
-import InputLabel from '@mui/material/InputLabel';
+import "bootstrap";
+import InputLabel from "@mui/material/InputLabel";
 import { useForm } from "react-hook-form";
 import { AddTeacher } from "../service/api.js";
-import Box from '@mui/material/Box';
-import Sidenav from "../components/sidebar.tsx"
+import Box from "@mui/material/Box";
+import Sidenav from "../components/sidebar.tsx";
 import Swal from "sweetalert2";
-import Header from './header.js';
-import { useNavigate } from 'react-router-dom';
-import { GetFees } from "../service/api"
+import Header from "./header.js";
+import { useNavigate } from "react-router-dom";
+import { GetFees } from "../service/api";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -33,56 +33,50 @@ const MenuProps = {
   },
 };
 
-
-
-
 // For database entry
 const initialValue = {
-  name: '',
-  dob: '',
-  stdassigned: '',
-  contactno: '',
-  alternateno: '',
-  address: '',
-  email: '',
-  uname: '',
-  pass: '',
-  languageknown: '',
-  experties: '',
-  experience: '',
-  subjects: ''
-}
+  name: "",
+  dob: "",
+  stdassigned: "",
+  contactno: "",
+  alternateno: "",
+  address: "",
+  email: "",
+  uname: "",
+  pass: "",
+  languageknown: "",
+  experties: "",
+  experience: "",
+  subjects: "",
+};
 
 const textstyle = {
-  color: 'white'
-}
+  color: "white",
+};
 var password = document.getElementById("password");
 
 const ValidateMobileNumber = (event, id) => {
-  var mobileNumber = event.target.value
+  var mobileNumber = event.target.value;
   // var mobileNumber1 = id
   // console.log(mobileNumber1);
 
   var expr = /^(0|91)?[6-9][0-9]{9}$/;
   if (!expr.test(mobileNumber)) {
-    document.getElementById(id).style.color = 'red'
+    document.getElementById(id).style.color = "red";
+  } else {
+    document.getElementById(id).style.color = "black";
   }
-  else {
-    document.getElementById(id).style.color = 'black'
-  }
-}
+};
 const names = ["Marathi", "HIndi", "English"];
-
 
 function getStyles(name, language, theme) {
   return {
     fontWeight:
       language.indexOf(name) === -1
         ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium
+        : theme.typography.fontWeightMedium,
   };
 }
-
 
 function getStylesstd(name, standard, theme) {
   return {
@@ -94,25 +88,24 @@ function getStylesstd(name, standard, theme) {
 }
 
 const standards = [
-  '1st',
-  '2nd',
-  '3rd',
-  '4th',
-  '5th',
-  '6th',
-  '7th',
-  '8th',
-  '9th',
-  '10th',
+  "1st",
+  "2nd",
+  "3rd",
+  "4th",
+  "5th",
+  "6th",
+  "7th",
+  "8th",
+  "9th",
+  "10th",
 ];
 const sub = [
-  'Marathi',
-  'English',
-  'Science',
-  'Math',
-  'Sanskruth',
-  'History/Geography/Civics',
-
+  "Marathi",
+  "English",
+  "Science",
+  "Math",
+  "Sanskruth",
+  "History/Geography/Civics",
 ];
 function getStylesstd2(name, theme) {
   return {
@@ -122,17 +115,11 @@ function getStylesstd2(name, theme) {
         : theme.typography.fontWeightMedium,
   };
 }
-const gender = [
-  'male',
-  'female',
-  'other',
-];
+const gender = ["male", "female", "other"];
 
 export default function Admission() {
-
   const navigate = useNavigate();
-  const temp = localStorage.getItem('token');
-
+  const temp = localStorage.getItem("token");
 
   const theme = useTheme();
   var password = "";
@@ -147,10 +134,9 @@ export default function Admission() {
     } = event;
     setstandard(
       // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
+      typeof value === "string" ? value.split(",") : value
     );
-
-  }
+  };
 
   const handleChangesubject = (event) => {
     const {
@@ -158,18 +144,13 @@ export default function Admission() {
     } = event;
     setsubjetcs(
       // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
+      typeof value === "string" ? value.split(",") : value
     );
-
-  }
+  };
 
   const handleChangegen = (event) => {
-
-    setgen(
-      event.target.value
-    );
-
-  }
+    setgen(event.target.value);
+  };
 
   function genPassword() {
     var chars = "0123456789";
@@ -179,52 +160,47 @@ export default function Admission() {
       password += chars.substring(randomNumber, randomNumber + 1);
     }
     document.getElementById("password").value = password;
-    setteacher({ ...teacher, ["pass"]: password })
-
+    setteacher({ ...teacher, ["pass"]: password });
   }
 
   const handleChange = (event) => {
     setStd(event.target.value);
-    setteacher({ ...teacher, [event.target.name]: event.target.value })
-
+    setteacher({ ...teacher, [event.target.name]: event.target.value });
   };
-  const [Std2, setStd] = useState('');
+  const [Std2, setStd] = useState("");
   const [open, setOpen] = useState(false);
-  const [username, Setuname] = useState('');
+  const [username, Setuname] = useState("");
 
   const [teacher, setteacher] = useState(initialValue);
   //const { name, dob, stdassigned, contactno, alternateno, address, email, uname, pass, languageknown, experties, experience, subjects } = teacher;
   // setteacher({std:Std})
 
   const onValueChange2 = (event, id) => {
-    var mobileNumber = event.target.value
+    var mobileNumber = event.target.value;
     // var mobileNumber1 = id
     // console.log(mobileNumber1);
 
     var expr = /^(0|91)?[6-9][0-9]{9}$/;
     if (!expr.test(mobileNumber)) {
-      document.getElementById(id).style.color = 'red'
+      document.getElementById(id).style.color = "red";
+    } else {
+      document.getElementById(id).style.color = "black";
     }
-    else {
-      document.getElementById(id).style.color = 'black'
-    }
-    setteacher({ ...teacher, [event.target.name]: event.target.value })
+    setteacher({ ...teacher, [event.target.name]: event.target.value });
     console.log(teacher);
-
-  }
+  };
 
   const onValueChange = (event) => {
-
     // setteacher({ ...teacher, [event.target.name]: event.target.value })
     // console.log(teacher);
-  }
+  };
 
   function submit() {
     console.log(teacher);
   }
   const emailfilled = (event) => {
     Setuname(event.target.value);
-  }
+  };
   const handleClose = () => {
     setOpen(false);
   };
@@ -237,8 +213,6 @@ export default function Admission() {
     const {
       target: { value },
     } = event;
-
-
   };
   const {
     register,
@@ -246,7 +220,7 @@ export default function Admission() {
     setValue,
     handleSubmit,
   } = useForm();
-  const [standardexisting, setstandardexisting] = useState([])
+  const [standardexisting, setstandardexisting] = useState([]);
 
   const fees = async () => {
     try {
@@ -266,106 +240,125 @@ export default function Admission() {
       } else standardexisting([]);
     } catch (error) {
       Swal.fire({
-        title: 'Error !',
+        title: "Error !",
         text: error,
-        icon: 'error',
+        icon: "error",
       });
     }
-  }
+  };
   const onSubmit = async (data) => {
-
     console.log(data);
 
-    try {
-      const response = await AddTeacher(data);
-      if (response.status == 200) {
-        Swal.fire({
-          title: "Success",
-          text: response.message,
-          icon: "success",
-          confirmButtonText: "OK",
-        });
+    if (
+      /^[0-9]{10}$/.test(data.ContactNo) &&
+      /^[0-9]{10}$/.test(data.Alternateno)
+    ) {
+      try {
+        const response = await AddTeacher(data);
+        if (response.status == 200) {
+          Swal.fire({
+            title: "Success",
+            text: response.message,
+            icon: "success",
+            confirmButtonText: "OK",
+          });
 
-        setValue("name", "");
-        setValue("dob", "");
-        setValue("Experties", "");
-        setValue("Experiance", "");
-        setValue("contactNo", "");
-        setValue("Alternetno", "");
-        setValue("subjects", "");
-        setValue("Address", "");
-        setValue("Email", "");
-        setValue("Usename", "");
-        setValue("Password", "");
-        setgen("");
-        setstandard([]);
-        navigate('/admin/teacher');
-      } else {
+          setValue("name", "");
+          setValue("dob", "");
+          setValue("Experties", "");
+          setValue("Experiance", "");
+          setValue("contactNo", "");
+          setValue("Alternetno", "");
+          setValue("subjects", "");
+          setValue("Address", "");
+          setValue("Email", "");
+          setValue("Usename", "");
+          setValue("Password", "");
+          setgen("");
+          setstandard([]);
+          navigate("/admin/teacher");
+        } else {
+          Swal.fire({
+            title: "Error",
+            text: "something went wrong",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      } catch (error) {
         Swal.fire({
-          title: "Error",
-          text: "something went wrong",
+          title: "Error !",
+          text: error,
           icon: "error",
-          confirmButtonText: "OK",
         });
       }
-
-    } catch (error) {
+    } else {
       Swal.fire({
-        title: 'Error !',
-        text: error,
-        icon: 'error',
+        title: "Error !",
+        text: "Enter correct contact number. ",
+        icon: "error",
       });
     }
-  }
+  };
 
   useEffect(() => {
     console.log(temp);
     if (temp === null) {
-      navigate('/');
+      navigate("/");
     }
-  }, [temp])
+  }, [temp]);
 
   useEffect(() => {
     fees();
   }, []);
   return (
-
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: "flex" }}>
       <Sidenav />
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }} >
-
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Box>
           <Header title="Teacher Admission" />
         </Box>
 
         <div class="card p-3 container-fluid mt-5">
-
           <div class="row">
             <div class="col-sm-12">
-
-
-              <form className="container row " onSubmit={handleSubmit(onSubmit)}>
+              <form
+                className="container row "
+                onSubmit={handleSubmit(onSubmit)}
+              >
                 {/* Name Input */}
                 <div className="col-12 col-sm-4 mt-3 ">
-                  <TextField fullWidth label="Name" variant="outlined" style={textstyle}
-
+                  <TextField
+                    fullWidth
+                    label="Name"
+                    variant="outlined"
+                    style={textstyle}
                     {...register("name", { required: true })}
                   />
-                  <p className='text-danger'>
+                  <p className="text-danger">
                     {errors.name?.type === "required" && "Name is required"}
                   </p>
-
                 </div>
 
                 {/* Birth date input */}
-                <div className='col-12 col-sm-4 mt-3'>
+                <div className="col-12 col-sm-4 mt-3">
                   <FormControl fullWidth>
                     {/* <FormHelperText >Date of Birth</FormHelperText> */}
 
-                    <TextField type='date' name='dob' variant='outlined'
+                    <TextField
+                      type="date"
+                      name="dob"
+                      variant="outlined"
+                      format="MM/dd/yyyy"
+                      maxDate={new Date()}
+                      InputProps={{
+                        inputProps: {
+                          max: new Date().toISOString().split("T")[0],
+                        },
+                      }}
                       {...register("dob", { required: true })}
                     />
-                    <p className='text-danger'>
+                    <p className="text-danger">
                       {errors.dob?.type === "required" && "DOB is required"}
                     </p>
                   </FormControl>
@@ -375,9 +368,12 @@ export default function Admission() {
 
                 <div class="col-12 col-sm-4 mt-3 ">
                   <div class="form-group local-forms w-100">
-                    <FormControl style={{ width: '100%' }}>
-                      <InputLabel id="demo-multiple-name-label2">Gender</InputLabel>
-                      <Select className=' select'
+                    <FormControl style={{ width: "100%" }}>
+                      <InputLabel id="demo-multiple-name-label2">
+                        Gender
+                      </InputLabel>
+                      <Select
+                        className=" select"
                         labelId="demo-multiple-name-label2"
                         id="demo-multiple-name"
                         value={gen}
@@ -386,7 +382,6 @@ export default function Admission() {
                         input={<OutlinedInput label="Gender" />}
                         MenuProps={MenuProps}
                       >
-
                         {gender.map((name) => (
                           <MenuItem
                             key={name}
@@ -397,17 +392,19 @@ export default function Admission() {
                           </MenuItem>
                         ))}
                       </Select>
-                      <p className='text-danger'>
-                        {errors.gen?.type === "required" && "Gender is required"}
+                      <p className="text-danger">
+                        {errors.gen?.type === "required" &&
+                          "Gender is required"}
                       </p>
                     </FormControl>
-
                   </div>
                 </div>
 
-                <div className='col-12 col-sm-4 '>
-                  <FormControl fullWidth className='mt-3'>
-                    <InputLabel id="demo-controlled-open-select-label1" >Assigned Classes</InputLabel>
+                <div className="col-12 col-sm-4 ">
+                  <FormControl fullWidth className="mt-3">
+                    <InputLabel id="demo-controlled-open-select-label1">
+                      Assigned Classes
+                    </InputLabel>
                     <Select
                       labelId="demo-controlled-open-select-label"
                       id="demo-controlled-open-select"
@@ -431,18 +428,15 @@ export default function Admission() {
                                         <MenuItem value={9}>9th</MenuItem> */}
 
                       {standardexisting.map((user) => (
-
                         <MenuItem value={user.value}>{user.text}</MenuItem>
-
                       ))}
-
                     </Select>
-                    <p className='text-danger'>
-                      {errors.Asignclass?.type === "required" && "Asignclass is required"}
+                    <p className="text-danger">
+                      {errors.Asignclass?.type === "required" &&
+                        "Asignclass is required"}
                     </p>
                   </FormControl>
                 </div>
-
 
                 {/* <div className='col-12 col-sm-4  mt-3 '>
                   <FormControl style={{ width: '100%' }}>
@@ -474,31 +468,44 @@ export default function Admission() {
                   </FormControl>
                 </div> */}
 
-
-
-                <div className='col-12 col-sm-4  mt-3 '>
-                  <TextField fullWidth variant='outlined' name='experties' id='experties' label="Experties" className='d-block'
+                <div className="col-12 col-sm-4  mt-3 ">
+                  <TextField
+                    fullWidth
+                    variant="outlined"
+                    name="experties"
+                    id="experties"
+                    label="Experties"
+                    className="d-block"
                     {...register("Experties", { required: true })}
-
                   />
-                  <p className='text-danger'>
-                    {errors.Experties?.type === "required" && "Experties is required"}
+                  <p className="text-danger">
+                    {errors.Experties?.type === "required" &&
+                      "Experties is required"}
                   </p>
                 </div>
 
-                <div className='col-12 col-sm-4 mt-3'>
-                  <TextField fullWidth variant='outlined' name='experience' id='experience' label="Experience" className='d-block' inputProps={{ inputMode: 'numeric' }}
+                <div className="col-12 col-sm-4 mt-3">
+                  <TextField
+                    fullWidth
+                    variant="outlined"
+                    name="experience"
+                    id="experience"
+                    label="Experience"
+                    className="d-block"
+                    inputProps={{ inputMode: "numeric" }}
                     {...register("Experience", { required: true })}
-
                   />
-                  <p className='text-danger'>
-                    {errors.Experience?.type === "required" && "Experience is required"}
+                  <p className="text-danger">
+                    {errors.Experience?.type === "required" &&
+                      "Experience is required"}
                   </p>
                 </div>
 
-                <div className='col-12 col-sm-4  mt-3 '>
-                  <FormControl style={{ width: '100%' }}>
-                    <InputLabel id="demo-multiple-name-label">Subjects</InputLabel>
+                <div className="col-12 col-sm-4  mt-3 ">
+                  <FormControl style={{ width: "100%" }}>
+                    <InputLabel id="demo-multiple-name-label">
+                      Subjects
+                    </InputLabel>
                     <Select
                       labelId="demo-multiple-name-label"
                       id="demo-multiple-name"
@@ -509,7 +516,6 @@ export default function Admission() {
                       input={<OutlinedInput label="Subjects" />}
                       MenuProps={MenuProps}
                     >
-
                       {sub.map((name) => (
                         <MenuItem
                           key={name}
@@ -520,8 +526,9 @@ export default function Admission() {
                         </MenuItem>
                       ))}
                     </Select>
-                    <p className='text-danger'>
-                      {errors.subjects?.type === "required" && "subjects is required"}
+                    <p className="text-danger">
+                      {errors.subjects?.type === "required" &&
+                        "subjects is required"}
                     </p>
                   </FormControl>
                 </div>
@@ -537,90 +544,119 @@ export default function Admission() {
                 </div> */}
 
                 <div className="col-12 col-sm-4 mt-3 ">
-                  <TextField fullWidth variant='outlined' name='contactno' id='contactno1' label="Contact No" className='d-block' inputProps={{ inputMode: 'numeric' }}
-
+                  <TextField
+                    fullWidth
+                    variant="outlined"
+                    name="contactno"
+                    id="contactno1"
+                    label="Contact No"
+                    className="d-block"
+                    inputProps={{ inputMode: "numeric" }}
                     {...register("ContactNo", { required: true })}
                   />
-                  <p className='text-danger'>
-                    {errors.ContactNo?.type === "required" && "Contact No is required"}
+                  <p className="text-danger">
+                    {errors.ContactNo?.type === "required" &&
+                      "Contact No is required"}
                   </p>
                 </div>
 
                 <div className="col-12 col-sm-4 mt-3  ">
-                  <TextField fullWidth variant='outlined' name='alternateno' id='contactno2' label="Alternate No"
+                  <TextField
+                    fullWidth
+                    variant="outlined"
+                    name="alternateno"
+                    id="contactno2"
+                    label="Alternate No"
                     {...register("Alternateno", { required: false })}
                   />
                 </div>
 
-
-                <div className='col-12 col-sm-4 mt-3'>
-                  <TextField fullWidth variant='outlined' name='address' id='address' label='Address' className=' ' multiline maxRows={4}
+                <div className="col-12 col-sm-4 mt-3">
+                  <TextField
+                    fullWidth
+                    variant="outlined"
+                    name="address"
+                    id="address"
+                    label="Address"
+                    className=" "
+                    multiline
+                    maxRows={4}
                     {...register("Address", { required: true })}
-
                   ></TextField>
-                  <p className='text-danger'>
-                    {errors.Address?.type === "required" && "Address  is required"}
+                  <p className="text-danger">
+                    {errors.Address?.type === "required" &&
+                      "Address  is required"}
                   </p>
                 </div>
 
-
                 <div className="col-12 col-sm-4  mt-3 ">
                   <div className="input-group  ">
-                    <TextField fullWidth variant='outlined' id='Email' label="Email" placeholder='example123@gmail.com' className='d-block' inputProps={{ inputMode: 'string' }}
+                    <TextField
+                      fullWidth
+                      variant="outlined"
+                      id="Email"
+                      label="Email"
+                      placeholder="example123@gmail.com"
+                      className="d-block"
+                      inputProps={{ inputMode: "string" }}
                       {...register("Email", { required: true })}
-
                     />
-                    <p className='text-danger'>
-                      {errors.Email?.type === "required" && "Email No is required"}
+                    <p className="text-danger">
+                      {errors.Email?.type === "required" &&
+                        "Email No is required"}
                     </p>
                   </div>
-
                 </div>
                 <div className="col-12 col-sm-4  mt-3">
                   <div className="input-group  ">
-                    <TextField fullWidth variant='outlined' id='uname' label="Username" className='d-block' inputProps={{ inputMode: 'string' }}
+                    <TextField
+                      fullWidth
+                      variant="outlined"
+                      id="uname"
+                      label="Username"
+                      className="d-block"
+                      inputProps={{ inputMode: "string" }}
                       {...register("Username", { required: true })}
-
                     />
-                    <p className='text-danger'>
-                      {errors.Username?.type === "required" && "Username  is required"}
+                    <p className="text-danger">
+                      {errors.Username?.type === "required" &&
+                        "Username  is required"}
                     </p>
                   </div>
                 </div>
 
-
-                <div className='col-12 col-sm-4  mt-3 '>
-                  <div className=''>
+                <div className="col-12 col-sm-4  mt-3 ">
+                  <div className="">
                     <TextField
-                      name='pass'
+                      name="pass"
                       id="password"
                       label="Password"
                       fullWidth
-
                       {...register("Password", { required: true })}
-
-
                       variant="outlined"
                     />
-                    <p className='text-danger'>
-                      {errors.Password?.type === "required" && "Password  is required"}
+                    <p className="text-danger">
+                      {errors.Password?.type === "required" &&
+                        "Password  is required"}
                     </p>
                   </div>
-
                 </div>
 
                 <div>
-
                   {/* <TextField className="btn btn-primary text-white" type="submit" /> */}
-                  <button type='submit' className='btn btn-primary mt-2' style={{ width: '7rem', height: '2.5rem' }}>Submit</button>
-
+                  <button
+                    type="submit"
+                    className="btn btn-primary mt-2"
+                    style={{ width: "7rem", height: "2.5rem" }}
+                  >
+                    Submit
+                  </button>
                 </div>
               </form>
             </div>
           </div>
         </div>
-
       </Box>
     </Box>
-  )
+  );
 }

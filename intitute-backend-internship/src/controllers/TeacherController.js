@@ -2,9 +2,7 @@ const mongoose = require('mongoose');
 const Utilities = require('../Utilities');
 const TeacherModule = require('../models/Teacher')
 const getUsers= require('../models/getUser')
-const formidable = require('formidable');
 const StudyMaterailModel= require('../models/studymaterial')
-const fs = require('fs');
 class TeacherController
 {
 

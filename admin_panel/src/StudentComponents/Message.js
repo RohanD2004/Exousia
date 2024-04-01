@@ -1,49 +1,46 @@
-import '../components/css/StudentMessages.css';
-import { React, useEffect, useState } from 'react';
-import MessageIcon from '@mui/icons-material/Message';
-import { Button, IconButton } from '@mui/material';
-import { Storm } from '@mui/icons-material';
-import { Box } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import Sidenav from "../StudentComponents/studentSidebar.tsx"
-import { getMessageData } from '../service/api'
-import moment from "moment-timezone"
+import "../components/css/StudentMessages.css";
+import { React, useEffect, useState } from "react";
+import MessageIcon from "@mui/icons-material/Message";
+import { Button, IconButton } from "@mui/material";
+import { Storm } from "@mui/icons-material";
+import { Box } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import Sidenav from "../StudentComponents/studentSidebar.tsx";
+import { getMessageData } from "../service/api";
+import moment from "moment-timezone";
 function Message() {
+  const [messageData, setMessageData] = useState([]);
+  const navigate = useNavigate();
+  const temp = localStorage.getItem("token");
 
-    const [messageData, setMessageData] = useState([])
-    const navigate = useNavigate();
-    const temp = localStorage.getItem('token');
+  const user_id = {
+    id: localStorage.getItem("user_id"),
+  };
+  const getStudentData = async () => {
+    const response = await getMessageData(user_id);
+    console.log(response?.data.data);
+    setMessageData(response?.data.data);
+  };
 
-
-    const user_id = {
-        "id": localStorage.getItem('user_id'),
+  useEffect(() => {
+    if (temp === null) {
+      navigate("/");
     }
-    const getStudentData = async () => {
+  }, [temp]);
 
-        const response = await getMessageData(user_id)
-        console.log(response?.data.data);
-        setMessageData(response?.data.data);
-    }
+  useEffect(() => {
+    getStudentData();
+  }, []);
 
-    useEffect(() => {
-        if (temp === null) {
-            navigate('/');
-        }
-    }, [temp])
-
-    useEffect(() => {
-
-        getStudentData();
-    }, [])
-
-    return (
-        <Box sx={{ display: 'flex' }}>
-
-
-            <Sidenav />
-            <Box component='main' className='table-responsive' sx={{ flexGrow: 1, p: 3 }}>
-
-                {/* <div className='container ' style={{backgroundColor:'white'}}>
+  return (
+    <Box sx={{ display: "flex" }}>
+      <Sidenav />
+      <Box
+        component="main"
+        className="table-responsive"
+        sx={{ flexGrow: 1, p: 3 }}
+      >
+        {/* <div className='container ' style={{backgroundColor:'white'}}>
                     <div className='row bg-dark' style={{ borderTop: '5px solid yellow' }}>
                         <div className='col'>
                             <p className='text-white h5 mt-3 ms-0'>You</p>
@@ -88,46 +85,41 @@ function Message() {
                             }
                     </div>
                 </div> */}
-                <div className="bg-white shadow container-fluid mt-5 pt-3 pb-3" style={{ borderTop: '5px solid blue', borderBottom: '5px solid blue', height: '80vh' }}>
-                    <p className="h4 mb-3">From: Exousia Academy</p>
-                    <ul className="list-group">
-                        {
-                            messageData.map((data, index) => {
-
-                                return (
-                                    <>
-                                        {
-                                            data.stdfeesinfo.message.map((data, index) => {
-                                                return (
-                                                    <>
-                                                        <li className="list-group-item">
-                                                            <div class="card col-xl-6">
-                                                                <div class="card-body">
-                                                                    <h5 class="card-title">12/4/2024</h5>
-                                                                    <p class="card-text text-left">
-                                                                        {data}
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    </>
-                                                )
-                                            })
-
-                                        }
-
-
-                                    </>
-                                )
-                            })
-                        }
-
-                    </ul>
-                </div>
-            </Box>
-        </Box>
-
-    );
+        <div
+          className="bg-white shadow container-fluid mt-5 pt-3 pb-3"
+          style={{
+            borderTop: "5px solid blue",
+            borderBottom: "5px solid blue",
+            height: "80vh",
+          }}
+        >
+          <p className="h4 mb-3">From: Adhyayan Coaching Classes</p>
+          <ul className="list-group">
+            {messageData.map((data, index) => {
+              return (
+                <>
+                  {data.stdfeesinfo.message.map((data, index) => {
+                    return (
+                      <>
+                        <li className="list-group-item">
+                          <div class="card col-xl-6">
+                            <div class="card-body">
+                              <h5 class="card-title">12/4/2024</h5>
+                              <p class="card-text text-left">{data}</p>
+                            </div>
+                          </div>
+                        </li>
+                      </>
+                    );
+                  })}
+                </>
+              );
+            })}
+          </ul>
+        </div>
+      </Box>
+    </Box>
+  );
 }
 
 export default Message;

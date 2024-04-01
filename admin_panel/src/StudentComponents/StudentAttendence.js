@@ -127,17 +127,7 @@ export default function StudentAttendence() {
                             <tbody>
 
                                 {
-                                    // attendenceData.map((data, index) => {
-                                    //     return (
-                                    //         <>
-                                    //             <tr>
-                                    //                 <td>{data.date}</td>
-                                    //                 <td>{data.attendanceinfo.length > 0 ? data.attendanceinfo[0].name : ''}</td>
-                                    //                 <td>{data.attend==0?'A':'P'}</td>
-                                    //             </tr>
-                                    //         </>
-                                    //     )
-                                    // })
+                                  
 
                                     attendenceData.filter((data, index) =>
                                         data.date.toLowerCase().includes(date))

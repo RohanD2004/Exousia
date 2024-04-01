@@ -8,7 +8,7 @@ import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
-import { GetDataForFees } from '../service/api.js';
+import { GetDataForFees,getPreviousYearData } from '../service/api.js';
 import { FormControl, Input, InputLabel, NativeSelect, Button } from '@mui/material'
 import { AiFillEye } from 'react-icons/ai';
 import Feesdetails from './feesdetails.js';
@@ -76,7 +76,11 @@ export default function Feeshistory() {
         let response = await GetDataForFees();
         setStudent(response?.data.data);
     }
-
+    const getPreviousData =  async(e) => {
+        console.log(e.target.value);
+       const response= await getPreviousYearData({'year':e.target.value});
+       setStudent(response?.data.data);
+    }
 
 
     const filter = (e) => {
@@ -133,7 +137,7 @@ export default function Feeshistory() {
                 <div class="card comman-shadow mt-5">
                     <div class="row align-items-center mt-3">
 
-                        <div className='col-xl-4 col-md-4  ms-3 form-group local-forms '>
+                        <div className='col-xl-4 col-md-4 d-flex  ms-3 form-group local-forms '>
                             <FormControl className='col-sm-10 w-75' >
                                 <InputLabel variant="outlined" htmlFor="uncontrolled-native">
                                     Filter
@@ -153,6 +157,27 @@ export default function Feeshistory() {
 
                                 </NativeSelect>
                             </FormControl>
+
+                            {/* <FormControl className='col-sm-10 w-75 ms-3' >
+                                <InputLabel variant="outlined" htmlFor="uncontrolled-native">
+                                    Select year
+                                </InputLabel>
+                                <NativeSelect
+                                    onChange={(e) => getPreviousData(e)}
+                                    className='form-control select'
+                                    defaultValue={1}
+                                    inputProps={{
+                                        name: 'fees_type',
+                                        id: 'uncontrolled-native',
+                                    }}
+                                >
+                                    <option value={"2022-23"}>2022-23</option>
+                                    <option value={"2023-24"}>2023-24</option>
+
+            
+
+                                </NativeSelect>
+                            </FormControl> */}
                         </div>
 
 

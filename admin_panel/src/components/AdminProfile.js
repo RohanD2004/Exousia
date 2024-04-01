@@ -1,4 +1,3 @@
-
 // import Sidenav from "../components/sidebar.tsx";
 // import "../components/css/Admin.css"
 // import Box from '@mui/material/Box';
@@ -32,7 +31,6 @@
 //     return (
 //         <Box sx={{ display: 'flex' }}>
 
-
 //             <Sidenav />
 //             <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
 
@@ -53,7 +51,6 @@
 //                                                             <>
 //                                                                 <div class="col-md-4 py-2 gradient-custom text-center text-white"
 //                                                                     style={{ borderTopLeftRadius: '.5rem', borderBottomLeftRadius: '.5rem' }}>
-
 
 //                                                                     <AdminPanelSettingsIcon className='mt-3 mb-3' style={{ fontSize: '7rem', color: 'black' }} />
 //                                                                     <h5>{data.name}</h5>
@@ -141,127 +138,150 @@
 // }
 
 // import './App.css';
-import React from 'react';
+import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 import Loading from "./Loading.js";
 import { adminData } from "../service/api.js";
-import { useEffect, useState } from 'react'
-import Box from '@mui/material/Box';
-import "../components/css/loading.css"
-import Header from "../components/header.js"
+import { useEffect, useState } from "react";
+import Box from "@mui/material/Box";
+import "../components/css/loading.css";
+import Header from "../components/header.js";
 import Sidenav from "../components/sidebar.tsx";
 
 function AdminProfile() {
+  const navigate = useNavigate();
+  const [admin, setAdminData] = useState([]);
+  const { id } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
+  const getAdminData = async () => {
+    const response = await adminData(id);
+    setAdminData(response?.data?.data || {});
+  };
 
-    const navigate = useNavigate();
-    const [admin, setAdminData] = useState([]);
-    const { id } = useParams();
-    const [isLoading, setIsLoading] = useState(true);
-    const getAdminData = async () => {
-        const response = await adminData(id);
-        setAdminData(response?.data?.data || {});
+  useEffect(() => {
+    setTimeout(() => {
+      // Replace this with your actual API call
+      getAdminData();
 
-    }
+      setIsLoading(false);
+    }, 2000);
+  }, []);
 
-    useEffect(() => {
-        setTimeout(() => {
-            // Replace this with your actual API call
-            getAdminData();
+  return (
+    <Box sx={{ display: "flex" }}>
+      <Sidenav />
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Header title="Admin Profile " />
+        <div className="container mt-4">
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <div className="row">
+              {admin.map((data) => {
+                return (
+                  <>
+                    <div className="col-lg-4 mt-2">
+                      <div className="card" style={{ borderRadius: "8px" }}>
+                        <div
+                          className=" d-flex flex-column"
+                          style={{
+                            height: "40vh",
+                            backgroundColor: "#aa66CC",
+                            borderRadius: "8px",
+                          }}
+                        >
+                          <div className="d-flex mt-3 justify-content-center">
+                            <AccountCircleIcon
+                              style={{ fontSize: "10rem", color: "white" }}
+                            ></AccountCircleIcon>
+                          </div>
+                          <div className="d-flex justify-content-center">
+                            <span className="h6 text-white d-block">
+                              {data.name}
+                            </span>
+                          </div>
+                          <div className="d-flex justify-content-center">
+                            <span className="h7 text-white d-block text-uppercase">
+                              Admin
+                            </span>
+                          </div>
+                          <div className="d-flex justify-content-center">
+                            <span className="h7 text-white d-block mt-1">
+                              Adhyayan Coaching Classes 2024
+                            </span>
+                          </div>
+                        </div>
+                        <div
+                          className="card-body"
+                          style={{ backgroundColor: "white" }}
+                        >
+                          <span>Credentials</span>
+                          <hr style={{ border: "2px solid black" }}></hr>
+                          <span style={{ fontSize: ".9rem", color: "grey" }}>
+                            <b>Email</b>
+                          </span>
+                          <p>{data.emial}</p>
 
-            setIsLoading(false);
-        }, 2000);
-    }, []);
+                          <span style={{ fontSize: ".9rem", color: "grey" }}>
+                            <b>Password</b>
+                          </span>
+                          <p>{data.password}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-8 mt-2">
+                      <div
+                        className="shadow p-3"
+                        style={{ background: "white" }}
+                      >
+                        <span>Personal Details</span>
+                        <hr style={{ border: "2px solid black" }}></hr>
+                        <span style={{ fontSize: ".9rem", color: "grey" }}>
+                          <b>Name</b>
+                        </span>
+                        <p>{data.name}</p>
 
+                        <span style={{ fontSize: ".9rem", color: "grey" }}>
+                          <b>Email</b>
+                        </span>
+                        <p>{data.emial}</p>
 
-    return (
+                        <span style={{ fontSize: ".9rem", color: "grey" }}>
+                          <b>Contact</b>
+                        </span>
+                        <p>{data.contact}</p>
 
-        <Box sx={{ display: 'flex' }}>
+                        <span style={{ fontSize: ".9rem", color: "grey" }}>
+                          <b>Gender</b>
+                        </span>
+                        <p>{data.gen}</p>
 
-            <Sidenav />
-            <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
-                <Header title="Admin Profile " />
-                <div className='container mt-4'>
+                        <span style={{ fontSize: ".9rem", color: "grey" }}>
+                          <b>Address</b>
+                        </span>
+                        <p>{data.address}</p>
 
-                    {
-                        isLoading ? (
-                            <Loading />
-                        ) : (
-
-                            <div className='row'>
-                                {
-                                    admin.map((data) => {
-                                        return (
-                                            <>
-                                                <div className='col-lg-4 mt-2'>
-
-                                                    <div className='card' style={{ borderRadius: '8px' }}>
-                                                        <div className=' d-flex flex-column' style={{ height: '40vh', backgroundColor: '#aa66CC', borderRadius: '8px' }}>
-                                                            <div className='d-flex mt-3 justify-content-center'>
-                                                                <AccountCircleIcon style={{ fontSize: '10rem', color: 'white' }}></AccountCircleIcon>
-                                                            </div>
-                                                            <div className='d-flex justify-content-center'>
-                                                                <span className='h6 text-white d-block'>{data.name}</span>
-                                                            </div>
-                                                            <div className='d-flex justify-content-center'>
-                                                                <span className='h7 text-white d-block text-uppercase'>Admin</span>
-                                                            </div>
-                                                            <div className='d-flex justify-content-center'>
-                                                                <span className='h7 text-white d-block mt-1'>{data.className}</span>
-                                                            </div>
-                                                        </div>
-                                                        <div className='card-body' style={{ backgroundColor: 'white' }}>
-                                                            <span>Credentials</span>
-                                                            <hr style={{ border: '2px solid black' }}></hr>
-                                                            <span style={{ fontSize: '.9rem', color: 'grey' }}><b>Email</b></span>
-                                                            <p>{data.emial}</p>
-
-                                                            <span style={{ fontSize: '.9rem', color: 'grey' }}><b>Password</b></span>
-                                                            <p>{data.password}</p>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                                <div className='col-lg-8 mt-2'>
-                                                    <div className='shadow p-3' style={{ background: 'white' }}>
-                                                        <span>Personal Details</span>
-                                                        <hr style={{ border: '2px solid black' }}></hr>
-                                                        <span style={{ fontSize: '.9rem', color: 'grey' }}><b>Name</b></span>
-                                                        <p>{data.name}</p>
-
-                                                        <span style={{ fontSize: '.9rem', color: 'grey' }}><b>Email</b></span>
-                                                        <p>{data.emial}</p>
-
-                                                        <span style={{ fontSize: '.9rem', color: 'grey' }}><b>Contact</b></span>
-                                                        <p>{data.contact}</p>
-
-                                                        <span style={{ fontSize: '.9rem', color: 'grey' }}><b>Gender</b></span>
-                                                        <p>{data.gen}</p>
-
-                                                        <span style={{ fontSize: '.9rem', color: 'grey' }}><b>Address</b></span>
-                                                        <p>{data.address}</p>
-
-                                                        <button className='btn btn-dark w-25 mt-3 mb-3'
-                                                        onClick={()=>navigate(`/admin/profile/edit/${data._id}`)}
-                                                        >Edit</button>
-                                                    </div>
-                                                </div>
-                                            </>
-                                        )
-                                    })
-                                }
-                            </div>
-                        )}
-                </div>
-
-            </Box>
-        </Box>
-
-    );
+                        <button
+                          className="btn btn-dark w-25 mt-3 mb-3"
+                          onClick={() =>
+                            navigate(`/admin/profile/edit/${data._id}`)
+                          }
+                        >
+                          Edit
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </Box>
+    </Box>
+  );
 }
 
 export default AdminProfile;
-
-
-

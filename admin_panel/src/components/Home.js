@@ -421,10 +421,14 @@ export default function Homepage() {
 
   const t2 = 28;
 
-  const changeYear= async()=>{
+  const changeYearButton= async()=>{
     console.log(year);
     const res= await changeYear(year);
     console.log(res); 
+  }
+
+  const changeYear2=async()=>{
+    
   }
   return (
     <Box sx={{ display: "flex" }}>
@@ -592,7 +596,7 @@ export default function Homepage() {
 
 
 
-                    <div className="card-body">
+                    {/* <div className="card-body">
 
                       <TextField
                         label="Academic year"
@@ -606,14 +610,14 @@ export default function Homepage() {
                       />
                       <div className="d-flex justify-content-center mt-3">
                         <input
-                        onClick={()=>changeYear()}
+                        onClick={()=>changeYearButton()}
                           type="submit"
                           value="Change academic year"
                           class="btn text-light w-75"
                           style={{ backgroundColor: "#0079FF" }}
                         />
                       </div>
-                    </div>
+                    </div> */}
 
                   </div>
                 </div>
@@ -622,7 +626,7 @@ export default function Homepage() {
                 <strong>
                   <span style={{ fontSize: "2rem" }}>Student Data</span>
                 </strong>
-                <div class="progress mt-1 mb-4" style={{ height: "1.5rem" }}>
+                {/* <div class="progress mt-1 mb-4" style={{ height: "1.5rem" }}>
                   <div
                     class="progress-bar bg-warning"
                     role="progressbar"
@@ -669,7 +673,7 @@ export default function Homepage() {
                   >
                     <b>4th | {four} </b>
                   </div>
-                </div>
+                </div> */}
                 <div class="progress mt-3 mb-4" style={{ height: "1.5rem" }}>
                   <div
                     class="progress-bar bg-warning"

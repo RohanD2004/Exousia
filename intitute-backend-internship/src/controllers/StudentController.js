@@ -170,6 +170,51 @@ class StudentController {
         }
     }
 
+    async gatAllstudentdataPrevious(req, res) {
+        const year=req.body.year;
+        try {
+
+            const studentdata = await Studentmodel.aggregate([
+                {
+                    $match: {
+                        isActive: true
+                    }
+                },
+                {
+                    $sort: { /* Specify the field and order for sorting */
+                        _id: -1, // 1 for ascending, -1 for descending
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "fees",
+                        localField: "std_id",
+                        foreignField: "_id",
+                        as: "stdfeesinfo",
+                    },
+
+                    // $unwind:'$stdfeesinfo'
+                },
+                {
+
+                    $unwind: { path: '$stdfeesinfo', preserveNullAndEmptyArrays: true }
+                },
+                {
+                    $lookup: {
+                        from: `feesdatas${year}`,
+                        localField: "fees",
+                        foreignField: "_id",
+                        as: "feesinfo",
+                    },
+                }
+
+            ])
+            Utilities.apiResponse(res, 200, 'Get Users Successfully', studentdata);
+        } catch (error) {
+            Utilities.apiResponse(res, 500, error);
+        }
+    }
+
 
     async deleteStudent(req, res) {
         try {
@@ -198,10 +243,6 @@ class StudentController {
         try {
             const TotalStd = [];
             const totalStudent = await Studentmodel.countDocuments({})
-            const first_data = await Studentmodel.countDocuments({ "std_id": "64aaeb0d3e6166d34291cf9a" })
-            const second_data = await Studentmodel.countDocuments({ "std_id": "64aaeb2e3e6166d34291cf9c" })
-            const third_data = await Studentmodel.countDocuments({ "std_id": "64aaeb6c3e6166d34291cfa0" })
-            const fourth_data = await Studentmodel.countDocuments({ "std_id": "64aaeb823e6166d34291cfa2" })
             const fifth_data = await Studentmodel.countDocuments({ "std_id": "64aaeb993e6166d34291cfa4" })
             const six_data = await Studentmodel.countDocuments({ "std_id": "64aaec113e6166d34291cfa7" })
             const seven_data = await Studentmodel.countDocuments({ "std_id": "64b5b3b2a1ef79beee269102" })
@@ -224,10 +265,6 @@ class StudentController {
             ])
             TotalStd.push({
                 total: totalStudent,
-                first: first_data,
-                second: second_data,
-                third: third_data,
-                fourth: fourth_data,
                 fifth: fifth_data,
                 six: six_data,
                 seven: seven_data,

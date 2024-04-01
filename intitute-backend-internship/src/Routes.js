@@ -1,17 +1,16 @@
 const Utilities = require('./Utilities');
 const express = require('express');
 const Route = express.Router();
-const multer = require('multer')
+// const multer = require('multer')
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/') // Uploads directory
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname)
-    }
-});
-const upload = multer({ storage: storage });
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, 'uploads/') // Uploads directory
+//     },
+//     filename: function (req, file, cb) {
+//         cb(null, file.originalname)
+//     }
+// });
 const authcontroller = require('./controllers/AuthController');
 const StudentController = require('./controllers/StudentController');
 const TeacherController = require('./controllers/TeacherController');
@@ -119,9 +118,12 @@ Route.route('/admin/std/sendmsg')
 
 Route.route('/admin/student/view/:id')
     .get(authcontroller.Auth, StudentController.getSinglestudetnData);
-
+    
     Route.route('/admin/chageyear')
-    .post(authcontroller.Auth, );
+    .post(authcontroller.Auth, AdminController.changeyear);
+
+    Route.route('/admin/feesdata/previous')
+    .post(authcontroller.Auth,StudentController.gatAllstudentdataPrevious );
 
 Route.route('/teacher/exams')
     .post(authcontroller.Auth, StudentController.studentdataForMarks);
