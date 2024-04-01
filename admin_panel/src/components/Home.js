@@ -35,7 +35,7 @@ import { useForm } from "react-hook-form";
 import { setFees } from "../service/api";
 import SendIcon from "@mui/icons-material/Send";
 import { GetFees } from "../service/api";
-import { addpayFees } from "../service/api";
+import { addpayFees,changeYear } from "../service/api";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import InputLabel from "@mui/material/InputLabel";
@@ -243,6 +243,8 @@ export default function Homepage() {
   const [feesdata, setFeesdata] = useState([]);
   const [feesstd, setfeesStd] = useState([]);
   const [message, setMessage] = useState({});
+  const [year, setYear] = useState({});
+
 
   const onSearch = async (value, id) => {
     setSname2(value);
@@ -336,7 +338,7 @@ export default function Homepage() {
             }
           }
         });
-        
+
       } catch (error) {
         Swal.fire({
           title: "Error !",
@@ -388,7 +390,7 @@ export default function Homepage() {
     try {
       const response = await teacherCount();
       teacherCounting = response?.data.data;
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const totalFeesAddiion = async () => {
@@ -418,6 +420,12 @@ export default function Homepage() {
   }, []);
 
   const t2 = 28;
+
+  const changeYear= async()=>{
+    console.log(year);
+    const res= await changeYear(year);
+    console.log(res); 
+  }
   return (
     <Box sx={{ display: "flex" }}>
       <Sidenav />
@@ -581,40 +589,32 @@ export default function Homepage() {
 
                 <div className="card mb-4 mb-lg-0">
                   <div className="card-body p-0">
-                    <ul className="list-group list-group-flush rounded-3">
-                      <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                        <i className="fas fa-globe fa-lg text-warning"></i>
-                        <p className="mb-0">https://www.google.com/</p>
-                      </li>
-                      <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                        <i
-                          className="fab fa-github fa-lg"
-                          style={{ color: "#333333" }}
-                        ></i>
-                        <p className="mb-0">https://twitter.com/</p>
-                      </li>
-                      <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                        <i
-                          className="fab fa-twitter fa-lg"
-                          style={{ color: "#55acee" }}
-                        ></i>
-                        <p className="mb-0">https://www.instagram.com/</p>
-                      </li>
-                      <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                        <i
-                          className="fab fa-instagram fa-lg"
-                          style={{ color: "#ac2bac" }}
-                        ></i>
-                        <p className="mb-0">https://www.whatsapp.com/</p>
-                      </li>
-                      <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                        <i
-                          className="fab fa-facebook-f fa-lg"
-                          style={{ color: "#3b5998;" }}
-                        ></i>
-                        <p className="mb-0">https://www.snapchat.com/</p>
-                      </li>
-                    </ul>
+
+
+
+                    <div className="card-body">
+
+                      <TextField
+                        label="Academic year"
+                        fullWidth
+                        focused
+                        placeholder="Enter the academic year"
+                        required
+                        inputMode="number"
+                        onChange={(e)=>setYear({ ...year, year: e.target.value })}
+
+                      />
+                      <div className="d-flex justify-content-center mt-3">
+                        <input
+                        onClick={()=>changeYear()}
+                          type="submit"
+                          value="Change academic year"
+                          class="btn text-light w-75"
+                          style={{ backgroundColor: "#0079FF" }}
+                        />
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               </div>
@@ -977,7 +977,7 @@ export default function Homepage() {
                           required
                           className="mb-3"
                           {...register2("Amount", { required: true })}
-                          onChange={(event)=>{
+                          onChange={(event) => {
                             if (event.target.value > remaining || event.target.value < 0) {
                               Swal.fire({
                                 title: "Failed",
@@ -990,7 +990,7 @@ export default function Homepage() {
                                   event.target.value = ''
                                 }
                                 else {
-          
+
                                 }
                               });
                             }
@@ -1008,7 +1008,7 @@ export default function Homepage() {
                         type="submit"
                         className="w-25 d-block btn btn-primary  mb-5 "
                         style={{ backgroundColor: "#0079FF", color: "white" }}
-                        // data-bs-toggle="modal" href="#data"
+                      // data-bs-toggle="modal" href="#data"
                       >
                         Submit
                       </Button>

@@ -120,6 +120,9 @@ Route.route('/admin/std/sendmsg')
 Route.route('/admin/student/view/:id')
     .get(authcontroller.Auth, StudentController.getSinglestudetnData);
 
+    Route.route('/admin/chageyear')
+    .post(authcontroller.Auth, );
+
 Route.route('/teacher/exams')
     .post(authcontroller.Auth, StudentController.studentdataForMarks);
 

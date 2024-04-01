@@ -25,6 +25,10 @@ class AdminController {
             Utilities.apiResponse(res, 500, error);
         }
     }
+
+    async changeyear(req, res) {
+        console.log(req.body)
+    }
     
 
 
