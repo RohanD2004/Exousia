@@ -187,6 +187,26 @@ export default function Sidebar() {
             />
           </ListItemButton>
         </ListItem>
+
+        <ListItem disablePadding sx={{ display: "block" }} onClick={() => navigate("/teacher/viewmark")}>
+          <ListItemButton sx={{ minHeight: 48, justifyContent: open ? "initial" : "center", px: 2.5, }}>
+            <ListItemIcon
+              sx={{
+                minWidth: 0,
+                mr: open ? 3 : "auto",
+                justifyContent: "center",
+                color: "white"
+              }}
+            >
+              <PiStudentDuotone />
+            </ListItemIcon>
+            <ListItemText
+              primary={"View Mark"}
+              sx={{ opacity: open ? 1 : 0 }}
+            />
+          </ListItemButton>
+        </ListItem>
+
         <ListItem disablePadding sx={{ display: "block" }} onClick={() => navigate("/teacher/Timetable")}>
           <ListItemButton sx={{ minHeight: 48, justifyContent: open ? "initial" : "center", px: 2.5, }}>
             <ListItemIcon
@@ -225,7 +245,43 @@ export default function Sidebar() {
           </ListItemButton>
         </ListItem>
 
-        
+        <ListItem disablePadding sx={{ display: "block" }} onClick={() => navigate("/teacher/attendence")}>
+          <ListItemButton sx={{ minHeight: 48, justifyContent: open ? "initial" : "center", px: 2.5, }}>
+            <ListItemIcon
+              sx={{
+                minWidth: 0,
+                mr: open ? 3 : "auto",
+                justifyContent: "center",
+                color: "white"
+              }}
+            >
+              <PiStudentDuotone />
+            </ListItemIcon>
+            <ListItemText
+              primary={"Fill Attendance"}
+              sx={{ opacity: open ? 1 : 0 }}
+            />
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem disablePadding sx={{ display: "block" }} onClick={() => navigate("/teacher/attendence/view")}>
+          <ListItemButton sx={{ minHeight: 48, justifyContent: open ? "initial" : "center", px: 2.5, }}>
+            <ListItemIcon
+              sx={{
+                minWidth: 0,
+                mr: open ? 3 : "auto",
+                justifyContent: "center",
+                color: "white"
+              }}
+            >
+              <PiStudentDuotone />
+            </ListItemIcon>
+            <ListItemText
+              primary={"View Attendance"}
+              sx={{ opacity: open ? 1 : 0 }}
+            />
+          </ListItemButton>
+        </ListItem>
 
         <ListItem disablePadding sx={{ display: "block" }} onClick={() =>logout()}>
           <ListItemButton sx={{ minHeight: 48, justifyContent: open ? "initial" : "center", px: 2.5, }}>

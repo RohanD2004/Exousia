@@ -2,7 +2,9 @@ const mongoose = require('mongoose');
 const Utilities = require('../Utilities');
 const TeacherModule = require('../models/Teacher')
 const getUsers= require('../models/getUser')
-
+const formidable = require('formidable');
+const StudyMaterailModel= require('../models/studymaterial')
+const fs = require('fs');
 class TeacherController
 {
 
@@ -13,7 +15,7 @@ class TeacherController
             const totalTeacher = await TeacherModule.countDocuments({})
             Utilities.apiResponse(res, 200, 'Teacher Count  Successfully!',totalTeacher);
         } catch (error) {
-            Utilities.apiResponse(rres,500,error);
+            Utilities.apiResponse(res,500,error);
         }
 
     };
@@ -131,6 +133,47 @@ class TeacherController
         }
     }
     
+    async uploadFIle(req, res) {
+      console.log(req.body);
+
+      try {
+       const study= new StudyMaterailModel(req.body);
+       await study.save();
+        Utilities.apiResponse(res, 200, 'File uploaded successful');
+    } catch (error) {
+        Utilities.apiResponse(res, 500, error);
+    }
+    }
+  
+    async getuploadFIle(req, res) {
+        console.log(req.body);
+        try {
+            const data = await StudyMaterailModel.find({ teacher_name: req.body.name });
+            Utilities.apiResponse(res, 200, 'File uploaded successful',data);
+        } catch (error) {
+            Utilities.apiResponse(res, 500, error);
+        }
+    }
+
+    async getuploadFileForStudent(req, res) {
+        console.log(req.body);
+        try {
+            const data = await StudyMaterailModel.find({ std: req.body.std_id });
+            Utilities.apiResponse(res, 200, 'File get  successful',data);
+        } catch (error) {
+            Utilities.apiResponse(res, 500, error);
+        }
+    }
+    
+    async deleteFile(req, res) {
+        console.log(req.body);
+        try {
+            const data = await StudyMaterailModel.deleteOne({ _id: req.body.id });
+            Utilities.apiResponse(res, 200, 'File deleted successful',data);
+        } catch (error) {
+            Utilities.apiResponse(res, 500, error);
+        }
+    }
     
     
 }

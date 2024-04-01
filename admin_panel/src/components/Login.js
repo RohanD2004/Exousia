@@ -244,7 +244,7 @@ import { Authenticate } from '../service/api';
 import Swal from "sweetalert2";
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { BallTriangle } from 'react-loader-spinner'
+import { BallTriangle} from 'react-loader-spinner'
 
 let token;
 function passtoken(tkn) {

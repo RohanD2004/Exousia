@@ -187,6 +187,7 @@ export default function Sidebar() {
             />
           </ListItemButton>
         </ListItem>
+
         <ListItem disablePadding sx={{ display: "block" }} onClick={() => navigate("/student/Timetable")}>
           <ListItemButton sx={{ minHeight: 48, justifyContent: open ? "initial" : "center", px: 2.5, }}>
             <ListItemIcon
@@ -258,6 +259,25 @@ export default function Sidebar() {
             </ListItemIcon>
             <ListItemText
               primary={"Messages"}
+              sx={{ opacity: open ? 1 : 0 }}
+            />
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem disablePadding sx={{ display: "block" }} onClick={() => navigate(`/student/attendence`)}>
+          <ListItemButton sx={{ minHeight: 48, justifyContent: open ? "initial" : "center", px: 2.5, }}>
+            <ListItemIcon
+              sx={{
+                minWidth: 0,
+                mr: open ? 3 : "auto",
+                justifyContent: "center",
+                color: "white"
+              }}
+            >
+              <FaRupeeSign />
+            </ListItemIcon>
+            <ListItemText
+              primary={"Attendance"}
               sx={{ opacity: open ? 1 : 0 }}
             />
           </ListItemButton>

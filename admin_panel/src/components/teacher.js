@@ -257,10 +257,17 @@ export default function Student() {
                         <a href="#" class=" col list-group-item list-group-item-action" aria-current="true">
                           <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1">{element.name}</h5>
-                            <small>{element.subjects}</small>
+                            <div class="">
+
+                            {element.subjects &&  
+                            element.subjects.map((sub,index) => (
+                              <span key={index}>{sub} , </span>
+                              ))}
+                              </div>
+                           
                           </div>
                           <p class="mb-1"> <b> Designation:- </b> teacher </p>
-                          <small><b>Classes:-</b>{element.Asignclass}</small>
+                          {/* <small><b>Classes:-</b>{element.Asignclass}</small> */}
                         </a>
                         <ToggleButton className='col col-xxl-1' value="list" aria-label="list">
                           <button onClick={()=>history(`view/${element._id}`)}>

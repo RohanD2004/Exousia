@@ -200,6 +200,7 @@ const Admission = () => {
     const handleOpen = () => {
         setOpen(true);
     };
+    
     const onSubmit = async (data) => {
 
         try {

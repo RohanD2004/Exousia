@@ -37,6 +37,11 @@ const studentSchama = new Schema(
             require: true,
         },
 
+        isActive: {
+            type: Boolean,
+            default:true
+        },
+
         email: {
             type: String,
             require: true,

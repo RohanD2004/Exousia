@@ -1,4 +1,4 @@
-import {React,useEffect,useState} from 'react';
+import { React, useEffect, useState } from 'react';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -21,8 +21,7 @@ import Sidenav from "../components/sidebar.tsx"
 import Swal from "sweetalert2";
 import Header from './header.js';
 import { useNavigate } from 'react-router-dom';
-
-
+import { GetFees } from "../service/api"
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -96,17 +95,25 @@ function getStylesstd(name, standard, theme) {
 
 const standards = [
   '1st',
-    '2nd',
-    '3rd',
-    '4th',
-    '5th',
-    '6th',
-    '7th',
-    '8th',
-    '9th',
-    '10th',
+  '2nd',
+  '3rd',
+  '4th',
+  '5th',
+  '6th',
+  '7th',
+  '8th',
+  '9th',
+  '10th',
 ];
+const sub = [
+  'Marathi',
+  'English',
+  'Science',
+  'Math',
+  'Sanskruth',
+  'History/Geography/Civics',
 
+];
 function getStylesstd2(name, theme) {
   return {
     fontWeight:
@@ -130,6 +137,8 @@ export default function Admission() {
   const theme = useTheme();
   var password = "";
   const [standard, setstandard] = useState([]);
+  const [subjects, setsubjetcs] = useState([]);
+
   const [gen, setgen] = useState([]);
 
   const handleChangestd = (event) => {
@@ -137,6 +146,17 @@ export default function Admission() {
       target: { value },
     } = event;
     setstandard(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value,
+    );
+
+  }
+
+  const handleChangesubject = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setsubjetcs(
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
@@ -172,8 +192,8 @@ export default function Admission() {
   const [open, setOpen] = useState(false);
   const [username, Setuname] = useState('');
 
-  const [teacher, setteacher] =useState(initialValue);
-  const { name, dob, stdassigned, contactno, alternateno, address, email, uname, pass, languageknown, experties, experience, subjects } = teacher;
+  const [teacher, setteacher] = useState(initialValue);
+  //const { name, dob, stdassigned, contactno, alternateno, address, email, uname, pass, languageknown, experties, experience, subjects } = teacher;
   // setteacher({std:Std})
 
   const onValueChange2 = (event, id) => {
@@ -218,7 +238,7 @@ export default function Admission() {
       target: { value },
     } = event;
 
-    
+
   };
   const {
     register,
@@ -226,8 +246,35 @@ export default function Admission() {
     setValue,
     handleSubmit,
   } = useForm();
+  const [standardexisting, setstandardexisting] = useState([])
+
+  const fees = async () => {
+    try {
+      const response = await GetFees();
+      if (response.status === 200) {
+        let list = response?.data;
+        if (list && list.length) {
+          list = list.map((item) => {
+            return {
+              key: item._id,
+              text: item.std,
+              value: item._id,
+            };
+          });
+        }
+        setstandardexisting(list);
+      } else standardexisting([]);
+    } catch (error) {
+      Swal.fire({
+        title: 'Error !',
+        text: error,
+        icon: 'error',
+      });
+    }
+  }
   const onSubmit = async (data) => {
 
+    console.log(data);
 
     try {
       const response = await AddTeacher(data);
@@ -238,17 +285,18 @@ export default function Admission() {
           icon: "success",
           confirmButtonText: "OK",
         });
-        setValue("name","");
-        setValue("dob","");
-        setValue("Experties","");
-        setValue("Experiance","");
-        setValue("contactNo","");
-        setValue("Alternetno","");
-        setValue("subjects","");
-        setValue("Address","");
-        setValue("Email","");
-        setValue("Usename","");
-        setValue("Password","");
+
+        setValue("name", "");
+        setValue("dob", "");
+        setValue("Experties", "");
+        setValue("Experiance", "");
+        setValue("contactNo", "");
+        setValue("Alternetno", "");
+        setValue("subjects", "");
+        setValue("Address", "");
+        setValue("Email", "");
+        setValue("Usename", "");
+        setValue("Password", "");
         setgen("");
         setstandard([]);
         navigate('/admin/teacher');
@@ -269,12 +317,17 @@ export default function Admission() {
       });
     }
   }
+
   useEffect(() => {
     console.log(temp);
     if (temp === null) {
       navigate('/');
     }
   }, [temp])
+
+  useEffect(() => {
+    fees();
+  }, []);
   return (
 
     <Box sx={{ display: 'flex' }}>
@@ -295,7 +348,7 @@ export default function Admission() {
                 {/* Name Input */}
                 <div className="col-12 col-sm-4 mt-3 ">
                   <TextField fullWidth label="Name" variant="outlined" style={textstyle}
-                
+
                     {...register("name", { required: true })}
                   />
                   <p className='text-danger'>
@@ -333,7 +386,7 @@ export default function Admission() {
                         input={<OutlinedInput label="Gender" />}
                         MenuProps={MenuProps}
                       >
-                     
+
                         {gender.map((name) => (
                           <MenuItem
                             key={name}
@@ -345,15 +398,53 @@ export default function Admission() {
                         ))}
                       </Select>
                       <p className='text-danger'>
-                          {errors.gen?.type === "required" && "Gender is required"}
-                        </p>
+                        {errors.gen?.type === "required" && "Gender is required"}
+                      </p>
                     </FormControl>
 
                   </div>
                 </div>
 
+                <div className='col-12 col-sm-4 '>
+                  <FormControl fullWidth className='mt-3'>
+                    <InputLabel id="demo-controlled-open-select-label1" >Assigned Classes</InputLabel>
+                    <Select
+                      labelId="demo-controlled-open-select-label"
+                      id="demo-controlled-open-select"
+                      open={open}
+                      multiple
+                      value={standard}
+                      onClose={handleClose}
+                      onOpen={handleOpen}
+                      input={<OutlinedInput label="Assigned Classes" />}
+                      {...register("Asignclass", { required: true })}
+                      onChange={handleChangestd}
+                    >
+                      {/* <MenuItem value={1}>1st</MenuItem>
+                                        <MenuItem value={2}>2nd</MenuItem>
+                                        <MenuItem value={3}>3rd</MenuItem>
+                                        <MenuItem value={4}>4th</MenuItem>
+                                        <MenuItem value={5}>5th</MenuItem>
+                                        <MenuItem value={6}>6th</MenuItem>
+                                        <MenuItem value={7}>7th</MenuItem>
+                                        <MenuItem value={8}>8th</MenuItem>
+                                        <MenuItem value={9}>9th</MenuItem> */}
 
-                <div className='col-12 col-sm-4  mt-3 '>
+                      {standardexisting.map((user) => (
+
+                        <MenuItem value={user.value}>{user.text}</MenuItem>
+
+                      ))}
+
+                    </Select>
+                    <p className='text-danger'>
+                      {errors.Asignclass?.type === "required" && "Asignclass is required"}
+                    </p>
+                  </FormControl>
+                </div>
+
+
+                {/* <div className='col-12 col-sm-4  mt-3 '>
                   <FormControl style={{ width: '100%' }}>
                     <InputLabel id="demo-multiple-name-label">Assigned Classes</InputLabel>
                     <Select
@@ -366,7 +457,7 @@ export default function Admission() {
                       input={<OutlinedInput label="Assigned Classes" />}
                       MenuProps={MenuProps}
                     >
-                     
+
                       {standards.map((name) => (
                         <MenuItem
                           key={name}
@@ -378,10 +469,10 @@ export default function Admission() {
                       ))}
                     </Select>
                     <p className='text-danger'>
-                        {errors.Asignclass?.type === "required" && "Asignclass is required"}
-                      </p>
+                      {errors.Asignclass?.type === "required" && "Asignclass is required"}
+                    </p>
                   </FormControl>
-                </div>
+                </div> */}
 
 
 
@@ -405,7 +496,37 @@ export default function Admission() {
                   </p>
                 </div>
 
-                <div className='col-12 col-sm-4 mt-3 '>
+                <div className='col-12 col-sm-4  mt-3 '>
+                  <FormControl style={{ width: '100%' }}>
+                    <InputLabel id="demo-multiple-name-label">Subjects</InputLabel>
+                    <Select
+                      labelId="demo-multiple-name-label"
+                      id="demo-multiple-name"
+                      multiple
+                      value={subjects}
+                      {...register("subjects", { required: true })}
+                      onChange={handleChangesubject}
+                      input={<OutlinedInput label="Subjects" />}
+                      MenuProps={MenuProps}
+                    >
+
+                      {sub.map((name) => (
+                        <MenuItem
+                          key={name}
+                          value={name}
+                          style={getStylesstd(name, standard, theme)}
+                        >
+                          {name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <p className='text-danger'>
+                      {errors.subjects?.type === "required" && "subjects is required"}
+                    </p>
+                  </FormControl>
+                </div>
+
+                {/* <div className='col-12 col-sm-4 mt-3 '>
                   <TextField fullWidth variant='outlined' name='subjects' id='subjects' label="subjects" className='d-block' inputProps={{ inputMode: 'string' }}
                     {...register("subjects", { required: true })}
 
@@ -413,7 +534,7 @@ export default function Admission() {
                   <p className='text-danger'>
                     {errors.subjects?.type === "required" && "subjects is required"}
                   </p>
-                </div>
+                </div> */}
 
                 <div className="col-12 col-sm-4 mt-3 ">
                   <TextField fullWidth variant='outlined' name='contactno' id='contactno1' label="Contact No" className='d-block' inputProps={{ inputMode: 'numeric' }}
@@ -491,7 +612,7 @@ export default function Admission() {
                 <div>
 
                   {/* <TextField className="btn btn-primary text-white" type="submit" /> */}
-                  <button type='submit' className='btn btn-primary mt-2' style={{width:'7rem',height:'2.5rem'}}>Submit</button>
+                  <button type='submit' className='btn btn-primary mt-2' style={{ width: '7rem', height: '2.5rem' }}>Submit</button>
 
                 </div>
               </form>

@@ -263,6 +263,27 @@ export default function Sidebar() {
           </ListItemButton>
         </ListItem>
 
+
+        <ListItem disablePadding sx={{ display: "block", backgroundColor: menuData === "Admission cancle" ? "#315278" : "transparent" }} onClick={() =>{ navigate("/admin/cancle");setMenuData("Admission cancle")}}>
+          <ListItemButton sx={{ minHeight: 48, justifyContent: open ? "initial" : "center", px: 2.5, }}>
+            <ListItemIcon
+              sx={{
+                minWidth: 0,
+                mr: open ? 3 : "auto",
+                justifyContent: "center",
+                color: "white"
+              }}
+            >
+              <PiStudentDuotone />
+            </ListItemIcon>
+            <ListItemText
+              primary={"Admission cancel"}
+              sx={{ opacity: open ? 1 : 0 }}
+            />
+          </ListItemButton>
+        </ListItem>
+
+        
         <ListItem disablePadding sx={{ display: "block" }} onClick={() => logout()}>
           <ListItemButton sx={{ minHeight: 48, justifyContent: open ? "initial" : "center", px: 2.5, }}>
             <ListItemIcon

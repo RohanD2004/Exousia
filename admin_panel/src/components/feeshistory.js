@@ -148,7 +148,9 @@ export default function Feeshistory() {
                                     }}
                                 >
                                     <option value={1}>Paid</option>
+                                    <option value={2}>Zero</option>
                                     <option value={0}>UnPaid</option>
+
                                 </NativeSelect>
                             </FormControl>
                         </div>
@@ -183,7 +185,12 @@ export default function Feeshistory() {
                                             } else if (type === "0") {
                                                 return (
                                                     lowerCaseName.includes(lowerCaseSearch) &&
-                                                    user.feesPaid !== user.stdfeesinfo.total_fees
+                                                    user.feesPaid !== user.stdfeesinfo.total_fees &&user.feesPaid > 0
+                                                );
+                                            }else if (type === "2") {
+                                                return (
+                                                    lowerCaseName.includes(lowerCaseSearch) &&
+                                                    user.feesPaid == 0
                                                 );
                                             }
                                         

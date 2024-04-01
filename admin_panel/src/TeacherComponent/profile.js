@@ -8,12 +8,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Header from "../components/header";
 import moment from 'moment'
 
-import { getTeacherProfile } from "../service/api"
+import { getTeacherProfile,getStandards } from "../service/api"
 
 export default function Teacher() {
   const navigate = useNavigate();
   const temp = localStorage.getItem('token');
-
+  const [assign_class, setassignclass] = useState([]);
   const [teacher, setTeacher] = useState([]);
 
   const { id } = useParams();
@@ -27,6 +27,9 @@ export default function Teacher() {
   const getSingleTeacher = async () => {
     const response = await getTeacherProfile(id);
     setTeacher(response?.data.data);
+    const stdids=response?.data.data[0].Asignclass;
+    const response2= await getStandards(stdids);
+    setassignclass(response2?.data)
 
   }
   useEffect(() => {
@@ -66,13 +69,19 @@ export default function Teacher() {
 
 
                         <div class="large font-italic mb-4"  >Assigned To:
-                          {teacherdata.Asignclass &&
-                            teacherdata.Asignclass.map((Asign, index) => (
-                              <span key={index}>{Asign} , </span>
+                          {assign_class &&
+                            assign_class.map((data) => (
+                              <span key={data._id}>{data.std} , </span>
                             ))}
                         </div>
+                     
 
-                        <div class="large font-italic mb-4">Subjects: {teacherdata.subjects}</div>
+                        <div class="large font-italic mb-4">Subjects: 
+                        {teacherdata.subjects &&  
+                            teacherdata.subjects.map((sub,index) => (
+                              <span key={index}> {sub} , </span>
+                              ))}
+                        </div>
                         <div class="large font-italic mb-4">Admitted On : {moment(teacherdata.createdAt).format('MMMM Do, YYYY')}</div>
                       </div>
                     </div>

@@ -26,10 +26,16 @@ import Assesment from './StudentComponents/Assesment';
 import TeacherHome from "./TeacherComponent/TeacherHome"
 import Exams from './TeacherComponent/Exams';
 import Uploadmaterial from './TeacherComponent/uploadmaterial';
-import TeacherTimetable from "./TeacherComponent/TeacherTimetable"
+import TeacherTimeTable from "./TeacherComponent/TeacherTimetable"
 import AdminProfile from './components/AdminProfile';
 import AdminEdit   from "./components/AdminEdit";
 import Message from './StudentComponents/Message';
+import Cancle from './components/cancle.js';
+import Viewmark from './TeacherComponent/viewmark.js'
+import Attendence from './TeacherComponent/Attendence.js';
+import StudentAttendence from './StudentComponents/StudentAttendence.js'
+import ViewAttendence from './TeacherComponent/ViewAttendence.js'
+import AttendanceHistory from './TeacherComponent/AttendanceHistory.js'
 export default function App() {
   return (
     <>
@@ -55,7 +61,10 @@ export default function App() {
           <Route path="admin/feesdetails" element={<Feeshistory />}>  </Route>
           <Route path="admin/feesdetails/history/:id?" element={<Feesdetails />}></Route>
           <Route path="/admin/recipt" element={<Recipt />}> </Route>
+          <Route path="/admin/cancle" element={<Cancle />}> </Route>
+
           <Route path="/login" element={<Recipt />}> </Route>
+          
 
 
           {/* student route start */}
@@ -65,13 +74,21 @@ export default function App() {
           <Route path="/student/feesdetails/:id?" element={<Feesdata />}> </Route>
           <Route path="/student/Assessment/:id?" element={<Assesment />}> </Route>
           <Route path="/student/messages" element={< Message/>}> </Route>
-
+          <Route path="/student/attendence" element={< StudentAttendence/>}> </Route>
 
           {/* Teacher dashboard route start */}
           <Route path="/teacher/:id?" element={<TeacherHome />}> </Route>
           <Route path="/teacher/exams" element={<Exams />}> </Route>
+          <Route path="/teacher/viewmark" element={<Viewmark />}> </Route>
+
           <Route path="/teacher/uploadmaterial" element={<Uploadmaterial />}> </Route>
-          <Route path="/teacher/Timetable" element={<TeacherTimetable />}> </Route>
+          <Route path="/teacher/Timetable" element={<TeacherTimeTable />}> </Route>
+          <Route path="/teacher/attendence" element={<Attendence/>}> </Route>
+          <Route path="/teacher/attendence/view" element={<ViewAttendence/>}> </Route>
+          <Route exact path="/teacher/attendence/view/student/:id?" element={<AttendanceHistory/>}> </Route>
+
+
+
 
 
         </Routes>

@@ -4,7 +4,7 @@ const Studentmodel = require('../models/Student');
 const feesModule = require("../models/fees");
 const FeeesDataModule = require("../models/feesdata");
 const User = require("../models/getUser");
-const getUsers =require('../models/getUser')
+const getUsers = require('../models/getUser')
 const MarkModule = require('../models/Marks')
 
 class StudentController {
@@ -103,7 +103,7 @@ class StudentController {
             };
             let students = [];
             if (req.params.std) {
-                students = await Studentmodel.find({ 'std_id': req.params.std });
+                students = await Studentmodel.find({ 'std_id': req.params.std,'isActive': true  });
 
             } else {
                 students = await Studentmodel.paginate({}, options);
@@ -131,10 +131,15 @@ class StudentController {
 
             const studentdata = await Studentmodel.aggregate([
                 {
-                $sort: { /* Specify the field and order for sorting */
-                    _id: -1, // 1 for ascending, -1 for descending
-                }
-            },
+                    $match: {
+                        isActive: true
+                    }
+                },
+                {
+                    $sort: { /* Specify the field and order for sorting */
+                        _id: -1, // 1 for ascending, -1 for descending
+                    }
+                },
                 {
                     $lookup: {
                         from: "fees",
@@ -157,7 +162,7 @@ class StudentController {
                         as: "feesinfo",
                     },
                 }
-                 
+
             ])
             Utilities.apiResponse(res, 200, 'Get Users Successfully', studentdata);
         } catch (error) {
@@ -168,10 +173,11 @@ class StudentController {
 
     async deleteStudent(req, res) {
         try {
-            await Studentmodel.deleteOne({ _id: req.params.id });
-            await FeeesDataModule.deleteMany({feesId:req.params.id})
-            await getUsers.deleteOne({user_Id: req.params.id})
-            await MarkModule.deleteMany({stuId:req.params.id})
+            await Studentmodel.updateOne({ _id: req.params.id }, { $set: { isActive: false } });
+            // await Studentmodel.deleteOne({ _id: req.params.id });
+            // await FeeesDataModule.deleteMany({feesId:req.params.id})
+            // await getUsers.deleteOne({user_Id: req.params.id})
+            // await MarkModule.deleteMany({stuId:req.params.id})
             Utilities.apiResponse(res, 200, 'Student Deleted Successfully');
         } catch (error) {
             Utilities.apiResponse(res, 500, error);
@@ -241,7 +247,7 @@ class StudentController {
 
         let Id = req.params.id;
         let query = { _id: Number(Id) }
-        
+
         try {
 
             const studetndata = await Studentmodel.aggregate([
@@ -274,23 +280,32 @@ class StudentController {
 
     async studentdataForMarks(req, res) {
 
-        
+
         const std_id2 = req.body.std_id;
         try {
-            const students = await Studentmodel.find({std_id :mongoose.Types.ObjectId(std_id2)});
+            const students = await Studentmodel.find({ std_id: mongoose.Types.ObjectId(std_id2) });
             Utilities.apiResponse(res, 200, 'Get Student Successfully', students);
         } catch (error) {
             Utilities.apiResponse(res, 500, error);
         }
     }
 
+       async getStudentDataForMark(req, res) {
+
+            let ids=[];
+            for (let index = 0; index < req.body.length; index++) {
+                ids.push(req.body[index].stuId);
+            }
+            const students = await Studentmodel.find({ _id: { $in: ids } });
+            console.log(ids);
+            console.log(students);
+            Utilities.apiResponse(res, 200, 'Get Student Successfully', students);
+        }
 
     async getSinglestudetnDataForMessage(req, res) {
 
         let Id = req.body.id;
         let query = { _id: Number(Id) }
-       
-        
         try {
 
             const studetndata = await Studentmodel.aggregate([
@@ -324,27 +339,72 @@ class StudentController {
 
     //couting total fees paid of student
 
-    async  totalFeesPaid(req, res) {
+    async totalFeesPaid(req, res) {
         try {
-          const response = await Studentmodel.aggregate([
-            {
-              $group: {
-                _id: null,
-                sum_val: { $sum: "$feesPaid" }
-              }
+            const response = await Studentmodel.aggregate([
+                {
+                    $group: {
+                        _id: null,
+                        sum_val: { $sum: "$feesPaid" }
+                    }
+                }
+            ]);
+
+            if (response.length > 0) {
+                const totalFeesPaid = response[0].sum_val;
+                Utilities.apiResponse(res, 200, 'Get Student Successfully', totalFeesPaid);
+            } else {
+                Utilities.apiResponse(res, 200, 'No students found or feesPaid is zero', 0);
             }
-          ]);
-      
-          if (response.length > 0) {
-            const totalFeesPaid = response[0].sum_val;
-            Utilities.apiResponse(res, 200, 'Get Student Successfully', totalFeesPaid);
-          } else {
-            Utilities.apiResponse(res, 200, 'No students found or feesPaid is zero', 0);
-          }
         } catch (error) {
-          Utilities.apiResponse(res, 500, error);
+            Utilities.apiResponse(res, 500, error);
         }
-      }
+    }
+
+    async getCancle(req, res) {
+        try {
+          
+            const studentdata = await Studentmodel.aggregate([
+                {
+                    $match: {
+                        isActive: false
+                    }
+                },
+                {
+                    $sort: { /* Specify the field and order for sorting */
+                        _id: -1, // 1 for ascending, -1 for descending
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "fees",
+                        localField: "std_id",
+                        foreignField: "_id",
+                        as: "stdfeesinfo",
+                    },
+
+                    // $unwind:'$stdfeesinfo'
+                },
+                {
+
+                    $unwind: { path: '$stdfeesinfo', preserveNullAndEmptyArrays: true }
+                },
+                {
+                    $lookup: {
+                        from: "feesdatas",
+                        localField: "fees",
+                        foreignField: "_id",
+                        as: "feesinfo",
+                    },
+                }
+
+            ])
+            Utilities.apiResponse(res, 200, 'Get Users Successfully', studentdata);
+           
+        } catch (error) {
+            Utilities.apiResponse(res, 500, error);
+        }
+    }
 
 
 }

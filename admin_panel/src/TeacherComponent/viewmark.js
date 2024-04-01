@@ -1,29 +1,17 @@
-// import React from 'react'
-// import { Box } from '@mui/material'
-// import Sidebar from './TeacherSidebar.tsx'
 
-// export default function Exams() {
-//   return (
-//     <Box sx={{ display: 'flex' }} >
-//     <Sidebar/>
-// <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
-
-//   </Box>
-//   </Box>
-//   )
-// }
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import axios from 'axios';
-import { GetStudentStd, updateMark } from '../service/api';
+import { GetStudentStd, updateMark, getStudentMarkData } from '../service/api';
 import { React, useEffect, useState } from 'react';
 import { Box, TextField, FormControl, InputLabel, Select, MenuItem, Typography } from '@mui/material';
 import Sidebar from './TeacherSidebar.tsx'
 import Header from "../components/header.js";
 import '../components/css/Exam.css'
-import { GetFees, viewTeacher2, getStandards } from "../service/api"
+import { GetFees, viewTeacher2, getStandards, getTeacherMarkData } from "../service/api"
 import Swal from "sweetalert2";
 import { useParams } from 'react-router-dom';
-export default function Exams() {
+
+export default function Viewmark() {
   const { id } = useParams();
 
   const [subject, setSubject] = useState('');
@@ -31,8 +19,15 @@ export default function Exams() {
   const [feesstd, setfeesStd] = useState([])
   const [student, setStudent] = useState([]);
   const [student2, setStudent2] = useState([]);
-  const [std, setStd] = useState([]);
   const [Sub, setSub] = useState([]);
+  const [markData, setMarkData] = useState([]);
+
+  const [testName, setTestName] = useState([]);
+  const [test, setTest] = useState('');
+
+  const [filteredMarkData, setFilteredMarkData] = useState([]);
+
+
   const [assign_class, setassignclass] = useState([]);
   const temp = localStorage.getItem('user_id')
   const result = Number(temp);
@@ -51,9 +46,38 @@ export default function Exams() {
     const data = event.target.value;
     setStudent({ ...student, [event.target.name]: event.target.value })
     setDate({ ...date, [event.target.name]: event.target.value })
-    getAllStudent({ std_id: data });
-    console.log("Mark : ", date.TotalMark)
   };
+
+  const handleChange3 = (event) => {
+    const selectedTest = event.target.value;
+    setTest(selectedTest);
+
+    // Clear filteredMarkData before populating with new data
+    setFilteredMarkData([]);
+
+    const updatedTestName = [];
+    for (let i = 0; i < markData.length; i++) {
+      if (markData[i].testName === selectedTest) {
+        updatedTestName.push(markData[i]);
+      }
+    }
+
+    setFilteredMarkData(updatedTestName);
+
+  };
+
+  useEffect(() => {
+    // Log filteredMarkData after it's updated
+    console.log(filteredMarkData);
+    getStudentData(filteredMarkData)
+  }, [filteredMarkData]);
+
+  const getStudentData = async (data) => {
+    console.log(data);
+    const response = await getStudentMarkData(data);
+    setStudent2(response?.data.data);
+
+  }
 
   const getAllStudent = async (data) => {
     let response = await GetStudentStd(data);
@@ -96,7 +120,7 @@ export default function Exams() {
     else {
       try {
         let response = await updateMark(date);
-      
+
         if (response?.status === 200) {
           console.log(response);
           setMarkSuccess(true);
@@ -121,10 +145,63 @@ export default function Exams() {
         // Display a generic error message
         console.error("Failed to update mark");
       }
-      
+
     }
 
   }
+
+  //   const getData = async()=>
+  //   {
+  //     const response= await getTeacherMarkData(date);
+  //     console.log(response.data.data);
+
+  //     for(let i=0;i<response.data.data.length;i++)
+  //     {
+
+  //         setTestName[i]=response.data.data[i].testName;
+  //         console.log(response.data.data[i].testName)
+
+  //     }
+  //     console.log(testName);
+  //   }
+
+  const getData = async () => {
+    try {
+    
+      const response = await getTeacherMarkData(date);
+
+
+      if(response.status==200)
+      {
+        Swal.fire({
+          title: 'Success',
+          text: "Test data get succesfully",
+          icon: 'success',
+        });
+      }
+      setMarkData(response.data.data);
+      // Create a copy of testName state array
+      const updatedTestName = [...testName];
+      const testNameSet = new Set(updatedTestName);
+      
+      for (let i = 0; i < response.data.data.length; i++) {
+        // Check if the testName is not already in the set
+        if (!testNameSet.has(response.data.data[i].testName)) {
+          updatedTestName.push(response.data.data[i].testName);
+          testNameSet.add(response.data.data[i].testName);
+        }
+      }
+      
+
+      // Set the updated testName state array
+      setTestName(updatedTestName);
+      console.log(updatedTestName);
+    } catch (error) {
+      // Handle errors
+      console.error("Error fetching data:", error);
+    }
+  };
+
 
   const getTeacherData = async () => {
     try {
@@ -148,9 +225,6 @@ export default function Exams() {
           });
 
         }
-        console.log(response2?.data)
-        console.log(list)
-        
         setfeesStd(list);
       }
     } catch (error) {
@@ -177,7 +251,7 @@ export default function Exams() {
 
         <div className='mt-4 p-2 container-fluid shadow'>
           <div className='row px-5'>
-            <div className='col-lg-2 mb-2'>
+            <div className='col-lg-3 mb-2'>
               <Typography
                 className='mt-2'
                 variant="h4"
@@ -185,56 +259,12 @@ export default function Exams() {
                 component="div"
                 sx={{ flexGrow: 1 }}
               >
-                Fill Marks
+                View Marks
               </Typography>
             </div>
-            <div className='col-lg-2 mb-2'>
-              <TextField variant='outlined' name="testName" focused label='Test' placeholder='Enter test name'
-                onChange={(event) => {
-                  const testName = event.target.value;
-
-                  setDate({ ...date, [event.target.name]: testName });
-
-                }}
-              ></TextField>
-            </div>
-            <div className='col-lg-2 mb-2'>
-              <FormControl fullWidth>
-                {/* <FormHelperText >Date of Birth</FormHelperText> */}
-                <TextField focused type='date' label='Date' name='date' variant='outlined'
-                  onChange={(event) => setDate({ ...date, [event.target.name]: event.target.value })}
-                />
-              </FormControl>
-            </div>
-            <div className='col-lg-2 mb-2'>
-              <TextField variant='outlined' label='Total marks' name='TotalMark' focused
-                onChange={(event) => {
-                  const mark = event.target.value;
-
-                  if (mark < 0) {
-                    Swal.fire({
-                      title: 'Error !',
-                      text: "Invalid mark",
-                      icon: 'error',
-                    }).then((res) => {
-
-                      if (res.isConfirmed) {
-                        event.target.value = ''
-                      }
-                      else {
-
-                      }
-                    });
-                  }
-                  else {
-                    setDate({ ...date, [event.target.name]: mark });
-                    setMaxMark(event.target.value);
-                  }
 
 
-                }}
-              />
-            </div>
+
             <div className='col-lg-2 mb-2'>
               <FormControl fullWidth focused>
                 <InputLabel id="select-label" >Subject</InputLabel>
@@ -272,6 +302,32 @@ export default function Exams() {
                 </Select>
               </FormControl>
             </div>
+
+            <div className='col-lg-2 mt-2 '>
+              <button className='btn btn-primary' onClick={() => getData()}>
+                Get Data
+              </button>
+            </div>
+
+            <div className='col-lg-2 mb-2'>
+              <FormControl fullWidth focused>
+                <InputLabel id="select-label" >Test Name</InputLabel>
+                <Select
+                  labelId="select-label"
+                  name='test'
+                  id="select-std"
+                  value={test}
+                  label="Standard"
+                  onChange={handleChange3}
+                >
+                  {testName.map((test, index) => (
+
+                    <MenuItem value={test}>{test}</MenuItem>
+
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
           </div>
         </div>
 
@@ -285,50 +341,33 @@ export default function Exams() {
             <thead className='table-dark'>
               <tr>
                 <th>Name</th>
-                <th className='ms-5 w-25'>Marks</th>
-                <th>Update</th>
+                <th className='ms-5 w-25'>Total Mark</th>
+                <th className='ms-5 w-25'>Obtain Mark</th>
+                <th>Date</th>
               </tr>
             </thead>
             <tbody>
 
               {
                 student2.map((user) => {
+                  const markData = filteredMarkData.find((data) => data.userId === user.id);
                   return (
                     <>
                       <tr>
                         <td>
                           {user.name}
-                          {updatedStudentId === user._id && (
-                            <CheckCircleIcon sx={{ color: 'green', ml: 1 }} />
-                          )}
+
                         </td>
+
                         <td>
-                          <input type='number' id='marks-input' name='score' className='form-control' required='true' defaultValue={0}
-
-                            onChange={(event) => {
-                              const mark = event.target.value;
-                              if (parseInt(mark) > parseInt(max_mark) || parseInt(mark) < 0) {
-                                Swal.fire({
-                                  title: 'Error !',
-                                  text: "Enter mark should be less than total mark",
-                                  icon: 'error',
-                                }).then((result) => {
-                                  if (result.isConfirmed) {
-                                    event.target.value = ''
-                                  }
-                                });
-
-                              }
-                              else {
-
-                                handleMarkSubmit(event, user._id)
-                              }
-
-
-                            }}
-
-                          /></td>
-                        <td ><button type='button' className='btn btn-warning' onClick={() => AddMark()} >Submit</button></td>
+                          {markData.TotalMark}
+                        </td>
+                        <td >
+                          {markData.score}
+                        </td>
+                        <td >
+                          {markData.updatedAt}
+                        </td>
                       </tr>
                     </>
                   )

@@ -24,9 +24,10 @@ export default function Studentprofile() {
     const getStudentData = async () => {
 
         const response = await getStudentprofile(id)
-        console.log(response?.data.data);
+        console.log(response?.data.data[0].std_id);
         setStudetndata(response?.data.data);
         let paid = response?.data.data.feesPaid;
+        localStorage.setItem('std_id', response.data.data[0].std_id);
         let total = response?.data.data[0].stdfeesinfo.total_fees
         remaining = total - paid;
 

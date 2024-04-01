@@ -12,7 +12,7 @@ const fees = new Schema(
         },
 
         message: {
-            type: String,
+            type: Array,
         },
         
 
@@ -24,3 +24,4 @@ const fees = new Schema(
 
 const Fees = mongoose.model('fee', fees);
 module.exports = Fees;
+

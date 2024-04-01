@@ -152,9 +152,6 @@ export default function Student() {
                           <th scope="col">Fees</th>
                           <th scope="col"></th>
                         </tr>
-
-
-
                       </thead>
                       <tbody>
                         {
@@ -185,7 +182,8 @@ export default function Student() {
 
                                 </tr>
 
-                            })}
+                            })
+                        }
 
                       </tbody>
                     </table>
