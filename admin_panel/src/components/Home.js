@@ -47,10 +47,6 @@ import Header from "./header";
 const pages = [];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 let count;
-let first;
-let second;
-let third;
-let four;
 let five;
 let six;
 let seven;
@@ -116,11 +112,8 @@ export default function Homepage() {
   let Student = [];
   const totalcount = async () => {
     count = await getTotalCount();
+    console.log( count?.data.data)
     totalStudent = count?.data.data[0].total;
-    first = count?.data.data[0].first;
-    second = count?.data.data[0].second;
-    third = count?.data.data[0].third;
-    four = count?.data.data[0].fourth;
     five = count?.data.data[0].fifth;
     six = count?.data.data[0].six;
     seven = count?.data.data[0].seven;

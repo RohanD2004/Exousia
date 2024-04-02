@@ -334,8 +334,7 @@ class StudentController {
                 ids.push(req.body[index].stuId);
             }
             const students = await Studentmodel.find({ _id: { $in: ids } });
-            console.log(ids);
-            console.log(students);
+        
             Utilities.apiResponse(res, 200, 'Get Student Successfully', students);
         }
 
