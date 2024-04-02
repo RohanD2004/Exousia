@@ -186,38 +186,38 @@ export default function Attendence() {
         console.log(dataArray);
         console.log(student2.length);
 
-        // if (dataArray.length == student2.length) {
-        //     let response = await FillAttendence(dataArray);
-        //     console.log(response);
-        //     if (response.status == 200) {
-        //         Swal.fire({
-        //             title: "Success",
-        //             text: response.data.message,
-        //             icon: "success",
-        //             confirmButtonText: "OK",
-        //         }).then((result) => {
-        //             if (result.isConfirmed) {
-        //                 window.location.reload();
-        //             }
-        //         });
-        //     }
-        //     else if (response.response.data.status === 400) {
-        //         // Display a message indicating that the mark already exists
-        //         console.log(response.response.data.message);
-        //         Swal.fire({
-        //             title: 'Error !',
-        //             text: response.response.data.message.toString(),
-        //             icon: 'error',
-        //         });
-        //     }
-        // }
-        // else {
-        //     Swal.fire({
-        //         title: 'Error !',
-        //         text: 'Please select the category  first , either "Present" or "Absent" !!',
-        //         icon: 'error',
-        //     });
-        // }
+        if (dataArray.length == student2.length) {
+            let response = await FillAttendence(dataArray);
+            console.log(response);
+            if (response.status == 200) {
+                Swal.fire({
+                    title: "Success",
+                    text: response.data.message,
+                    icon: "success",
+                    confirmButtonText: "OK",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.reload();
+                    }
+                });
+            }
+            else if (response.response.data.status === 400) {
+                // Display a message indicating that the mark already exists
+                console.log(response.response.data.message);
+                Swal.fire({
+                    title: 'Error !',
+                    text: response.response.data.message.toString(),
+                    icon: 'error',
+                });
+            }
+        }
+        else {
+            Swal.fire({
+                title: 'Error !',
+                text: 'Please select the category  first , either "Present" or "Absent" !!',
+                icon: 'error',
+            });
+        }
 
     }
     return (
