@@ -1,14 +1,14 @@
 import axios from "axios";
 import { tokenpassApi } from "../components/Login";
 import { FaEyeDropper } from "react-icons/fa";
-// const url = "http://localhost:8000";
- const url="https://erp-exousia.onrender.com"
+const url = "http://localhost:8000";
+//  const url="https://erp-exousia.onrender.com"
 
 export const Authenticate = async (logcred) => {
   try {
     return await axios.post(`${url}/`, logcred);
   } catch (error) {
-    console.log("erroe during login  student", error);
+    return error
   }
 };
 
@@ -800,6 +800,42 @@ export const getPreviousYearData = async (data) => {
 
     return await axios.post(
       `${url}/admin/feesdata/previous`,data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  } catch (error) {
+    console.log("Error occurred during getSingleAttendence API call", error);
+    throw error; // Rethrow the error so that the caller of this function can handle it
+  }
+};
+
+export const getTimetable = async (data) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    return await axios.post(
+      `${url}/student/timetable`,data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  } catch (error) {
+    console.log("Error occurred during getSingleAttendence API call", error);
+    throw error; // Rethrow the error so that the caller of this function can handle it
+  }
+};
+
+export const getTimetableForTeacher = async (data) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    return await axios.post(
+      `${url}/teacher/timetable`,data,
       {
         headers: {
           Authorization: `Bearer ${token}`,

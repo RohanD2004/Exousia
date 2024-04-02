@@ -272,9 +272,11 @@ export default function Login() {
     setIsBlur(true);
     try {
       const response = await Authenticate(data);
-      const tkn = response?.data.data.accessToken;
-
-      if (response?.status === 200) {
+      console.log(response);
+      
+      if (response?.status === 200) 
+      {
+        const tkn = response?.data.data.accessToken;
         localStorage.setItem("token", tkn);
         Swal.fire({
           title: "Success",
@@ -296,16 +298,18 @@ export default function Login() {
 
         setIsLoading(false);
         setIsBlur(false);
-      } else if (response.status == 422) {
+      } else if (response.response.data.status == 422) {
         Swal.fire({
           title: "Error !",
-          text: response.message,
+          text: response.response.data.message,
           icon: "error",
           confirmButtonText: "OK",
         });
+        setIsLoading(false);
+        setIsBlur(false);
       } else {
         Swal.fire({
-          title: "Error !",
+          title: "Error !121",
           text: response.message,
           icon: "error",
           confirmButtonText: "OK",

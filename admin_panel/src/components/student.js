@@ -184,6 +184,18 @@ export default function Student() {
 
                             })
                         }
+                        {
+                          <tr>
+
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                            <td><b>Total</b></td>
+                            {students.length+1}</tr>
+                        }
 
                       </tbody>
                     </table>

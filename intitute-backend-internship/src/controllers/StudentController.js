@@ -250,6 +250,7 @@ class StudentController {
             const nine_data = await Studentmodel.countDocuments({ "std_id": "64b5b3d5a1ef79beee269104" })
             const ten_data = await Studentmodel.countDocuments({ "std_id": "64b5b40fa1ef79beee269105" })
             let gestudents = [];
+            console.log("Totoal student : ",totalStudent);
             const studentdata = await Studentmodel.aggregate([
                 {
                     $lookup: {

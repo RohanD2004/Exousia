@@ -1,168 +1,120 @@
-import {React,useEffect} from "react";
+import { React, useEffect, useState } from "react";
 import Sidebar from "../StudentComponents/studentSidebar.tsx";
 import { Box } from "@mui/material";
 import Header from '../components/header.js';
 import { useNavigate } from "react-router-dom";
+import { getTimetable } from "../service/api.js"
 function TimeTable() {
-  const temp= localStorage.getItem('token');
-  const navigate= useNavigate();
+  const temp = localStorage.getItem('token');
+  const std_id = localStorage.getItem('std_id')
+  const navigate = useNavigate();
 
+  const [timetable, setTimetable] = useState([]);
+  const [days, setDays] = useState([
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ]);
 
   useEffect(() => {
     console.log(temp);
-    if(temp ===null){
+    console.log(std_id);
+    if (temp === null) {
       navigate('/');
     }
   }, [temp])
+
+
+  const getData = async (id) => {
+    var arr = { 'std_id': id };
+    const response = await getTimetable(arr);
+    setTimetable(response.data.data[0]);
+
+  };
+
+  useEffect(() => {
+    getData(std_id)
+  }, [])
   return (
     <>
-      <Box sx={{ display: 'flex'}} >
-        <Sidebar/>
+      <Box sx={{ display: 'flex' }} >
+        <Sidebar />
         <Box component="main" className='table-responsive' sx={{ flexGrow: 1, p: 3 }} >
-        <Box sx={{ flexGrow: 1 }}>
-        <Header title="Timetable"/>
-        </Box>
-        <div className="p-2 mt-5 shadow table-responsive bg-white">
+          <Box sx={{ flexGrow: 1 }}>
+            <Header title="Timetable" />
+          </Box>
+
+
+
+          <div className="p-2 mt-5 shadow table-responsive bg-white">
             <table className="table table-striped table-bordered">
               <thead className="table-dark">
-                <tr>
+
+                {
+                  timetable.std=="10th"?
+                  <tr>
                   <th>Day</th>
-                  <th>2:00 - 2:45</th>
-                  <th>2:45 - 3:30</th>
-                  <th>3:30 - 4:15</th>
-                  <th>4:15 - 5:00</th>
-                  <th>5:00 - 5:45</th>
-                  <th>5:45 - 6:30</th>
-                  <th>6:30 - 7:15</th>
+                  <th>{timetable.time1}</th>
+                  <th>{timetable.time2}</th>
+                  <th>{timetable.time3}</th>
+                  <th>{timetable.time4}</th>
+
                   <th>STD</th>
                 </tr>
+                  :
+                  <tr>
+                  
+                  <th>Day</th>
+                  <th>{timetable.time1}</th>
+                  <th>{timetable.time2}</th>
+                  <th>{timetable.time3}</th>
+                  <th>STD</th>
+                </tr>
+                }
+              
               </thead>
               <tbody>
-                <tr>
-                  <td rowSpan={6}>Monday <br></br>-<br></br> Thursday</td>
-                  <td>Math</td>
-                  <td>English</td>
-                  <td>Science</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>5th</td>
-                </tr>
-                <tr>
-                  <td>English</td>
-                  <td>Science</td>
-                <td>Math</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>6th</td>
-                </tr>
-                <tr>
-                  <td>Science</td>
-                <td>Math</td>
-                  <td>English</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>7th</td>
-                </tr>
-                <tr>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>Math</td>
-                  <td>English</td>
-                  <td>Science</td>
-                  <td>-</td>
-                  <td>8th</td>
-                </tr>
-                <tr>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>English</td>
-                  <td>Science</td>
-                <td>Math</td>
-                  <td>-</td>
-                  <td>9th</td>
-                </tr>
-                <tr>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>Marathi</td>
-                <td>Math</td>
-                  <td>English</td>
-                  <td>Science</td>
-                  <td>10th</td>
-                </tr>
-                <tr>
-                  <td rowSpan={6}>Friday <br></br>-<br></br> Saturday</td>
-                  <td>Math</td>
-                  <td>English</td>
-                  <td>Science</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>5th</td>
-                </tr>
-                <tr>
-                  <td>English</td>
-                  <td>Science</td>
-                <td>Math</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>6th</td>
-                </tr>
-                <tr>
-                  <td>Science</td>
-                <td>Math</td>
-                  <td>English</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>7th</td>
-                </tr>
-                <tr>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>Sanskrut</td>
-                  <td>Math</td>
-                  <td>English</td>
-                  <td>-</td>
-                  <td>8th</td>
-                </tr>
-                <tr>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                <td>Math</td>
-                  <td>English</td>
-                  <td>Sanskrut</td>
-                  <td>-</td>
-                  <td>9th</td>
-                </tr>
-                <tr>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>History/<br></br>Geography/<br></br>Civics</td>
-                  <td>English</td>
-                <td>Math</td>
-                  <td>Sanskrut</td>
-                  <td>10th</td>
-                </tr>
+
+                {
+                  days.map((day,index) => {
+
+                    return (
+                      timetable.std=="10th"?
+                      <>
+                      <tr>
+                        <td >{day} </td>
+                        <td>{ index==5 ||  index==4 && timetable.std=="10th" ? timetable.sub6: timetable.sub1}</td>
+                        <td>{timetable.sub2}</td>
+                        <td>{ timetable.sub3}</td>
+                        <td>{ index==5 || index==4 && timetable.std=="10th" ?timetable.sub5:timetable.sub4}</td>
+                        <td>{timetable.std}</td>
+                      </tr>
+                    </>
+                      :
+
+                     <>
+                          <tr>
+                            <td >{day} </td>
+                            <td>{ index==4 || index==5  && timetable.std=="9th"?timetable.sub4 :timetable.sub1}</td>
+                            <td>{timetable.sub2}</td>
+                            <td>{ index==5 || index==4 && timetable.std=="9th"?timetable.sub4 : timetable.sub3}</td>
+                            <td>{timetable.std}</td>
+                          </tr>
+                        </>
+                      
+                    )
+                  })
+                }
+
+
+
               </tbody>
             </table>
           </div>
+
           <div className="p-2 mt-5 shadow bg-white">
             <table className="table table-striped table-bordered">
               <thead className="table-dark">
@@ -203,6 +155,6 @@ function TimeTable() {
       </Box>
     </>
   );
-          
+
 }
 export default TimeTable;

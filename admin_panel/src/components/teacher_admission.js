@@ -246,61 +246,134 @@ export default function Admission() {
       });
     }
   };
+
   const onSubmit = async (data) => {
     console.log(data);
+    let er = "";
+    if (data.Email == " ") {
+      if (
+        /^[0-9]{10}$/.test(data.ContactNo) &&
+        /^[0-9]{10}$/.test(data.Alternateno)
+      ) {
+        try {
+          const response = await AddTeacher(data);
+          if (response.status == 200) {
+            Swal.fire({
+              title: "Success",
+              text: response.message,
+              icon: "success",
+              confirmButtonText: "OK",
+            });
 
-    if (
-      /^[0-9]{10}$/.test(data.ContactNo) &&
-      /^[0-9]{10}$/.test(data.Alternateno)
-    ) {
-      try {
-        const response = await AddTeacher(data);
-        if (response.status == 200) {
+            setValue("name", "");
+            setValue("dob", "");
+            setValue("Experties", "");
+            setValue("Experiance", "");
+            setValue("contactNo", "");
+            setValue("Alternetno", "");
+            setValue("subjects", "");
+            setValue("Address", "");
+            setValue("Email", "");
+            setValue("Usename", "");
+            setValue("Password", "");
+            setgen("");
+            setstandard([]);
+            navigate("/admin/teacher");
+          } else {
+            Swal.fire({
+              title: "Error",
+              text: "something went wrong",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        } catch (error) {
           Swal.fire({
-            title: "Success",
-            text: response.message,
-            icon: "success",
-            confirmButtonText: "OK",
-          });
-
-          setValue("name", "");
-          setValue("dob", "");
-          setValue("Experties", "");
-          setValue("Experiance", "");
-          setValue("contactNo", "");
-          setValue("Alternetno", "");
-          setValue("subjects", "");
-          setValue("Address", "");
-          setValue("Email", "");
-          setValue("Usename", "");
-          setValue("Password", "");
-          setgen("");
-          setstandard([]);
-          navigate("/admin/teacher");
-        } else {
-          Swal.fire({
-            title: "Error",
-            text: "something went wrong",
+            title: "Error !",
+            text: error,
             icon: "error",
-            confirmButtonText: "OK",
           });
         }
-      } catch (error) {
+      } else {
+        if (!/^[0-9]{10}$/.test(data.ContactNo)) {
+          er += "contact no ";
+        }
+
+        if (!/^[0-9]{10}$/.test(data.Alternateno)) {
+          er += ",alternate no ";
+        }
+
         Swal.fire({
           title: "Error !",
-          text: error,
+          text: "Enter correct " + er + ".",
           icon: "error",
         });
       }
     } else {
-      Swal.fire({
-        title: "Error !",
-        text: "Enter correct contact number. ",
-        icon: "error",
-      });
+      if (
+        /^[0-9]{10}$/.test(data.ContactNo) &&
+        /^[0-9]{10}$/.test(data.Alternateno) &&
+        /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(data.Email)
+      ) {
+        try {
+          const response = await AddTeacher(data);
+          if (response.status == 200) {
+            Swal.fire({
+              title: "Success",
+              text: response.message,
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+
+            setValue("name", "");
+            setValue("dob", "");
+            setValue("Experties", "");
+            setValue("Experiance", "");
+            setValue("contactNo", "");
+            setValue("Alternetno", "");
+            setValue("subjects", "");
+            setValue("Address", "");
+            setValue("Email", "");
+            setValue("Usename", "");
+            setValue("Password", "");
+            setgen("");
+            setstandard([]);
+            navigate("/admin/teacher");
+          } else {
+            Swal.fire({
+              title: "Error",
+              text: "something went wrong",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        } catch (error) {
+          Swal.fire({
+            title: "Error !",
+            text: error,
+            icon: "error",
+          });
+        }
+      } else {
+        if (!/^[0-9]{10}$/.test(data.ContactNo)) {
+          er += "contact no ";
+        }
+
+        if (!/^[0-9]{10}$/.test(data.Alternateno)) {
+          er += ",alternate no ";
+        }
+
+        if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(data.Email)) {
+          er += ",email ";
+        }
+        Swal.fire({
+          title: "Error !",
+          text: "Enter correct " + er + ".",
+          icon: "error",
+        });
+      }
     }
   };
-
   useEffect(() => {
     console.log(temp);
     if (temp === null) {

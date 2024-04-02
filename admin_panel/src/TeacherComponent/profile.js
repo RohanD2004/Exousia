@@ -28,6 +28,7 @@ export default function Teacher() {
     const response = await getTeacherProfile(id);
     setTeacher(response?.data.data);
     const stdids=response?.data.data[0].Asignclass;
+    localStorage.setItem('std_ids',stdids);
     const response2= await getStandards(stdids);
     setassignclass(response2?.data)
 

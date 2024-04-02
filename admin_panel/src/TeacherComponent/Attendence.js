@@ -37,6 +37,7 @@ export default function Attendence() {
     const [assign_class, setassignclass] = useState([]);
     const temp = localStorage.getItem('user_id')
     const result = Number(temp);
+    const [isFirstDateSelected, setIsFirstDateSelected] = useState(false);
 
     const [data, setData] = useState([]);
 
@@ -176,42 +177,47 @@ export default function Attendence() {
         console.log(dataArray);
     }
 
+    const function_date=(event)=>{
+        setDate(event.target.value)
+        setIsFirstDateSelected(true);
+    }
+
     const submitData = async () => {
-        console.log(dataArray.length);
+        console.log(dataArray);
         console.log(student2.length);
 
-        if (dataArray.length == student2.length) {
-            let response = await FillAttendence(dataArray);
-            console.log(response);
-            if (response.status == 200) {
-                Swal.fire({
-                    title: "Success",
-                    text: response.data.message,
-                    icon: "success",
-                    confirmButtonText: "OK",
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.reload();
-                    }
-                });
-            }
-            else if (response.response.data.status === 400) {
-                // Display a message indicating that the mark already exists
-                console.log(response.response.data.message);
-                Swal.fire({
-                    title: 'Error !',
-                    text: response.response.data.message.toString(),
-                    icon: 'error',
-                });
-            }
-        }
-        else {
-            Swal.fire({
-                title: 'Error !',
-                text: 'Please select the category  first , either "Present" or "Absent" !!',
-                icon: 'error',
-            });
-        }
+        // if (dataArray.length == student2.length) {
+        //     let response = await FillAttendence(dataArray);
+        //     console.log(response);
+        //     if (response.status == 200) {
+        //         Swal.fire({
+        //             title: "Success",
+        //             text: response.data.message,
+        //             icon: "success",
+        //             confirmButtonText: "OK",
+        //         }).then((result) => {
+        //             if (result.isConfirmed) {
+        //                 window.location.reload();
+        //             }
+        //         });
+        //     }
+        //     else if (response.response.data.status === 400) {
+        //         // Display a message indicating that the mark already exists
+        //         console.log(response.response.data.message);
+        //         Swal.fire({
+        //             title: 'Error !',
+        //             text: response.response.data.message.toString(),
+        //             icon: 'error',
+        //         });
+        //     }
+        // }
+        // else {
+        //     Swal.fire({
+        //         title: 'Error !',
+        //         text: 'Please select the category  first , either "Present" or "Absent" !!',
+        //         icon: 'error',
+        //     });
+        // }
 
     }
     return (
@@ -240,7 +246,13 @@ export default function Attendence() {
                             <FormControl fullWidth>
                                 {/* <FormHelperText >Date of Birth</FormHelperText> */}
                                 <TextField focused type='date' label='Date' name='date' variant='outlined'
-                                    onChange={(event) => setDate(event.target.value)}
+                                maxDate={new Date()}
+                                InputProps={{
+                                  inputProps: {
+                                    max: new Date().toISOString().split("T")[0],
+                                  },
+                                }}
+                                    onChange={(event) => function_date(event)}
                                 />
                             </FormControl>
                         </div>
@@ -256,6 +268,7 @@ export default function Attendence() {
                                     value={Standard}
                                     label="Standard"
                                     onChange={handleChange2}
+                                    disabled={!isFirstDateSelected}
                                 >
                                     {feesstd.map((user) => (
 
@@ -263,11 +276,14 @@ export default function Attendence() {
 
                                     ))}
                                 </Select>
+                                {
+                                    !isFirstDateSelected? <p>Select date first</p>:<p></p>
+                                }
                             </FormControl>
                         </div>
                         <div className='col-lg-2 mb-2 mt-3'>
                             <div className="form-check">
-                                <input class="form-check-input" type="radio" name="attendance" id="flexRadioDefault1" onChange={(e) => presentUpdate(e)} />
+                                <input class="form-check-input" type="radio" checked name="attendance" id="flexRadioDefault1" onChange={(e) => presentUpdate(e)} />
                                 <label class="form-check-label" for="flexRadioDefault1">Present</label>
                             </div>
                         </div>
@@ -318,7 +334,7 @@ export default function Attendence() {
 
                         </tbody>
                         <div>
-                            <button onClick={() => submitData()}>Submit</button>
+                            <button onClick={() => submitData()}className=' btn btn-primary mt-2' >Submit</button>
                         </div>
                     </table>
                 </div>

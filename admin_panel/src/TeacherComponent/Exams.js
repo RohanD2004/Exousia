@@ -73,14 +73,13 @@ export default function Exams() {
       });
     }
   }
-  const handleMarkSubmit = (event, id) => {
+  var dataarray=[];
+  const handleMarkSubmit = (event, id,index) => {
     setDate({ ...date, [event.target.name]: event.target.value, ["stuId"]: id })
-
   };
 
   const [markSuccess, setMarkSuccess] = useState(false)
   const [updatedStudentId, setUpdatedStudentId] = useState(null);
-
 
   const AddMark = async () => {
 
@@ -160,6 +159,9 @@ export default function Exams() {
   };
   const [max_mark, setMaxMark] = useState('');
 
+  const submitData=()=>{
+    console.log(dataarray);
+  }
   useEffect(() => {
 
     getTeacherData();
@@ -202,6 +204,12 @@ export default function Exams() {
               <FormControl fullWidth>
                 {/* <FormHelperText >Date of Birth</FormHelperText> */}
                 <TextField focused type='date' label='Date' name='date' variant='outlined'
+                maxDate={new Date()}
+                InputProps={{
+                  inputProps: {
+                    max: new Date().toISOString().split("T")[0],
+                  },
+                  }}
                   onChange={(event) => setDate({ ...date, [event.target.name]: event.target.value })}
                 />
               </FormControl>
@@ -276,11 +284,11 @@ export default function Exams() {
         </div>
 
         <div className='container mt-4'>
-          {markSuccess && (
+          {/* {markSuccess && (
             <p className='alert alert-success' role='alert'>
               Mark updated successfully!
             </p>
-          )}
+          )} */}
           <table className='table table-responsive'>
             <thead className='table-dark'>
               <tr>
@@ -292,7 +300,7 @@ export default function Exams() {
             <tbody>
 
               {
-                student2.map((user) => {
+                student2.map((user,index) => {
                   return (
                     <>
                       <tr>
@@ -303,7 +311,10 @@ export default function Exams() {
                           )}
                         </td>
                         <td>
-                          <input type='number' id='marks-input' name='score' className='form-control' required='true' defaultValue={0}
+                          <input type='number'
+                          className='form-control'
+                          id='marks-input' name='score' required='true'
+                           defaultValue={0}
 
                             onChange={(event) => {
                               const mark = event.target.value;
@@ -323,18 +334,18 @@ export default function Exams() {
 
                                 handleMarkSubmit(event, user._id)
                               }
-
-
+                              const className = `form-control ${parseInt(event.target.value) < (parseInt(max_mark))/2 || parseInt(event.target.value) == 0 ? 'is-invalid' : ''}`;
+                              event.target.className = className;
                             }}
 
-                          /></td>
+                          />
+                          </td>
                         <td ><button type='button' className='btn btn-warning' onClick={() => AddMark()} >Submit</button></td>
                       </tr>
                     </>
                   )
                 })
               }
-
             </tbody>
           </table>
         </div>

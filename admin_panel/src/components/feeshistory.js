@@ -248,6 +248,7 @@ export default function Feeshistory() {
                                                 )
                                             );
                                         })}
+                                      
                                 </tbody>
 
 

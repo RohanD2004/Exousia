@@ -81,12 +81,11 @@ function TextLinkExample() {
 
                         <div className="card">
                           <div className="card-header">
-                            <b>{ct}</b> shubham kahdekar
+                            <b>{user.std} standard</b> 
 
                           </div>
                           <div className="card-body">
-                            <h5 className="card-title">{user.std} standard</h5>
-                            <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                      
                             <Link to={`/admin/classes/std/${user._id}`} style={{ color: 'white', textDecoration: 'none' }} > <button className="btn btn-primary" href="#data" onClick={() => getStd(user._id)} >checkout </button> </Link>
                           </div>
                         </div >

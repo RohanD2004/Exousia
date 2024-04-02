@@ -88,7 +88,7 @@ class AttendenceController {
                 },  
              
             ]);
-            console.log(studentdata);
+            
             Utilities.apiResponse(res, 200, 'Get attendence Successfully', studentdata);
         } catch (error) {
             Utilities.apiResponse(res, 500, error);
@@ -124,7 +124,7 @@ class AttendenceController {
                    
                 ]);
     
-            console.log(studentdata);
+        
             Utilities.apiResponse(res, 200, 'Get attendence Successfully', studentdata);
         } catch (error) {
             Utilities.apiResponse(res, 500, error);

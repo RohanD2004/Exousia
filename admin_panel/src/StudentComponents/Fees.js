@@ -111,7 +111,8 @@ export default function Feesdata() {
 
                                         </tr>
 
-                                    })}
+                                    })
+                                    }
 
                             </tbody>
 

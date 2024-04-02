@@ -161,7 +161,6 @@ const Admission = () => {
   };
 
   const gender = ["male", "female", "other"];
-
   function getStylesstd2(name, theme) {
     return {
       fontWeight:
@@ -256,6 +255,14 @@ const Admission = () => {
   useEffect(() => {
     fees();
   }, []);
+
+  const [value, setValue2] = useState("");
+  const [isInvalid, setIsInvalid] = useState(false);
+  const demo = (event) => {
+
+    const inputValue = event.target.value;
+    setIsInvalid(inputValue.length >= 10);
+  }
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -377,7 +384,7 @@ const Admission = () => {
                 </FormControl>
               </div>
 
-              <div class="col-12 col-sm-4 ">
+              <div class="col-12 col-sm-4">
                 <TextField
                   fullWidth
                   variant="outlined"
@@ -385,13 +392,19 @@ const Admission = () => {
                   id="contactno1"
                   label="Contact No"
                   className="d-block mt-3"
-                  inputProps={{ inputMode: "numeric" }}
+                  onChange={(e) => {
+                    setValue(e.target.value);
+                    setIsInvalid(e.target.value.length > 10);
+                    
+                  }}
+                  inputProps={{ inputMode: "numeric", style: { color: isInvalid ? 'red' : 'black' } }}
                   {...register("contact", { required: true })}
                 />
                 <p className="text-danger">
                   {errors.contact?.type === "required" && "contact is required"}
                 </p>
               </div>
+
               <div class="col-12 col-sm-4 ">
                 <TextField
                   fullWidth

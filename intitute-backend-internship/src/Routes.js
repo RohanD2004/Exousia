@@ -22,6 +22,7 @@ const MarkControler = require('./controllers/MarkController')
 const mailController = require('./controllers/mail')
 const AdminController = require("./controllers/AdminController");
 const AttendenceController = require('./controllers/AttendenceController');
+const TimeTableController= require('./controllers/TimetableController')
 
 /**
  * APIs V1 Routes
@@ -152,6 +153,12 @@ Route.route('/student/messages')
 
     Route.route('/student/getuploadFIle')
     .post(authcontroller.Auth, TeacherController.getuploadFileForStudent);
+
+    Route.route('/student/timetable')
+    .post(authcontroller.Auth, TimeTableController.getTimeTable);
+
+    Route.route('/teacher/timetable')
+    .post(authcontroller.Auth, TimeTableController.getTimeTableForTeacher);
 
     Route.route('/teacher/attendence/view')
     .post(authcontroller.Auth, AttendenceController.getAllStudentAttendance);

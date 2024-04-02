@@ -63,7 +63,6 @@ export default function Viewmark() {
     }
 
     setFilteredMarkData(updatedTestName);
-
   };
 
   useEffect(() => {
@@ -195,6 +194,14 @@ export default function Viewmark() {
 
       // Set the updated testName state array
       setTestName(updatedTestName);
+      if(testName.length==0)
+      {
+        Swal.fire({
+          title: 'Success',
+          text: "No test ",
+          icon: 'success',
+        });
+      }
       console.log(updatedTestName);
     } catch (error) {
       // Handle errors
@@ -350,7 +357,10 @@ export default function Viewmark() {
 
               {
                 student2.map((user) => {
-                  const markData = filteredMarkData.find((data) => data.userId === user.id);
+                  const markData = filteredMarkData.find((data) => data.stuId === user._id);
+            
+                  console.log(user._id)
+                  console.log(markData);
                   return (
                     <>
                       <tr>

@@ -57,6 +57,7 @@ export default function ViewAttendence() {
 
     const getAttendenceDate = async (data) => {
         const response = await getSortedAttandence(data);
+        console.log(response);
         setSortedArray(response.data.data);
     }
     const [indexarr, setIndexArr] = useState([]);
@@ -196,6 +197,12 @@ export default function ViewAttendence() {
                             <FormControl fullWidth>
                                 {/* <FormHelperText >Date of Birth</FormHelperText> */}
                                 <TextField focused type='date' label='Date' name='date' variant='outlined'
+                                    maxDate={new Date()}
+                                    InputProps={{
+                                        inputProps: {
+                                            max: new Date().toISOString().split("T")[0],
+                                        },
+                                    }}
                                     onChange={(event) => dateChange(event)}
                                 />
                             </FormControl>
@@ -256,25 +263,32 @@ export default function ViewAttendence() {
                                     :
 
                                     sortedarray.map((data, index) => {
-                                            console.log(data.studentinfo[0].date);
                                         return (
-                                            <>
-                                                <tr>
-                                                    <td>{data.name}</td>
-                                                    <td>{data.studentinfo[0].date}</td>
-                                                    <td>{data.studentinfo[0].attend==0?'A':'P'}</td>
-                                                    <td>-</td>
-                                                    <td>
-                                                         <Link to={`student/${data._id}`} style={{ color: 'white', textDecoration: 'none' }}>
+                                            <tr key={index}>
+                                                <td>{data.name}</td>
+                                                {data.studentinfo.length === 0 ? (
+                                                    <td colSpan="3">Attendance Not Found</td>
+                                                ) : (
+                                                    <>
+                                                        <td>{data.studentinfo[0].date}</td>
+                                                        <td>{data.studentinfo[0].attend === 0 ? 'A' : 'P'}</td>
+                                                        <td>-</td>
+                                                    </>
+                                                )}
+                                                <td>
+                                                    {data.studentinfo.length > 0 && (
+                                                        <Link to={`student/${data._id}`} style={{ color: 'white', textDecoration: 'none' }}>
                                                             <Button className="btn " href="#data" startIcon={<AiFillEye />} />
                                                         </Link>
-                                                        </td>
-                                                </tr>
-                                            </>
-                                        )
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        );
                                     })
-
                             }
+
+
+
 
 
                         </tbody>
