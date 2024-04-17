@@ -81,7 +81,15 @@ export default function Exams() {
   const [markSuccess, setMarkSuccess] = useState(false)
   const [updatedStudentId, setUpdatedStudentId] = useState(null);
 
-  const AddMark = async () => {
+  const AddMark = async (ind) => {
+
+    console.log(ind);
+    console.log(student2.length);
+
+    if(ind+1==student2.length)
+      {
+        document.location.reload();
+      }
 
     console.log(date);
     if (parseInt(date.score) == 0 || date.score == '') {
@@ -340,7 +348,7 @@ export default function Exams() {
 
                           />
                           </td>
-                        <td ><button type='button' className='btn btn-warning' onClick={() => AddMark()} >Submit</button></td>
+                        <td ><button type='button' className='btn btn-warning' onClick={() => AddMark(index)} >Submit</button></td>
                       </tr>
                     </>
                   )

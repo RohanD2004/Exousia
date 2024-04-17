@@ -56,7 +56,7 @@ export default function Attendence() {
     const getAllStudent = async (data) => {
         let response = await GetStudentStd(data);
         setStudent2(response?.data.data);
-        presentUpdate2(true);
+        
     }
 
     const [updatedStudentId, setUpdatedStudentId] = useState(null);
@@ -117,6 +117,7 @@ export default function Attendence() {
                     icon: 'error',
                 });
             }
+        console.log(event.target.checked);
 
         if (event.target.checked) {
             dataArray[index] = {
@@ -126,8 +127,11 @@ export default function Attendence() {
                 attend: document.getElementById('flexRadioDefault1').checked == true ? 1 : 0,
                 date: date
             };
+            console.log('Enter in the first if');
         }
-        else if (!event.target.checked) {
+        else if (event.target.checked==false) {
+            console.log('Enter in the second if');
+
             if (dataArray[index].attend == 1) {
 
                 dataArray[index] = {
@@ -137,6 +141,7 @@ export default function Attendence() {
                     attend: 0,
                     date: date
                 };
+                console.log('Enter in the second if1');
             } else if (dataArray[index].attend == 0) {
                 dataArray[index] = {
                     stuId: id,
@@ -145,6 +150,7 @@ export default function Attendence() {
                     attend: 1,
                     date: date
                 };
+                console.log('Enter in the second if2');
             }
         }
 
@@ -152,29 +158,12 @@ export default function Attendence() {
         console.log(dataArray);
 
     }
-    const presentUpdate2 = async (event) => {
-
-        if (event==true) {
-            student2.map((user, index) => {
-                dataArray[index] = {
-                    stuId: user._id,
-                    teacher_id: Sub._id,
-                    std: user.std_id,
-                    attend: 0,
-                    date: date
-                };
-            }
-            )
-
-        } else {
-            dataArray = []
-        }
-        console.log(dataArray);
-    }
-
+  
+    var flag=false;
     const presentUpdate = async (event) => {
-
+        
         if (event.target.checked) {
+            flag=true;
             student2.map((user, index) => {
                 dataArray[index] = {
                     stuId: user._id,
@@ -191,9 +180,12 @@ export default function Attendence() {
         }
         console.log(dataArray);
     }
+   
 
     const absenttUpdate = async (event) => {
+        
         if (event.target.checked) {
+            flag=true
             student2.map((user, index) => {
                 dataArray[index] = {
                     stuId: user._id,
@@ -244,13 +236,13 @@ export default function Attendence() {
                 });
             }
         }
-        else{
-            Swal.fire({
-                title: 'Error !',
-                text: 'Please select the category  first , either "Present" or "Absent" !!',
-                icon: 'error',
-            });
-        }
+        // else{
+        //     Swal.fire({
+        //         title: 'Error !',
+        //         text: 'Please select the category  first , either "Present" or "Absent" !!',
+        //         icon: 'error',
+        //     });
+        // }
       
 
     }
@@ -317,7 +309,7 @@ export default function Attendence() {
                         </div>
                         <div className='col-lg-2 mb-2 mt-3'>
                             <div className="form-check">
-                                <input class="form-check-input" type="radio" checked name="attendance" id="flexRadioDefault1" onChange={(e) => presentUpdate(e)} />
+                                <input class="form-check-input" type="radio"  name="attendance" id="flexRadioDefault1" onChange={(e) => presentUpdate(e)} />
                                 <label class="form-check-label" for="flexRadioDefault1">Present</label>
                             </div>
                         </div>
@@ -355,9 +347,11 @@ export default function Attendence() {
                                                 </td>
                                                 <td>
                                                     <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onChange={(event) => updateAttendence(event, user._id, index, user.std_id)} />
+                                                        <input class="form-check-input"  type="checkbox" id="flexSwitchCheckDefault" onChange={(event) => updateAttendence(event, user._id, index, user.std_id)} />
                                                         <label class="form-check-label" for="flexSwitchCheckDefault"></label>
                                                     </div>
+                                                    
+                                                    
                                                 </td>
 
                                             </tr>
@@ -365,14 +359,25 @@ export default function Attendence() {
                                     )
                                 })
                             }
+                                  <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    {
+                                isVisible && <button onClick={() => submitData() }className=' btn btn-primary mt-2' >Submit</button>
+
+                                    }
+
+                                </td>
+
+                            </tr>
 
                         </tbody>
-                        <div>
-                            {
-                               isVisible && <button onClick={() => submitData() }className=' btn btn-primary mt-2' >Submit</button>
+                     
+                        
+                          
                            
-                            }
-                             </div>
+                             
                     </table>
                 </div>
             </Box>

@@ -9,6 +9,7 @@ import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
+import { MdOutlinePreview } from "react-icons/md";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -20,11 +21,13 @@ import { PiStudentDuotone } from "react-icons/pi";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { GiHamburgerMenu } from 'react-icons/gi'
+import { CgNotes } from "react-icons/cg";
 import { GiTeacher } from "react-icons/gi";
 import { AiFillHome, AiOutlineLogout } from "react-icons/ai"
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { Button } from "@mui/material";
 import { FaRupeeSign } from "react-icons/fa";
+import { IoMdCloudUpload } from "react-icons/io";
 
 // import Admission from "./teacher_admission";
 const drawerWidth = 240;
@@ -236,7 +239,7 @@ export default function Sidebar() {
                 color: "white"
               }}
             >
-              <PiStudentDuotone />
+              <IoMdCloudUpload />
             </ListItemIcon>
             <ListItemText
               primary={"Upload Material"}
@@ -255,7 +258,7 @@ export default function Sidebar() {
                 color: "white"
               }}
             >
-              <PiStudentDuotone />
+              <CgNotes />
             </ListItemIcon>
             <ListItemText
               primary={"Fill Attendance"}
@@ -274,7 +277,7 @@ export default function Sidebar() {
                 color: "white"
               }}
             >
-              <PiStudentDuotone />
+              <MdOutlinePreview />
             </ListItemIcon>
             <ListItemText
               primary={"View Attendance"}

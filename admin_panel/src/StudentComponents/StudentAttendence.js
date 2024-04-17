@@ -138,7 +138,7 @@ export default function StudentAttendence() {
                                                     <tr>
                                                         <td>{data.date}</td>
                                                         <td>{data.attendanceinfo.length > 0 ? data.attendanceinfo[0].name : ''}</td>
-                                                        <td>{data.attend == 0 ? 'A' : 'P'}</td>
+                                                        <td>{data.attend == 1 ? 'P' : 'A'}</td>
                                                     </tr>
                                                 </>
                                             )

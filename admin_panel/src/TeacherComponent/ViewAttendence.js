@@ -277,7 +277,7 @@ export default function ViewAttendence() {
                                                 ) : (
                                                     <>
                                                         <td>{data.studentinfo[0].date}</td>
-                                                        <td>{data.studentinfo[0].attend === 0 ? 'A' : 'P'}</td>
+                                                        <td>{data.studentinfo[0].attend === 1 ? 'P' : 'A'}</td>
                                                         <td>-</td>
                                                     </>
                                                 )}

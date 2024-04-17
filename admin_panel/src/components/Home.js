@@ -54,7 +54,7 @@ let eight;
 let nine;
 let ten;
 let stdinfo;
-let total_fees;
+var total_fees = "";
 let remaining;
 let totalStudent;
 let teacherCounting;
@@ -462,7 +462,7 @@ export default function Homepage() {
                         <div class="row align-items-center mb-2 d-flex">
                           <div class="col-8">
                             <h2 class="d-flex align-items-center mb-0">
-                              {totalStudent}
+                              {totalStudent-25}
                             </h2>
                           </div>
                         </div>
@@ -959,7 +959,7 @@ export default function Homepage() {
                     <div className="row px-3 ">
                       <div className="col-lg-5 col-md-10 col-sm-10">
                         <TextField
-                          label={total_fees}
+                          label={"Total fees: "+total_fees}
                           placeholder="Remaining fees"
                           value={remaining}
                           type="numeric"

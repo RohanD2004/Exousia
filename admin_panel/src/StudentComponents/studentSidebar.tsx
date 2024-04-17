@@ -8,6 +8,7 @@ import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
+import { BiMessageSquareDetail } from "react-icons/bi";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -25,6 +26,8 @@ import { AiFillHome, AiOutlineLogout } from "react-icons/ai"
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { Button } from "@mui/material";
 import { FaRupeeSign } from "react-icons/fa";
+import { SiBookstack } from "react-icons/si";
+import { CgNotes } from "react-icons/cg";
 
 // import Admission from "./teacher_admission";
 const drawerWidth = 240;
@@ -179,7 +182,7 @@ export default function Sidebar() {
                 color: "white"
               }}
             >
-              <PiStudentDuotone />
+              <SiBookstack />
             </ListItemIcon>
             <ListItemText
               primary={"StudyMaterial"}
@@ -255,7 +258,7 @@ export default function Sidebar() {
                 color: "white"
               }}
             >
-              <FaRupeeSign />
+              <BiMessageSquareDetail />
             </ListItemIcon>
             <ListItemText
               primary={"Messages"}
@@ -274,7 +277,7 @@ export default function Sidebar() {
                 color: "white"
               }}
             >
-              <FaRupeeSign />
+              <CgNotes /> 
             </ListItemIcon>
             <ListItemText
               primary={"Attendance"}

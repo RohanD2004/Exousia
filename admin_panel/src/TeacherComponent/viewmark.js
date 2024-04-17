@@ -50,11 +50,11 @@ export default function Viewmark() {
 
   const handleChange3 = (event) => {
     const selectedTest = event.target.value;
+    getStudentData(filteredMarkData);
     setTest(selectedTest);
     console.log(selectedTest);
     // Clear filteredMarkData before populating with new data
     setFilteredMarkData([]);
-    getStudentData(filteredMarkData);
     const updatedTestName = [];
     for (let i = 0; i < markData.length; i++) {
       if (markData[i].testName === selectedTest) {
@@ -110,36 +110,40 @@ export default function Viewmark() {
       const response = await getTeacherMarkData(date);
       if(response.status==200)
       {
-        Swal.fire({
-          title: 'Success',
-          text: "Test data get succesfully",
-          icon: 'success',
-        });
-      }
-      setMarkData(response.data.data);
-      // Create a copy of testName state array
-      const updatedTestName = [...testName];
-      const testNameSet = new Set(updatedTestName);
-     
-      for (let i = 0; i < response.data.data.length; i++) {
-        // Check if the testName is not already in the set
-        if (!testNameSet.has(response.data.data[i].testName)) {
-          updatedTestName.push(response.data.data[i].testName);
-          testNameSet.add(response.data.data[i].testName);
+        setMarkData(response.data.data);
+        // Create a copy of testName state array
+        const updatedTestName = [...testName];
+        const testNameSet = new Set(updatedTestName);
+       
+        for (let i = 0; i < response.data.data.length; i++) {
+          // Check if the testName is not already in the set
+          if (!testNameSet.has(response.data.data[i].testName)) {
+            updatedTestName.push(response.data.data[i].testName);
+            testNameSet.add(response.data.data[i].testName);
+          }
         }
-      }
+    
+        // Set the updated testName state array
+        setTestName(updatedTestName);
+        if(testName.length==0)
+        {
+          Swal.fire({
+            title: 'Failed',
+            text: "No test ",
+            icon: 'error',
+          });
+        }
+        else if(testName.length!=0)
+          {
+            Swal.fire({
+              title: 'Success',
+              text: "Test data get succesfully",
+              icon: 'success',
+            });
+          }
   
-      // Set the updated testName state array
-      setTestName(updatedTestName);
-      // if(testName.length==0)
-      // {
-      //   Swal.fire({
-      //     title: 'Success',
-      //     text: "No test ",
-      //     icon: 'success',
-      //   });
-      // }
-
+      }
+      
     } catch (error) {
       // Handle errors
       console.error("Error fetching data:", error);
