@@ -148,7 +148,7 @@ export default function Student() {
                           <th scope="col">Standard</th>
                           <th scope="col">Gender</th>
                           <th scope="col">Contact No</th>
-                          <th scope="col">Email/Username</th>
+                          <th scope="col">Email</th>
                           <th scope="col">Fees</th>
                           <th scope="col"></th>
                         </tr>

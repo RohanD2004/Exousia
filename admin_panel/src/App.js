@@ -42,7 +42,6 @@ export default function App() {
 
       <BrowserRouter>
         <Routes>
-
           <Route path="/" exact element={<Login />}  ></Route>
           <Route path="admin" exact element={<Home />}  ></Route>
           <Route path="/admin/profile/:id?" exact element={<AdminProfile />}  ></Route>

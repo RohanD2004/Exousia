@@ -46,31 +46,31 @@ class FeesModule {
             const filter = { _id: req.body.std_id };
             const update = { $push: { message: req.body.msg } };
             await feesModule.updateOne(filter, update);
+            const msg=req.body.msg;
 
+            const data = await Studentmodel.find({ std_id: mongoose.Types.ObjectId(req.body.std_id) });
+            for (let index = 0; index < data.length; index++) {
+                // console.log(data[index].contact);
+                // console.log(data[index].name);
+                var req = unirest("GET", "https://www.fast2sms.com/dev/bulkV2");
+                req.query({
+                    "authorization": "vDlAkn05Jo8KnytKTux1lGqPT38xmpSfc5zuNw0jLEEb08TatKgV8L6i0li0",
+                    "message":msg.toString(),
+                    "language": "english",
+                    "route": "q",
+                    "numbers": data[index].contact.toString(),
+                });
+                req.headers({
+                    "cache-control": "no-cache"
+                });
+                req.end(function (res) {
+                    if (res.error) {
+                        throw new Error(res.error);
+                    }
+                    console.log(res.body);
+                });
 
-            // const data = await Studentmodel.find({ std_id: mongoose.Types.ObjectId(req.body.std_id) });
-            // for (let index = 0; index < data.length; index++) {
-            //     // console.log(data[index].contact);
-            //     // console.log(data[index].name);
-            //     var req = unirest("GET", "https://www.fast2sms.com/dev/bulkV2");
-            //     req.query({
-            //         "authorization": "vDlAkn05Jo8KnytKTux1lGqPT38xmpSfc5zuNw0jLEEb08TatKgV8L6i0li0",
-            //         "message": req.body.msg,
-            //         "language": "english",
-            //         "route": "q",
-            //         "numbers": data[index].contact.toString(),
-            //     });
-            //     req.headers({
-            //         "cache-control": "no-cache"
-            //     });
-            //     req.end(function (res) {
-            //         if (res.error) {
-            //             throw new Error(res.error);
-            //         }
-            //         console.log(res.body);
-            //     });
-
-            // }
+            }
 
             Utilities.apiResponse(res, 200, 'Message Send Successful');
         } catch (error) {

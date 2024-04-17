@@ -187,7 +187,11 @@ export default function Homepage() {
             text: response.message,
             icon: "success",
             confirmButtonText: "OK",
-          });
+          }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.reload();
+            }
+        });
         } else if (response.status == 500) {
           Swal.fire({
             title: "Error",
@@ -273,7 +277,11 @@ export default function Homepage() {
           text: response.data.message,
           icon: "success",
           confirmButtonText: "OK",
-        });
+        }).then((result) => {
+          if (result.isConfirmed) {
+              window.location.reload();
+          }
+      });
       }
     } catch (error) {
       Swal.fire({
@@ -812,13 +820,7 @@ export default function Homepage() {
                         "Standard is required"}
                     </p>
                   </FormControl>
-                  <FormControlLabel
-                    className="ms-3 "
-                    value="All"
-                    control={<Switch color="primary" />}
-                    label="All"
-                    labelPlacement="end"
-                  />
+                
                 </header>
                 <div className="mt-2">
                   <TextField

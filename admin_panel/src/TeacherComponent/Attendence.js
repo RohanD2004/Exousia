@@ -24,6 +24,7 @@ import { GetFees, viewTeacher2, getStandards, FillAttendence } from "../service/
 import Swal from "sweetalert2";
 import { useParams } from 'react-router-dom';
 import Toggle from 'react-toggle';
+import { Visibility } from '@mui/icons-material';
 export default function Attendence() {
     const { id } = useParams();
     var dataArray = []
@@ -42,6 +43,8 @@ export default function Attendence() {
     const [data, setData] = useState([]);
 
     const handleChange2 = (event) => {
+        setIsVisible(true);
+
         setStandard(event.target.value);
         const data = event.target.value;
         setStudent({ ...student, [event.target.name]: event.target.value })
@@ -53,6 +56,7 @@ export default function Attendence() {
     const getAllStudent = async (data) => {
         let response = await GetStudentStd(data);
         setStudent2(response?.data.data);
+        presentUpdate2(true);
     }
 
     const [updatedStudentId, setUpdatedStudentId] = useState(null);
@@ -92,6 +96,7 @@ export default function Attendence() {
         }
     };
     const [presentChecked, setpresentChecked] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
 
 
 
@@ -103,6 +108,15 @@ export default function Attendence() {
 
 
     const updateAttendence = async (event, id, index, std_id) => {
+
+        if(!document.getElementById('flexRadioDefault1').checked && !document.getElementById('flexRadioDefault2').checked)
+            {
+                Swal.fire({
+                    title: 'Error !',
+                    text: 'Please select the category  first , either "Present" or "Absent" !!',
+                    icon: 'error',
+                });
+            }
 
         if (event.target.checked) {
             dataArray[index] = {
@@ -137,6 +151,25 @@ export default function Attendence() {
 
         console.log(dataArray);
 
+    }
+    const presentUpdate2 = async (event) => {
+
+        if (event==true) {
+            student2.map((user, index) => {
+                dataArray[index] = {
+                    stuId: user._id,
+                    teacher_id: Sub._id,
+                    std: user.std_id,
+                    attend: 0,
+                    date: date
+                };
+            }
+            )
+
+        } else {
+            dataArray = []
+        }
+        console.log(dataArray);
     }
 
     const presentUpdate = async (event) => {
@@ -183,7 +216,7 @@ export default function Attendence() {
     }
 
     const submitData = async () => {
-        console.log(dataArray);
+        console.log(dataArray.length);
         console.log(student2.length);
 
         if (dataArray.length == student2.length) {
@@ -211,13 +244,14 @@ export default function Attendence() {
                 });
             }
         }
-        else {
+        else{
             Swal.fire({
                 title: 'Error !',
                 text: 'Please select the category  first , either "Present" or "Absent" !!',
                 icon: 'error',
             });
         }
+      
 
     }
     return (
@@ -334,8 +368,11 @@ export default function Attendence() {
 
                         </tbody>
                         <div>
-                            <button onClick={() => submitData()}className=' btn btn-primary mt-2' >Submit</button>
-                        </div>
+                            {
+                               isVisible && <button onClick={() => submitData() }className=' btn btn-primary mt-2' >Submit</button>
+                           
+                            }
+                             </div>
                     </table>
                 </div>
             </Box>

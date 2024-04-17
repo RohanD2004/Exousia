@@ -228,8 +228,6 @@ class StudentController {
             Utilities.apiResponse(res, 500, error);
         }
     }
-
-
     async updateStudent(req, res) {
         try {
             await Studentmodel.findOneAndUpdate({ _id: req.params.id }, req.body);

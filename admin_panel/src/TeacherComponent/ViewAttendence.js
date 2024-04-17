@@ -35,6 +35,7 @@ export default function ViewAttendence() {
     const [data, setData] = useState([]);
 
     const handleChange2 = async (event) => {
+        setIsFirstDateSelected(true);
         setStandard(event.target.value);
         const data = event.target.value;
         setStudent({ ...student, [event.target.name]: event.target.value })
@@ -142,7 +143,7 @@ export default function ViewAttendence() {
     };
     const [presentChecked, setpresentChecked] = useState(false);
 
-
+    const [isFirstDateSelected, setIsFirstDateSelected] = useState(false);
 
     useEffect(() => {
 
@@ -190,6 +191,7 @@ export default function ViewAttendence() {
 
                                     ))}
                                 </Select>
+                                
                             </FormControl>
                         </div>
 
@@ -198,6 +200,7 @@ export default function ViewAttendence() {
                                 {/* <FormHelperText >Date of Birth</FormHelperText> */}
                                 <TextField focused type='date' label='Date' name='date' variant='outlined'
                                     maxDate={new Date()}
+                                    disabled={!isFirstDateSelected}
                                     InputProps={{
                                         inputProps: {
                                             max: new Date().toISOString().split("T")[0],
@@ -205,6 +208,9 @@ export default function ViewAttendence() {
                                     }}
                                     onChange={(event) => dateChange(event)}
                                 />
+                                {
+                                    !isFirstDateSelected? <p>Select standard first</p>:<p></p>
+                                }
                             </FormControl>
                         </div>
 

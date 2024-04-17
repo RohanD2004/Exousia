@@ -192,7 +192,7 @@ export default function Classlayout() {
                       <th scope="row"  >{user._id}</th>
                       <td >{user.name}</td>
                       <td  >{user.contact}</td>
-                      <td >{user.Alternet_contact}</td>
+                      <td >{user.feesPaid}</td>
                       <td  ><Button component={Link} to={`/admin/classes/std/edit/${user._id}`} startIcon={<EditIcon />}>
                       </Button><Button onClick={() => deleteStudentData(user._id)} startIcon={<DeleteIcon />}>
                         </Button></td>

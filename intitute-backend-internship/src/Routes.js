@@ -80,7 +80,6 @@ Route.route('/admin/classes/std/edit/:id?')
 Route.route('/admin/classes/std/:id?')
     .delete(authcontroller.Auth, StudentController.deleteStudent);
 
-
 Route.route('/admin/teacher')
     .get(authcontroller.Auth, TeacherController.getAllTeacher);
 

@@ -277,6 +277,7 @@ export default function Login() {
       if (response?.status === 200) 
       {
         const tkn = response?.data.data.accessToken;
+        
         localStorage.setItem("token", tkn);
         Swal.fire({
           title: "Success",
@@ -300,7 +301,7 @@ export default function Login() {
         setIsBlur(false);
       } else if (response.response.data.status == 422) {
         Swal.fire({
-          title: "Error !",
+          title: "Failed",
           text: response.response.data.message,
           icon: "error",
           confirmButtonText: "OK",
@@ -309,7 +310,7 @@ export default function Login() {
         setIsBlur(false);
       } else {
         Swal.fire({
-          title: "Error !121",
+          title: "Failed",
           text: response.message,
           icon: "error",
           confirmButtonText: "OK",
@@ -317,7 +318,7 @@ export default function Login() {
       }
     } catch (error) {
       Swal.fire({
-        title: "Error ",
+        title: "Failed",
         text: error,
         icon: "error",
         confirmButtonText: "OK",

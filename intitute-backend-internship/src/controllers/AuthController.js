@@ -31,7 +31,16 @@ class AuthController {
                     userdata,
                     accessToken,
                 });
+            } else if (user.pass != req.body.pass) {
+                Utilities.apiResponse(res, 422, 'Invalid password')
             }
+            else if (user.loginid != req.body.loginid) {
+                Utilities.apiResponse(res, 422, 'Invalid username')
+            }
+            else if (user.loginid != req.body.loginid && user.pass != req.body.pass) {
+                Utilities.apiResponse(res, 422, 'Invalid username and password')
+            }
+
         } catch (error) {
             Utilities.apiResponse(res, 500, error);
         }

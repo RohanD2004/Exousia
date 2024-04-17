@@ -51,14 +51,15 @@ export default function Viewmark() {
   const handleChange3 = (event) => {
     const selectedTest = event.target.value;
     setTest(selectedTest);
-
+    console.log(selectedTest);
     // Clear filteredMarkData before populating with new data
     setFilteredMarkData([]);
-
+    getStudentData(filteredMarkData);
     const updatedTestName = [];
     for (let i = 0; i < markData.length; i++) {
       if (markData[i].testName === selectedTest) {
         updatedTestName.push(markData[i]);
+        console.log(markData[i]);
       }
     }
 
@@ -96,80 +97,17 @@ export default function Viewmark() {
       });
     }
   }
-  const handleMarkSubmit = (event, id) => {
-    setDate({ ...date, [event.target.name]: event.target.value, ["stuId"]: id })
-
-  };
+ 
 
   const [markSuccess, setMarkSuccess] = useState(false)
-  const [updatedStudentId, setUpdatedStudentId] = useState(null);
+  
 
-
-  const AddMark = async () => {
-
-    console.log(date);
-    if (parseInt(date.score) == 0 || date.score == '') {
-      Swal.fire({
-        title: 'Error !',
-        text: "Mark should not be zero",
-        icon: 'error',
-      });
-      setMarkSuccess(false);
-    }
-    else {
-      try {
-        let response = await updateMark(date);
-
-        if (response?.status === 200) {
-          console.log(response);
-          setMarkSuccess(true);
-          setUpdatedStudentId(date.stuId); // Set the ID of the updated student
-          setTimeout(() => {
-            setMarkSuccess(false);
-            // Reset the updated student ID after 2 seconds
-          }, 2000);
-        } else if (response.response.data.status === 400) {
-          // Display a message indicating that the mark already exists
-          console.log(response.response.data.message);
-          Swal.fire({
-            title: 'Error !',
-            text: response.response.data.message.toString(),
-            icon: 'error',
-          });
-        } else {
-          // Display a generic error message
-          console.error("Failed to update mark");
-        }
-      } catch (error) {
-        // Display a generic error message
-        console.error("Failed to update mark");
-      }
-
-    }
-
-  }
-
-  //   const getData = async()=>
-  //   {
-  //     const response= await getTeacherMarkData(date);
-  //     console.log(response.data.data);
-
-  //     for(let i=0;i<response.data.data.length;i++)
-  //     {
-
-  //         setTestName[i]=response.data.data[i].testName;
-  //         console.log(response.data.data[i].testName)
-
-  //     }
-  //     console.log(testName);
-  //   }
 
   const getData = async () => {
+
     try {
     
       const response = await getTeacherMarkData(date);
-
-
       if(response.status==200)
       {
         Swal.fire({
@@ -182,7 +120,7 @@ export default function Viewmark() {
       // Create a copy of testName state array
       const updatedTestName = [...testName];
       const testNameSet = new Set(updatedTestName);
-      
+     
       for (let i = 0; i < response.data.data.length; i++) {
         // Check if the testName is not already in the set
         if (!testNameSet.has(response.data.data[i].testName)) {
@@ -190,24 +128,27 @@ export default function Viewmark() {
           testNameSet.add(response.data.data[i].testName);
         }
       }
-      
-
+  
       // Set the updated testName state array
       setTestName(updatedTestName);
-      if(testName.length==0)
-      {
-        Swal.fire({
-          title: 'Success',
-          text: "No test ",
-          icon: 'success',
-        });
-      }
-      console.log(updatedTestName);
+      // if(testName.length==0)
+      // {
+      //   Swal.fire({
+      //     title: 'Success',
+      //     text: "No test ",
+      //     icon: 'success',
+      //   });
+      // }
+
     } catch (error) {
       // Handle errors
       console.error("Error fetching data:", error);
     }
   };
+
+  const demo=()=>{
+    setTestName=[];
+  }
 
 
   const getTeacherData = async () => {
@@ -350,6 +291,7 @@ export default function Viewmark() {
                 <th>Name</th>
                 <th className='ms-5 w-25'>Total Mark</th>
                 <th className='ms-5 w-25'>Obtain Mark</th>
+                <th className='ms-5 w-25'>Test</th>
                 <th>Date</th>
               </tr>
             </thead>
@@ -358,8 +300,6 @@ export default function Viewmark() {
               {
                 student2.map((user) => {
                   const markData = filteredMarkData.find((data) => data.stuId === user._id);
-            
-                  console.log(user._id)
                   console.log(markData);
                   return (
                     <>
@@ -374,6 +314,9 @@ export default function Viewmark() {
                         </td>
                         <td >
                           {markData.score}
+                        </td>
+                        <td>
+                          {test}
                         </td>
                         <td >
                           {markData.updatedAt}
