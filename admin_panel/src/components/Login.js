@@ -315,6 +315,8 @@ export default function Login() {
           icon: "error",
           confirmButtonText: "OK",
         });
+        setIsLoading(false);
+        setIsBlur(false);
       }
     } catch (error) {
       Swal.fire({

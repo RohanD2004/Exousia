@@ -2,7 +2,7 @@ import axios from "axios";
 import { tokenpassApi } from "../components/Login";
 import { FaEyeDropper } from "react-icons/fa";
 // const url = "http://localhost:8000";
- const url="https://erp-exousia.onrender.com/"
+ const url="https://erp-exousia.onrender.com"
 
 export const Authenticate = async (logcred) => {
   try {
